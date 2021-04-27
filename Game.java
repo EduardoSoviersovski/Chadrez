@@ -1,4 +1,5 @@
 import javax.swing.*;
+import Board.*;
 
 public class Game {
     JFrame window;
@@ -13,7 +14,6 @@ public class Game {
     }
 
     public void startGame(){
-        board.draw();
         window.setVisible(true);
     }
 
