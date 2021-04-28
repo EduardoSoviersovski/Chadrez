@@ -2,8 +2,8 @@ import javax.swing.*;
 import Board.*;
 
 public class Game {
-    JFrame window;
-    Board board;
+    private JFrame window;
+    private Board board;
 
     public Game(){
         window = new JFrame();

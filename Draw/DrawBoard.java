@@ -2,7 +2,7 @@ package Draw;
 import java.awt.*;
 
 public class DrawBoard extends Draw{
-    DrawTile[][] dt;
+    private DrawTile[][] dt;
 
     public DrawBoard(){
         dt = new DrawTile[8][8];
