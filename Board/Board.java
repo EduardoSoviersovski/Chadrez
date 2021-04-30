@@ -1,5 +1,5 @@
 package Board;
-import Draw.*;
+import Draw.DrawBoard;
 
 public class Board{
     private Tile[][] tiles;

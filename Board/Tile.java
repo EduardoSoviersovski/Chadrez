@@ -1,5 +1,5 @@
 package Board;
-import Draw.*;
+import Draw.DrawTile;
 import Piece.*;
 
 public class Tile {
@@ -14,26 +14,34 @@ public class Tile {
         this.x = x;
         this.y = y;
 
+        
         isTileOccupied = false;
 
         if(x % 2 == 0){
             if(y % 2 == 0){
-                this.color = TileColor.WHITE;
+                this.color = TileColor.LIGHT;
             }
             else{
-                this.color = TileColor.GRAY;
+                this.color = TileColor.DARK;
             }
         }
         else{
             if(y % 2 == 0){
-                this.color = TileColor.GRAY;
+                this.color = TileColor.DARK;
             }
             else{
-                this.color = TileColor.WHITE;
+                this.color = TileColor.LIGHT;
             }
         }
 
         dt = new DrawTile(x, y, color);
+
+        pieceInTile = null;
+    }
+
+    public void reset(){
+        isTileOccupied = false;
+        pieceInTile = null;
     }
 
     public int getX(){

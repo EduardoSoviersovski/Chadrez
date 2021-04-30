@@ -1,4 +1,4 @@
 package Board;
 public enum TileColor{
-    WHITE, GRAY;
+    LIGHT, DARK;
 }
