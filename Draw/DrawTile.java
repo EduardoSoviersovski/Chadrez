@@ -23,7 +23,7 @@ public class DrawTile extends Draw{
         }
 
         else if(color == TileColor.LIGHT){
-            g.setColor(Color.WHITE);
+            g.setColor(Color.getHSBColor((float)0, (float)0, (float)0.84));
             g.fillRect(x * 40 + 20, y * 40 + 20, 40, 40);
         }
     }

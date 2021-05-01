@@ -18,7 +18,7 @@ public class DrawPiece extends Draw{
         this.y = y;
 
         try{                //Leitura do arquivo da imagem
-            image = ImageIO.read(new File("Sprites/"+ color + "/" + type + ".png"));
+            image = ImageIO.read(new File("./Chadrez/Sprites/"+ color + "/" + type + ".png"));
         } catch(IOException e){         //Pega o erro caso o endereço passado não seja o de uma imagem
             e.printStackTrace();
         }
@@ -32,5 +32,4 @@ public class DrawPiece extends Draw{
 
         g.drawImage(image, x * 40 + 23, y * 40 + 23, this);
     }
-    
 }
