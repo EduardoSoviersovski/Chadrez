@@ -51,6 +51,7 @@ public class Game {
     }
 
     public void setup(){
+        window.setTitle("Chádrez");
         window.setSize(380, 400);
         window.setDefaultCloseOperation(3);
         window.setResizable(false);
