@@ -1,11 +1,11 @@
 package Piece;
 import Draw.DrawPiece;
-import Board.Tile;
+import Board.*;
 
 public class Knight extends Piece{
     //Atributos
-    public Knight(Tile tile, PieceAlignment alignment){
-        super(tile, alignment);
+    public Knight(Board board, Tile tile, PieceAlignment alignment){
+        super(board, tile, alignment);
         type = PieceType.KNIGHT;
         
         dp = new DrawPiece(tile.getX(), tile.getY(), PieceType.KNIGHT, alignment);

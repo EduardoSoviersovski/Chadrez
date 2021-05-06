@@ -1,11 +1,11 @@
 package Piece;
 import Draw.DrawPiece;
-import Board.Tile;
+import Board.*;
 
 public class Pawn extends Piece{
     //Atributos
-    public Pawn(Tile tile, PieceAlignment alignment){
-        super(tile, alignment);
+    public Pawn(Board board, Tile tile, PieceAlignment alignment){
+        super(board, tile, alignment);
         type = PieceType.PAWN;
         
         dp = new DrawPiece(tile.getX(), tile.getY(), PieceType.PAWN, alignment);

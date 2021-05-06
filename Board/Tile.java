@@ -44,6 +44,10 @@ public class Tile {
         pieceInTile = null;
     }
 
+    public void setPieceInTile(Piece piece){
+        pieceInTile = piece;
+    }
+
     public int getX(){
         return x;
     }

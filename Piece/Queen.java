@@ -1,11 +1,11 @@
 package Piece;
 import Draw.DrawPiece;
-import Board.Tile;
+import Board.*;
 
 public class Queen extends Piece{
     //Atributos
-    public Queen(Tile tile, PieceAlignment alignment){
-        super(tile, alignment);
+    public Queen(Board board, Tile tile, PieceAlignment alignment){
+        super(board, tile, alignment);
         type = PieceType.QUEEN;
         
         dp = new DrawPiece(tile.getX(), tile.getY(), PieceType.QUEEN, alignment);

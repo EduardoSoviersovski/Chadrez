@@ -32,4 +32,12 @@ public class DrawPiece extends Draw{
 
         g.drawImage(image, x * 40 + 23, y * 40 + 23, this);
     }
+
+    public void setX(int x){
+        this.x = x;
+    }
+
+    public void setY(int y){
+        this.y = y;
+    }
 }
