@@ -46,6 +46,7 @@ public class Tile {
 
     public void setPieceInTile(Piece piece){
         pieceInTile = piece;
+        isTileOccupied = true;
     }
 
     public int getX(){
