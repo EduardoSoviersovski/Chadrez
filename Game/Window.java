@@ -10,7 +10,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import Board.Board;
-import Draw.DrawBoard;
 import Draw.DrawGame;
 import Piece.*;
 
@@ -24,6 +23,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
     private ArrayList<JLabel> labels;
     private DrawGame dg;
     private ArrayList<Piece> pieces;
+    private MoveManager mm;
 
 
     //Método construtor
@@ -35,6 +35,8 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         jogador2 = new JTextField("Jogador 2");
 
         labels = new ArrayList<JLabel>();
+
+        mm = new MoveManager(board);
 
         //definicao de action listener para startButton
         startButton = new JButton("New Game");
@@ -65,7 +67,8 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
                 score.setBounds(360, 165, 100, 30);
 
                 //newGame();
-
+                
+                addLabels();
                 setup();
             }
         
@@ -114,11 +117,26 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         this.add(loadButton);
         this.add(jogador1);
         this.add(jogador2);
+        this.add(dg);
+    }
+
+    public void addLabels(){
+        //Configuração da janela
+        this.setTitle("Chádrez");
+        this.setSize(500, 400);
+        this.setDefaultCloseOperation(3);
+        this.setResizable(false);
+
+        //Adição dos componentes
+        this.add(startButton);
+        this.add(loadButton);
+        this.add(jogador1);
+        this.add(jogador2);
+        this.add(dg);
+
         for(int i = 0; i < labels.size(); i++){
             this.add(labels.get(i));
         }
-        this.add(dg);
-        
     }
 
     //Inicia um novo jogo, adicionando as peças a janela
@@ -151,8 +169,6 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         }
     }
 
-    
-
     @Override
     public void mouseClicked(MouseEvent e) {
         
@@ -160,26 +176,8 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
 
     @Override
     public void mousePressed(MouseEvent e) {
-        int deltaX = (e.getX()-20)/40;
-        int deltaY = (e.getY()-40)/40;
-        Piece pieceToMove = null;
-        int i;
-        int x = -1 , y = -1;
-        for (i = 0; i < pieces.size(); i++){
-            if(pieces.get(i).getClicked()){
-                x = pieces.get(i).getX();
-                y = pieces.get(i).getY();
-                pieceToMove = pieces.get(i);
-                break;
-            }
-        }
-        if(x != -1){
-            pieceToMove.setClicked(false);
-            ;pieceToMove.move(x, y, deltaX, deltaY);   
-        }
-        else{
-            board.getTile(deltaX, deltaY).getPieceInTile().setClicked(true);
-        }
+        mm.makeMove((e.getX()-20)/40, (e.getY()-40)/40);
+        
         //System.out.println(board.getTile(x, y).getPieceInTile().getPieceType());  
         repaint();
         revalidate();  

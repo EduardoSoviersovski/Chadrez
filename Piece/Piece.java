@@ -9,23 +9,26 @@ public abstract class Piece {
     protected PieceType type;
     protected PieceAlignment alignment;
     protected DrawPiece dp;
-    protected boolean clicked = false;
+    protected boolean clicked;
 
     public Piece(Board board, Tile tile, PieceAlignment alignment){
         this.board = board;
         this.tile = tile;
         this.alignment = alignment;
 
+        clicked = false;
+
         this.tile.setPieceInTile(this);
     }
 
-    public void move(int x, int y, int deltaX, int deltaY){
-        if(!board.getTile(deltaX,deltaY).getIsTileOccupied()){
+    public void move(int x, int y){
+        
+        if(!board.getTile(x, y).getIsTileOccupied()){
             tile.reset();
-            tile = board.getTile(deltaX, deltaY);
-            dp.setX(deltaX);
-            dp.setY(deltaY);
-            board.getTile(deltaX, deltaY).setPieceInTile(this);
+            tile = board.getTile(x, y);
+            dp.setX(x);
+            dp.setY(y);
+            board.getTile(x, y).setPieceInTile(this);
         }
     }
     //public abstract void capture();
