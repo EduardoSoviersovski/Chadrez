@@ -19,17 +19,30 @@ public class Pawn extends Piece{
     }
     
     //adicona todos os movimentos possiveis desta peca nesta posicao a uma array de Tiles    
-    public ArrayList<Tile> possibleMoves(){
+    public void setPossibleMoves(){
         ArrayList<Tile> moves = new ArrayList<Tile>();
-        int x = tile.getX();
-        int y = tile.getY();
+        int x = getX();
+        int y = getY();
         
-        moves.add(board.getTile(x, y + 1));
-        if(firstMove){   
-            moves.add(board.getTile(x, y + 2));
-            this.firstMove = false;
+        if(alignment ==  PieceAlignment.BLACK){
+            moves.add(board.getTile(x, y + 1));
+            if(firstMove){   
+                moves.add(board.getTile(x, y + 2));
+                this.firstMove = false;
+            }
+        }
+        else{
+            moves.add(board.getTile(x, y - 1));
+            if(firstMove){  
+                moves.add(board.getTile(x, y - 2));
+                this.firstMove = false;
+            }
         }
 
-        return moves;
+        this.possibleMoves = moves;
+    }
+
+    public ArrayList<Tile> getPossibleMoves(){
+        return possibleMoves;
     }
 }

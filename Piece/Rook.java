@@ -17,39 +17,43 @@ public class Rook extends Piece{
     }
 
     //adicona todos os movimentos possiveis desta peca nesta posicao a uma array de Tiles
-    public ArrayList<Tile> possibleMoves(){
+    public void setPossibleMoves(){
         ArrayList<Tile> moves = new ArrayList<Tile>();
         int x = tile.getX();
         int y = tile.getY();
 
-        while(x >= 0 || board.getTile(x, y).getIsTileOccupied()){
-            x -= 1;
+        while(x >= 0){
             moves.add(board.getTile(x, y));
+            x -= 1;
         }
 
         x = tile.getX();
         y = tile.getY();
 
-        while(y >= 0 || board.getTile(x, y).getIsTileOccupied()){
-            y -= 1;
+        while(y >= 0){
             moves.add(board.getTile(x, y));
+            y -= 1;
         }
         
         x = tile.getX();
         y = tile.getY();
 
-        while(x < 8 || board.getTile(x, y).getIsTileOccupied()){
-            x += 1;
+        while(x < 8){
             moves.add(board.getTile(x, y));
+            x += 1;
         }
 
         x = tile.getX();
         y = tile.getY();
 
-        while(y < 8 || board.getTile(x, y).getIsTileOccupied()){
-            y += 1;
+        while(y < 8){
             moves.add(board.getTile(x, y));
+            y += 1;
         }
-        return moves;
+        this.possibleMoves = moves;
+    }
+        
+    public ArrayList<Tile> getPossibleMoves(){
+        return possibleMoves;
     }
 }

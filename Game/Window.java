@@ -177,8 +177,6 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
     @Override
     public void mousePressed(MouseEvent e) {
         mm.makeMove((e.getX()-20)/40, (e.getY()-40)/40);
-        
-        //System.out.println(board.getTile(x, y).getPieceInTile().getPieceType());  
         repaint();
         revalidate();  
     }

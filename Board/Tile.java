@@ -49,6 +49,9 @@ public class Tile {
         isTileOccupied = true;
     }
 
+    public void setIsTileOccupied(boolean b){
+        this.isTileOccupied = b;
+    }
     public int getX(){
         return x;
     }

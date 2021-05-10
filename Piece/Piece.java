@@ -10,6 +10,7 @@ public abstract class Piece {
     protected PieceAlignment alignment;
     protected DrawPiece dp;
     protected boolean clicked;
+    protected ArrayList <Tile> possibleMoves;
 
     public Piece(Board board, Tile tile, PieceAlignment alignment){
         this.board = board;
@@ -32,7 +33,9 @@ public abstract class Piece {
         }
     }
     //public abstract void capture();
-    public abstract ArrayList<Tile> possibleMoves();
+    public abstract void setPossibleMoves();
+
+    public abstract ArrayList<Tile> getPossibleMoves();
     
     public abstract DrawPiece getDp();
 
@@ -47,6 +50,9 @@ public abstract class Piece {
         return clicked;
     }
 
+    public Tile getTile(){
+        return tile;
+    }
     public int getX(){
         return tile.getX();
     }

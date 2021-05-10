@@ -17,35 +17,55 @@ public class Knight extends Piece{
     }
     
     //adicona todos os movimentos possiveis desta peca nesta posicao a uma array de Tiles
-    public ArrayList<Tile> possibleMoves(){
+    public void setPossibleMoves(){
         ArrayList<Tile> moves = new ArrayList<Tile>();
         int x = tile.getX();
         int y = tile.getY();
 
-        if(!board.getTile(x - 1, y + 2).getIsTileOccupied()){
-            moves.add(board.getTile(x - 1, y + 2));
+        if(x - 1 >= 0 && y - 2 >= 0){
+            if(!board.getTile(x - 1, y - 2).getIsTileOccupied()){
+                moves.add(board.getTile(x - 1, y - 2));
+            }
         }
-        if(!board.getTile(x + 1, y + 2).getIsTileOccupied()){
-            moves.add(board.getTile(x - 1, y + 2));
+        if(x + 1 < 8 && y - 2 >= 0){
+            if(!board.getTile(x + 1, y - 2).getIsTileOccupied()){
+                moves.add(board.getTile(x + 1, y - 2));
+            }
         }
-        if(!board.getTile(x - 2, y + 1).getIsTileOccupied()){
-            moves.add(board.getTile(x - 2, y + 1));
+        if(x - 2 >= 0 && y - 1 >= 0){
+            if(!board.getTile(x - 2, y - 1).getIsTileOccupied()){
+                moves.add(board.getTile(x - 2 , y - 1));
+            }
         }
-        if(!board.getTile(x - 2, y + 1).getIsTileOccupied()){
-            moves.add(board.getTile(x - 2, y + 1));
+        if(x + 2 < 8 && y - 1 >= 0){
+            if(!board.getTile(x + 2, y - 1).getIsTileOccupied()){
+                moves.add(board.getTile(x + 2 , y - 1));
+            }
         }
-        if(!board.getTile(x - 1, y - 2).getIsTileOccupied()){
-            moves.add(board.getTile(x - 1, y - 2));
+
+        if(x - 1 >= 0 && y + 2 < 8){
+            if(!board.getTile(x - 1, y - 2).getIsTileOccupied()){
+                moves.add(board.getTile(x - 1, y + 2));
+            }
         }
-        if(!board.getTile(x + 1, y - 2).getIsTileOccupied()){
-            moves.add(board.getTile(x + 1, y - 2));
+        if(x - 2 >= 0 && y + 1 < 8){
+            if(!board.getTile(x - 2, y - 1).getIsTileOccupied()){
+                moves.add(board.getTile(x - 2 , y + 1));
+            }
         }
-        if(!board.getTile(x - 2, y - 1).getIsTileOccupied()){
-            moves.add(board.getTile(x - 2, y - 1));
+        if(x + 1 < 8 && y + 2 < 8){
+            if(!board.getTile(x + 1, y + 2).getIsTileOccupied()){
+                moves.add(board.getTile(x + 1, y + 2));
+            }
         }
-        if(!board.getTile(x + 2, y - 1).getIsTileOccupied()){
-            moves.add(board.getTile(x + 2, y - 1));
+        if(x + 2 < 8 && y + 1 < 8){
+            if(!board.getTile(x + 1, y + 2).getIsTileOccupied()){
+                moves.add(board.getTile(x + 2, y + 1));
+            }
         }
-        return moves;
+        this.possibleMoves = moves;
+    }
+    public ArrayList<Tile> getPossibleMoves(){
+        return possibleMoves;
     }
 }
