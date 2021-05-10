@@ -17,6 +17,18 @@ public class Pawn extends Piece{
     public DrawPiece getDp(){
         return dp;
     }
+
+    @Override
+    public void move(int x, int y){
+        if(!board.getTile(x, y).getIsTileOccupied()){
+            tile.reset();
+            tile = board.getTile(x, y);
+            dp.setX(x);
+            dp.setY(y);
+            board.getTile(x, y).setPieceInTile(this);
+            firstMove = false;
+        }
+    }
     
     //adicona todos os movimentos possiveis desta peca nesta posicao a uma array de Tiles    
     public void setPossibleMoves(){
@@ -28,14 +40,12 @@ public class Pawn extends Piece{
             moves.add(board.getTile(x, y + 1));
             if(firstMove){   
                 moves.add(board.getTile(x, y + 2));
-                this.firstMove = false;
             }
         }
         else{
             moves.add(board.getTile(x, y - 1));
             if(firstMove){  
                 moves.add(board.getTile(x, y - 2));
-                this.firstMove = false;
             }
         }
 
