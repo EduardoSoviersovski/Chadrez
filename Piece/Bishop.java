@@ -21,7 +21,7 @@ public class Bishop extends Piece{
         ArrayList<Tile> moves = new ArrayList<Tile>();
         int x = getX();
         int y = getY();
-        while(x >= 0 && y >=0){
+        while(x >= 0 && y >=0){     
             moves.add(board.getTile(x, y));
             x -= 1;
             y -= 1;
@@ -54,7 +54,8 @@ public class Bishop extends Piece{
         this.possibleMoves = moves;
     }
 
-        public ArrayList<Tile> getPossibleMoves(){
+    public ArrayList<Tile> getPossibleMoves(){
         return possibleMoves;
     }
+
 }

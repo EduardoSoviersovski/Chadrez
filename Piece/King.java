@@ -22,8 +22,7 @@ public class King extends Piece{
             for(int j = -1; j < 2; j++){
                 
                 if((getX()+i) >= 0 && (getX()+i) < 8 && (getY()+j) < 8 && (getY()+j) >= 0 && 
-                    !board.getTile(getX()+i, getY()+j).getIsTileOccupied()){
-                        
+                    (!board.getTile(getX()+i, getY()+j).getIsTileOccupied())){  
                     moves.add(board.getTile((getX()+i), getY()+j));
                 }
             }

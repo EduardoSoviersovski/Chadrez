@@ -29,9 +29,8 @@ public class MoveManager {
             else{
                 pieceToMove.setPossibleMoves();
                 if(pieceToMove.getPossibleMoves().contains(selectedTile)){
-
-                    System.out.println("Peça movida");
                     pieceToMove.move(x, y);
+                    System.out.println("Peça movida");
                 }
                 else{
                         System.out.println("Movimento invalido");

@@ -96,8 +96,6 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
 
         pieces = new ArrayList<Piece>();
         
-
-        
         newGame();
         
         dg = new DrawGame(board.getDb(), pieces);

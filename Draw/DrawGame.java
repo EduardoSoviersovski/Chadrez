@@ -8,7 +8,7 @@ public class DrawGame extends Draw{
     private DrawBoard db;
     private ArrayList<DrawPiece> listDp;
 
-    //Construtora/
+    //Construtora
     public DrawGame(DrawBoard db, ArrayList<Piece> listPiece){
         this.db = db;
 

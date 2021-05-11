@@ -40,4 +40,8 @@ public class DrawPiece extends Draw{
     public void setY(int y){
         this.y = y;
     }
+
+    public Image getImage(){
+        return image;
+    }
 }

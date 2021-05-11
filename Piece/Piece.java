@@ -31,8 +31,24 @@ public abstract class Piece {
             dp.setY(y);
             board.getTile(x, y).setPieceInTile(this);
         }
+        else{
+            if(board.getTile(x, y).getPieceInTile().getPieceAlignment() == alignment){
+                System.out.println("Peca aliada");
+                return;
+            }
+            capture(x, y);
+        }
     }
-    //public abstract void capture();
+    public void capture(int x, int y){
+        tile.reset();
+        tile = board.getTile(x, y);
+        tile.reset();
+        dp.setX(x);
+        dp.setY(y);
+        board.getTile(x, y).setPieceInTile(this);
+        System.out.println("Peca capturada");
+    }
+
     public abstract void setPossibleMoves();
 
     public abstract ArrayList<Tile> getPossibleMoves();
