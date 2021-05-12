@@ -21,6 +21,7 @@ public class Bishop extends Piece{
         ArrayList<Tile> moves = new ArrayList<Tile>();
         int x = getX()-1;
         int y = getY()-1;
+
         while(x >= 0 && y >=0 && !board.getTile(x, y).getIsTileOccupied()){     
             moves.add(board.getTile(x, y));
             x -= 1;
@@ -37,6 +38,7 @@ public class Bishop extends Piece{
 
         x = getX()-1;
         y = getY()+1;
+
         while(x >= 0 && y < 8 && !board.getTile(x, y).getIsTileOccupied()){
             moves.add(board.getTile(x, y));
             x -= 1;
@@ -53,6 +55,7 @@ public class Bishop extends Piece{
 
         x = getX()+1;
         y = getY()-1;
+
         while(x < 8 && y >= 0 && !board.getTile(x, y).getIsTileOccupied()){
             moves.add(board.getTile(x, y));
             x += 1;
@@ -69,6 +72,7 @@ public class Bishop extends Piece{
 
         x = getX()+1;
         y = getY()+1;
+        
         while(x < 8 && y < 8 && !board.getTile(x, y).getIsTileOccupied()){
             moves.add(board.getTile(x, y));
             x += 1;

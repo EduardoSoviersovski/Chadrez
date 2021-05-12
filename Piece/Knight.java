@@ -23,29 +23,86 @@ public class Knight extends Piece{
         int y = tile.getY();
 
         if(x - 1 >= 0 && y - 2 >= 0){
-                moves.add(board.getTile(x - 1, y - 2));
+                if(board.getTile(x - 1, y - 2).getIsTileOccupied()){
+                        if(board.getTile(x - 1,y - 2).getPieceInTile().getPieceAlignment() != alignment){
+                                moves.add(board.getTile(x - 1, y - 2));
+                        }
+                }
+                else{
+                        moves.add(board.getTile(x - 1, y - 2));
+                }
         }
         if(x + 1 < 8 && y - 2 >= 0){
-                moves.add(board.getTile(x + 1, y - 2));
+                if(board.getTile(x + 1, y - 2).getIsTileOccupied()){
+                        if(board.getTile(x + 1,y - 2).getPieceInTile().getPieceAlignment() != alignment){
+                                moves.add(board.getTile(x + 1, y - 2));
+                        }
+                }
+                else{
+                        moves.add(board.getTile(x + 1, y - 2));
+                }
         }
+
         if(x - 2 >= 0 && y - 1 >= 0){
-                moves.add(board.getTile(x - 2 , y - 1));
+                if(board.getTile(x - 2, y - 1).getIsTileOccupied()){
+                        if(board.getTile(x - 2,y - 1).getPieceInTile().getPieceAlignment() != alignment){
+                                moves.add(board.getTile(x - 2 , y - 1));
+                        }
+                }
+                else{
+                        moves.add(board.getTile(x - 2 , y - 1));
+                }
         }
         if(x + 2 < 8 && y - 1 >= 0){
-                moves.add(board.getTile(x + 2 , y - 1));
+                if(board.getTile(x + 2, y - 1).getIsTileOccupied()){
+                        if(board.getTile(x + 2,y - 1).getPieceInTile().getPieceAlignment() != alignment){
+                                moves.add(board.getTile(x + 2 , y - 1));
+                        }
+                }
+                else{
+                        moves.add(board.getTile(x + 2 , y - 1));
+                }
         }
 
         if(x - 1 >= 0 && y + 2 < 8){
-                moves.add(board.getTile(x - 1, y + 2));
+                if(board.getTile(x - 1, y + 2).getIsTileOccupied()){
+                        if(board.getTile(x - 1,y + 2).getPieceInTile().getPieceAlignment() != alignment){
+                                moves.add(board.getTile(x - 1, y + 2));
+                        }
+                }
+                else{
+                        moves.add(board.getTile(x - 1, y + 2));
+                }
         }
         if(x - 2 >= 0 && y + 1 < 8){
-                moves.add(board.getTile(x - 2 , y + 1));
+                if(board.getTile(x - 2, y + 1).getIsTileOccupied()){
+                        if(board.getTile(x - 2,y + 1).getPieceInTile().getPieceAlignment() != alignment){
+                                moves.add(board.getTile(x - 2 , y + 1));
+                        }
+                }
+                else{
+                        moves.add(board.getTile(x - 2 , y + 1));
+                }
         }
         if(x + 1 < 8 && y + 2 < 8){
-                moves.add(board.getTile(x + 1, y + 2));
+                if(board.getTile(x + 1, y + 2).getIsTileOccupied()){
+                        if(board.getTile(x + 1,y + 2).getPieceInTile().getPieceAlignment() != alignment){
+                                moves.add(board.getTile(x + 1, y + 2));
+                        }
+                }
+                else{
+                        moves.add(board.getTile(x + 1, y + 2));
+                }
         }
         if(x + 2 < 8 && y + 1 < 8){
-                moves.add(board.getTile(x + 2, y + 1));
+                if(board.getTile(x + 2, y + 1).getIsTileOccupied()){
+                        if(board.getTile(x + 2,y + 1).getPieceInTile().getPieceAlignment() != alignment){
+                                moves.add(board.getTile(x + 2, y + 1));
+                        }
+                }
+                else{
+                        moves.add(board.getTile(x + 2, y + 1));
+                }
         }
         this.possibleMoves = moves;
     }

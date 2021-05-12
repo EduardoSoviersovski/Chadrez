@@ -46,11 +46,18 @@ public class Pawn extends Piece{
         
         if(alignment ==  PieceAlignment.BLACK){
             if(y + 1 < 8){
-                moves.add(board.getTile(x, y + 1));
+                if(!board.getTile(x, y+1).getIsTileOccupied()){
+                    moves.add(board.getTile(x, y + 1));
+                }
+                if(y + 2 < 8){
+                    if(firstMove){  
+                        if(!board.getTile(x, y+2).getIsTileOccupied()){ 
+                            moves.add(board.getTile(x, y + 2));
+                        }
+                    }
+                }   
             }
-            if(firstMove){   
-                moves.add(board.getTile(x, y + 2));
-            }
+            
             if(x+1 < 8 && y+1 < 8){
                 if(board.getTile(x+1, y+1).getIsTileOccupied()){
                     if(board.getTile(x+1, y+1).getPieceInTile().getPieceAlignment() != this.getPieceAlignment()){
@@ -67,9 +74,17 @@ public class Pawn extends Piece{
             }
         }
         else{
-            moves.add(board.getTile(x, y - 1));
-            if(firstMove){  
-                moves.add(board.getTile(x, y - 2));
+            if(y - 1 >= 0){
+                if(!board.getTile(x, y-1).getIsTileOccupied()){
+                    moves.add(board.getTile(x, y-1));
+                }
+                if(y - 2 >= 0){
+                    if(firstMove){  
+                        if(!board.getTile(x, y-2).getIsTileOccupied()){ 
+                            moves.add(board.getTile(x, y-2));
+                        }
+                    }
+                }   
             }
             if(x+1 < 8 && y-1 >= 0){
                 if(board.getTile(x+1, y-1).getIsTileOccupied()){

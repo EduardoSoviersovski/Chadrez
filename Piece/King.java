@@ -18,12 +18,20 @@ public class King extends Piece{
     //adicona todos os movimentos possiveis desta peca nesta posicao a uma array de Tiles
     public void setPossibleMoves(){
         ArrayList<Tile> moves = new ArrayList<Tile>();
+        int x = getX();
+        int y = getY();
         for(int i = -1; i < 2; i++){
             for(int j = -1; j < 2; j++){
-                
-                if((getX()+i) >= 0 && (getX()+i) < 8 && (getY()+j) < 8 && (getY()+j) >= 0 && 
-                    (!board.getTile(getX()+i, getY()+j).getIsTileOccupied())){  
-                    moves.add(board.getTile((getX()+i), getY()+j));
+                if((x+i) >= 0 && (x+i) < 8 && (y+j) < 8 && (y+j) >= 0 && 
+                    (!board.getTile(x+i, y+j).getIsTileOccupied())){  
+                    moves.add(board.getTile((x+i), y+j));
+                }
+                if(x+i >= 0 && x+i < 8 && y+j >= 0 && y+j < 8){
+                    if(board.getTile(x+i, y+j).getIsTileOccupied()){
+                        if(board.getTile(x+i, y+j).getPieceInTile().getPieceAlignment() != alignment){
+                            moves.add(board.getTile(x+i, y+j));
+                        }
+                    }
                 }
             }
         }
