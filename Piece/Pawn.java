@@ -19,7 +19,7 @@ public class Pawn extends Piece{
     }
 
     @Override
-    public void move(int x, int y){
+    public void move(int x, int y, ArrayList<Piece> pieces){
         if(!board.getTile(x, y).getIsTileOccupied()){
             tile.reset();
             tile = board.getTile(x, y);
@@ -27,6 +27,13 @@ public class Pawn extends Piece{
             dp.setY(y);
             board.getTile(x, y).setPieceInTile(this);
             firstMove = false;
+        }
+        else{
+            if(board.getTile(x, y).getPieceInTile().getPieceAlignment() == alignment){
+                System.out.println("Peca aliada");
+                return;
+            }
+            capture(x, y, pieces);
         }
     }
     

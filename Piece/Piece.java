@@ -22,7 +22,7 @@ public abstract class Piece {
         this.tile.setPieceInTile(this);
     }
 
-    public void move(int x, int y){
+    public void move(int x, int y, ArrayList<Piece> pieces){
         
         if(!board.getTile(x, y).getIsTileOccupied()){
             tile.reset();
@@ -36,10 +36,11 @@ public abstract class Piece {
                 System.out.println("Peca aliada");
                 return;
             }
-            capture(x, y);
+            capture(x, y, pieces);
         }
     }
-    public void capture(int x, int y){
+    public void capture(int x, int y, ArrayList<Piece> pieces){
+        pieces.remove(board.getTile(x, y).getPieceInTile());
         tile.reset();
         tile = board.getTile(x, y);
         tile.reset();

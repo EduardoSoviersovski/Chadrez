@@ -13,9 +13,6 @@ public class DrawGame extends Draw{
         this.db = db;
 
         listDp = new ArrayList<DrawPiece>();
-        for(int i = 0; i < listPiece.size(); i++){
-            listDp.add(listPiece.get(i).getDp());
-        }
     }
 
     //Métodos
@@ -25,6 +22,12 @@ public class DrawGame extends Draw{
         db.paintComponent(g);
         for(int i = 0; i < listDp.size(); i++){
             listDp.get(i).paintComponent(g);
+        }
+    }
+
+    public void updateDpList(ArrayList<Piece> listPiece){
+        for(int i = 0; i < listPiece.size(); i++){
+            listDp.add(listPiece.get(i).getDp());
         }
     }
 }

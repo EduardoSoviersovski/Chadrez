@@ -37,9 +37,10 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         jogador1 = new JTextField("Jogador 1");
         jogador2 = new JTextField("Jogador 2");
 
+        pieces = new ArrayList<Piece>();
         labels = new ArrayList<JLabel>();
 
-        mm = new MoveManager(board);
+        mm = new MoveManager(board, pieces);
 
         //definicao de action listener para startButton
         startButton = new JButton("New Game");
@@ -71,10 +72,10 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
                 nome2.setBounds(350, 290, 100, 30);
                 score.setBounds(360, 165, 100, 30);
 
-                //newGame();
+                newGame();
+                dg.updateDpList(pieces);
                 
                 addLabels();
-                setup();
             }
         
         });
@@ -108,10 +109,10 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
                 nome2.setBounds(350, 290, 100, 30);
                 score.setBounds(360, 165, 100, 30);
 
-                //pawnNewGame();
+                pawnNewGame();
+                dg.updateDpList(pieces);
                 
                 addLabels();
-                setup();
             }
         
         });
@@ -145,10 +146,10 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
                 nome2.setBounds(350, 290, 100, 30);
                 score.setBounds(360, 165, 100, 30);
 
-                //randNewGame();
+                randNewGame();
+                dg.updateDpList(pieces);
                 
                 addLabels();
-                setup();
             }
         
         });
@@ -176,12 +177,10 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         loadButton.setBounds(360, 260, 99, 30);
 
         board.startBoard();
-
-        pieces = new ArrayList<Piece>();
         
         //newGame();
         //pawnNewGame();
-        randNewGame();
+        //randNewGame();
         
         dg = new DrawGame(board.getDb(), pieces);
         setup();
@@ -206,24 +205,13 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
     }
 
     public void addLabels(){
-        //Configuração da janela
-        this.setTitle("Chádrez");
-        this.setSize(500, 400);
-        this.setDefaultCloseOperation(3);
-        this.setResizable(false);
-
-        //Adição dos componentes
-        this.add(startButton);
-        this.add(loadButton);
-        this.add(allPawnStartButton);
-        this.add(randStartButton);
-        this.add(jogador1);
-        this.add(jogador2);
-        this.add(dg);
-
         for(int i = 0; i < labels.size(); i++){
             this.add(labels.get(i));
+            labels.get(i).setVisible(true);
         }
+
+        this.setResizable(false);
+        this.add(dg);
     }
 
     //Inicia um novo jogo, adicionando as peças a janela
@@ -329,6 +317,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
     @Override
     public void mousePressed(MouseEvent e) {
         mm.makeMove((e.getX()-20)/40, (e.getY()-40)/40);
+        dg.updateDpList(pieces);
         repaint();
         revalidate();  
     }

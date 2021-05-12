@@ -1,4 +1,5 @@
 package Game;
+import java.util.ArrayList;
 import Board.Board;
 import Board.Tile;
 import Piece.Piece;
@@ -7,9 +8,11 @@ public class MoveManager {
     private Board board;
     private Piece pieceToMove;
     private boolean pieceSelected;
+    private ArrayList<Piece> pieces;
 
-    public MoveManager(Board board){
+    public MoveManager(Board board, ArrayList<Piece> pieces){
         this.board = board;
+        this.pieces = pieces;
 
         pieceToMove = null;
         pieceSelected = false;
@@ -29,7 +32,7 @@ public class MoveManager {
             else{
                 pieceToMove.setPossibleMoves();
                 if(pieceToMove.getPossibleMoves().contains(selectedTile)){
-                    pieceToMove.move(x, y);
+                    pieceToMove.move(x, y, pieces);
                     System.out.println("Peça movida");
                 }
                 else{
