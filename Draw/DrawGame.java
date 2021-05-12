@@ -26,6 +26,9 @@ public class DrawGame extends Draw{
     }
 
     public void updateDpList(ArrayList<Piece> listPiece){
+        while(!listDp.isEmpty()){
+            listDp.remove(0);
+        }
         for(int i = 0; i < listPiece.size(); i++){
             listDp.add(listPiece.get(i).getDp());
         }

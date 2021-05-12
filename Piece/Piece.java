@@ -9,7 +9,6 @@ public abstract class Piece {
     protected PieceType type;
     protected PieceAlignment alignment;
     protected DrawPiece dp;
-    protected boolean clicked;
     protected ArrayList <Tile> possibleMoves;
 
     public Piece(Board board, Tile tile, PieceAlignment alignment){
@@ -17,19 +16,17 @@ public abstract class Piece {
         this.tile = tile;
         this.alignment = alignment;
 
-        clicked = false;
-
         this.tile.setPieceInTile(this);
     }
 
     public void move(int x, int y, ArrayList<Piece> pieces){
-        
         if(!board.getTile(x, y).getIsTileOccupied()){
             tile.reset();
             tile = board.getTile(x, y);
             dp.setX(x);
             dp.setY(y);
             board.getTile(x, y).setPieceInTile(this);
+            System.out.println("Peça movida");
         }
         else{
             if(board.getTile(x, y).getPieceInTile().getPieceAlignment() == alignment){
@@ -40,6 +37,7 @@ public abstract class Piece {
         }
     }
     public void capture(int x, int y, ArrayList<Piece> pieces){
+        //board.getTile(x, y).getPieceInTile().pieceGotCaptured();
         pieces.remove(board.getTile(x, y).getPieceInTile());
         tile.reset();
         tile = board.getTile(x, y);
@@ -63,9 +61,6 @@ public abstract class Piece {
     public PieceAlignment getPieceAlignment(){
         return this.alignment;
     }
-    public boolean getClicked(){
-        return clicked;
-    }
 
     public Tile getTile(){
         return tile;
@@ -76,9 +71,5 @@ public abstract class Piece {
 
     public int getY(){
         return tile.getY();
-    }
-
-    public void setClicked(boolean b){
-        this.clicked = b;
     }
 }

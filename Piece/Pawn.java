@@ -27,6 +27,7 @@ public class Pawn extends Piece{
             dp.setY(y);
             board.getTile(x, y).setPieceInTile(this);
             firstMove = false;
+            System.out.println("Peça movida");
         }
         else{
             if(board.getTile(x, y).getPieceInTile().getPieceAlignment() == alignment){
@@ -44,7 +45,9 @@ public class Pawn extends Piece{
         int y = getY();
         
         if(alignment ==  PieceAlignment.BLACK){
-            moves.add(board.getTile(x, y + 1));
+            if(y + 1 < 8){
+                moves.add(board.getTile(x, y + 1));
+            }
             if(firstMove){   
                 moves.add(board.getTile(x, y + 2));
             }
