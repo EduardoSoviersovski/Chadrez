@@ -29,10 +29,6 @@ public abstract class Piece {
             System.out.println("Peça movida");
         }
         else{
-            if(board.getTile(x, y).getPieceInTile().getPieceAlignment() == alignment){
-                System.out.println("Peca aliada");
-                return;
-            }
             capture(x, y, pieces);
         }
     }
