@@ -21,8 +21,10 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
     private JButton allPawnStartButton;
     private JButton randStartButton;
     private JButton loadButton;
-    private JTextField jogador1;
-    private JTextField jogador2;
+    private JButton surrenderBlack;
+    private JButton surrenderWhite;
+    private JTextField player1;
+    private JTextField player2;
     private ArrayList<JLabel> labels;
     private DrawGame dg;
     private ArrayList<Piece> pieces;
@@ -34,42 +36,65 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         //Inicialização dos atributos
         board = new Board();
 
-        jogador1 = new JTextField("Jogador 1");
-        jogador2 = new JTextField("Jogador 2");
+        player1 = new JTextField("Jogador 1");
+        player2 = new JTextField("Jogador 2");
 
         pieces = new ArrayList<Piece>();
         labels = new ArrayList<JLabel>();
 
         mm = new MoveManager(board, pieces);
 
+        JLabel name1 = new JLabel("");
+        JLabel name2 = new JLabel("");
+        JLabel score = new JLabel("");
+
+        surrenderBlack = new JButton("Surrender");
+        surrenderBlack.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+                surrenderBlack.setVisible(false);
+                surrenderWhite.setVisible(false);
+                while(pieces.size() != 0){
+                    pieces.remove(0);
+                }
+                while(labels.size() != 0){
+                    labels.remove(0);
+                }
+                showMenu();
+            }
+        });
+        surrenderWhite = new JButton("Surrender");
+        surrenderWhite.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+                surrenderBlack.setVisible(false);
+                surrenderWhite.setVisible(false);
+                while(pieces.size() != 0){
+                    pieces.remove(0);
+                }
+                
+                showMenu();
+            }
+        });
         //definicao de action listener para startButton
         startButton = new JButton("New Game");
         startButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
-                String j1 = jogador1.getText();
-                String j2 = jogador2.getText();
-                String s = "0 - 0";
-                
-                JLabel nome1 = new JLabel(j1);
-                JLabel nome2 = new JLabel(j2);
-                JLabel score = new JLabel(s);
+                name1.setText(player1.getText());
+                name2.setText(player2.getText());
+                score.setText("0 - 0");
 
                 //adiciona labels com nomes escolhidos e placar
-                labels.add(nome1);
-                labels.add(nome2);
+                labels.add(name1);
+                labels.add(name2);
                 labels.add(score);
 
                 //esconde todos os botoes e espacos para nome
-                startButton.setVisible(false);
-                allPawnStartButton.setVisible(false);
-                randStartButton.setVisible(false);
-                loadButton.setVisible(false);
-                jogador1.setVisible(false);
-                jogador2.setVisible(false);
+                hideMenu();
+                surrenderBlack.setVisible(true);
+                surrenderWhite.setVisible(true);
 
                 //Posicionamento dos componentes
-                nome1.setBounds(350, 10, 100, 30);
-                nome2.setBounds(350, 290, 100, 30);
+                name1.setBounds(350, 10, 100, 30);
+                name2.setBounds(350, 290, 100, 30);
                 score.setBounds(360, 165, 100, 30);
 
                 newGame();
@@ -83,30 +108,23 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         allPawnStartButton = new JButton("All Pawn");
         allPawnStartButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
-                String j1 = jogador1.getText();
-                String j2 = jogador2.getText();
-                String s = "0 - 0";
-                
-                JLabel nome1 = new JLabel(j1);
-                JLabel nome2 = new JLabel(j2);
-                JLabel score = new JLabel(s);
+                name1.setText(player1.getText());
+                name2.setText(player2.getText());
+                score.setText("0 - 0");
 
                 //adiciona labels com nomes escolhidos e placar
-                labels.add(nome1);
-                labels.add(nome2);
+                labels.add(name1);
+                labels.add(name2);
                 labels.add(score);
 
                 //esconde todos os botoes e espacos para nome
-                startButton.setVisible(false);
-                allPawnStartButton.setVisible(false);
-                randStartButton.setVisible(false);
-                loadButton.setVisible(false);
-                jogador1.setVisible(false);
-                jogador2.setVisible(false);
+                hideMenu();
+                surrenderBlack.setVisible(true);
+                surrenderWhite.setVisible(true);
 
                 //Posicionamento dos componentes
-                nome1.setBounds(350, 10, 100, 30);
-                nome2.setBounds(350, 290, 100, 30);
+                name1.setBounds(350, 10, 100, 30);
+                name2.setBounds(350, 290, 100, 30);
                 score.setBounds(360, 165, 100, 30);
 
                 pawnNewGame();
@@ -120,30 +138,23 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         randStartButton = new JButton("Random");
         randStartButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
-                String j1 = jogador1.getText();
-                String j2 = jogador2.getText();
-                String s = "0 - 0";
-                
-                JLabel nome1 = new JLabel(j1);
-                JLabel nome2 = new JLabel(j2);
-                JLabel score = new JLabel(s);
+                name1.setText(player1.getText());
+                name2.setText(player2.getText());
+                score.setText("0 - 0");
 
                 //adiciona labels com nomes escolhidos e placar
-                labels.add(nome1);
-                labels.add(nome2);
+                labels.add(name1);
+                labels.add(name2);
                 labels.add(score);
 
                 //esconde todos os botoes e espacos para nome
-                startButton.setVisible(false);
-                allPawnStartButton.setVisible(false);
-                randStartButton.setVisible(false);
-                loadButton.setVisible(false);
-                jogador1.setVisible(false);
-                jogador2.setVisible(false);
+                hideMenu();
+                surrenderBlack.setVisible(true);
+                surrenderWhite.setVisible(true);
 
                 //Posicionamento dos componentes
-                nome1.setBounds(350, 10, 100, 30);
-                nome2.setBounds(350, 290, 100, 30);
+                name1.setBounds(350, 10, 100, 30);
+                name2.setBounds(350, 290, 100, 30);
                 score.setBounds(360, 165, 100, 30);
 
                 randNewGame();
@@ -157,30 +168,26 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         loadButton = new JButton("Load Game");
         loadButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
-                startButton.setVisible(false);
-                allPawnStartButton.setVisible(false);
-                randStartButton.setVisible(false);
-                loadButton.setVisible(false);
-                jogador1.setVisible(false);
-                jogador2.setVisible(false);
+                hideMenu();
             }
         });
 
         addMouseListener(this);
         addMouseMotionListener(this);
         //Posicionamento dos componentes
-        jogador1.setBounds(360, 50, 100, 30);
-        jogador2.setBounds(360, 90, 100, 30);
+        player1.setBounds(360, 50, 100, 30);
+        player2.setBounds(360, 90, 100, 30);
         startButton.setBounds(360, 130, 99, 30);
         allPawnStartButton.setBounds(360, 170, 99, 30);
         randStartButton.setBounds(360, 210, 99, 30);
         loadButton.setBounds(360, 260, 99, 30);
+        surrenderBlack.setBounds(360, 40, 99, 30);
+        surrenderWhite.setBounds(360, 320, 99, 30);
+
+        surrenderBlack.setVisible(false);
+        surrenderWhite.setVisible(false);
 
         board.startBoard();
-        
-        //newGame();
-        //pawnNewGame();
-        //randNewGame();
         
         dg = new DrawGame(board.getDb(), pieces);
         setup();
@@ -199,8 +206,10 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         this.add(loadButton);
         this.add(allPawnStartButton);
         this.add(randStartButton);
-        this.add(jogador1);
-        this.add(jogador2);
+        this.add(player1);
+        this.add(player2);
+        this.add(surrenderBlack);
+        this.add(surrenderWhite);
         this.add(dg);
     }
 
@@ -209,7 +218,6 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
             this.add(labels.get(i));
             labels.get(i).setVisible(true);
         }
-
         this.setResizable(false);
         this.add(dg);
     }
@@ -240,7 +248,6 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
             }
             pieces.add(new Pawn(board, board.getTile(i,1), PieceAlignment.BLACK));
             pieces.add(new Pawn(board, board.getTile(i,6), PieceAlignment.WHITE));
-
         }
     }
 
@@ -309,9 +316,22 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         }
     }
 
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        
+    public void hideMenu(){
+        startButton.setVisible(false);
+        allPawnStartButton.setVisible(false);
+        randStartButton.setVisible(false);
+        loadButton.setVisible(false);
+        player1.setVisible(false);
+        player2.setVisible(false);
+    }
+
+    public void showMenu(){
+        startButton.setVisible(true);
+        allPawnStartButton.setVisible(true);
+        randStartButton.setVisible(true);
+        loadButton.setVisible(true);
+        player1.setVisible(true);
+        player2.setVisible(true);
     }
 
     @Override
@@ -321,31 +341,16 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         repaint();
         revalidate();  
     }
-
     @Override
-    public void mouseReleased(MouseEvent e) {
-    
-    }  
-
+    public void mouseClicked(MouseEvent e) {}
     @Override
-    public void mouseEntered(MouseEvent e) {
-       
-        
-    }
-
+    public void mouseReleased(MouseEvent e) {}  
     @Override
-    public void mouseExited(MouseEvent e) {
-        
-        
-    }
-
+    public void mouseEntered(MouseEvent e) {}
     @Override
-    public void mouseDragged(MouseEvent e) {
-
-    }
-
+    public void mouseExited(MouseEvent e) {}
     @Override
-    public void mouseMoved(MouseEvent e) {
-
-    }
+    public void mouseDragged(MouseEvent e) {}
+    @Override
+    public void mouseMoved(MouseEvent e) {}
 }
