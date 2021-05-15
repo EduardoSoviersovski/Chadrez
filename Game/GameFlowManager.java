@@ -21,6 +21,7 @@ public class GameFlowManager {
     public void resetGame(){
         turn = PieceAlignment.WHITE;
     }
+    
     public boolean checkMovingPiece(Piece piece){
         if(piece.getPieceAlignment() == turn){
             return true;

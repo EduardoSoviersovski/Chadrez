@@ -55,14 +55,14 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
             public void actionPerformed(ActionEvent e) {
                 surrenderBlack.setVisible(false);
                 surrenderWhite.setVisible(false);
-                while(pieces.size() != 0){
+                while(!pieces.isEmpty()){
                     pieces.remove(0);
                 }
-                while(labels.size() != 0){
+                while(!labels.isEmpty()){
                     labels.remove(0);
                 }
                 gfm.resetGame();
-                dg.updateDpList(pieces);
+                board.startBoard();
                 showMenu();
             }
         });
@@ -75,7 +75,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
                     pieces.remove(0);
                 }
                 gfm.resetGame();
-                dg.updateDpList(pieces);
+                board.startBoard();
                 showMenu();
             }
         });
