@@ -33,7 +33,6 @@ public abstract class Piece {
         }
     }
     public void capture(int x, int y, ArrayList<Piece> pieces){
-        //board.getTile(x, y).getPieceInTile().pieceGotCaptured();
         pieces.remove(board.getTile(x, y).getPieceInTile());
         tile.reset();
         tile = board.getTile(x, y);

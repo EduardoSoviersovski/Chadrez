@@ -11,9 +11,8 @@ public class MoveManager {
     private GameFlowManager gfm;
     private ArrayList<Piece> pieces;
 
-    public MoveManager(Board board, ArrayList<Piece> pieces){
-        gfm = new GameFlowManager();
-        
+    public MoveManager(Board board, ArrayList<Piece> pieces, GameFlowManager gfm){
+        this.gfm = gfm;   
         this.board = board;
         this.pieces = pieces;
 
