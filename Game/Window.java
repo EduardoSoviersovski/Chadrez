@@ -30,6 +30,9 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
     private ArrayList<Piece> pieces;
     private MoveManager mm;
     private GameFlowManager gfm;
+    private JLabel name1;
+    private JLabel name2;
+    private JLabel score;
 
 
     //Método construtor
@@ -46,9 +49,9 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
 
         mm = new MoveManager(board, pieces, gfm);
 
-        JLabel name1 = new JLabel("");
-        JLabel name2 = new JLabel("");
-        JLabel score = new JLabel("");
+        name1 = new JLabel("");
+        name2 = new JLabel("");
+        score = new JLabel("");
 
         surrenderBlack = new JButton("Surrender");
         surrenderBlack.addActionListener(new ActionListener(){
@@ -58,12 +61,13 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
                 while(!pieces.isEmpty()){
                     pieces.remove(0);
                 }
-                while(!labels.isEmpty()){
-                    labels.remove(0);
-                }
+                // while(!labels.isEmpty()){
+                //     labels.remove(0);
+                // }
                 gfm.resetGame();
                 board.startBoard();
                 showMenu();
+                resetLabels();
             }
         });
         surrenderWhite = new JButton("Surrender");
@@ -71,12 +75,13 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
             public void actionPerformed(ActionEvent e) {
                 surrenderBlack.setVisible(false);
                 surrenderWhite.setVisible(false);
-                while(pieces.size() != 0){
+                while(pieces.isEmpty()){
                     pieces.remove(0);
                 }
                 gfm.resetGame();
                 board.startBoard();
                 showMenu();
+                resetLabels();
             }
         });
         //definicao de action listener para startButton
