@@ -1,7 +1,7 @@
 package Game;
 
 public class Game {
-    private Window window;    
+    private Window window;   
 
     public Game(){
         window = new Window();

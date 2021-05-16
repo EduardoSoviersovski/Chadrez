@@ -30,4 +30,7 @@ public class GameFlowManager {
             return false;
         }
     }
+    public PieceAlignment getTurn(){
+        return turn;
+    }
 }

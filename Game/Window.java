@@ -23,6 +23,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
     private JButton loadButton;
     private JButton surrenderBlack;
     private JButton surrenderWhite;
+    private JButton saveButton;
     private JTextField player1;
     private JTextField player2;
     private ArrayList<JLabel> labels;
@@ -34,6 +35,8 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
     private JLabel name2;
     private JLabel score;
 
+    private SaveGameDAO saveGame;
+
 
     //Método construtor
     public Window(){
@@ -41,8 +44,8 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         board = new Board();
         gfm = new GameFlowManager();
 
-        player1 = new JTextField("Jogador 1");
-        player2 = new JTextField("Jogador 2");
+        player1 = new JTextField("Jogador1");
+        player2 = new JTextField("Jogador2");
 
         pieces = new ArrayList<Piece>();
         labels = new ArrayList<JLabel>();
@@ -53,17 +56,24 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         name2 = new JLabel("");
         score = new JLabel("");
 
+        saveButton = new JButton("Save");
+        saveButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+                saveGame = new SaveGameDAO(board, gfm, labels);
+                saveGame.setSave();
+                saveGame.createSave();
+
+                System.out.println(saveGame.getSave());
+            }
+        });
+
+
         surrenderBlack = new JButton("Surrender");
         surrenderBlack.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
-                surrenderBlack.setVisible(false);
-                surrenderWhite.setVisible(false);
                 while(!pieces.isEmpty()){
                     pieces.remove(0);
                 }
-                // while(!labels.isEmpty()){
-                //     labels.remove(0);
-                // }
                 gfm.resetGame();
                 board.startBoard();
                 showMenu();
@@ -73,9 +83,8 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         surrenderWhite = new JButton("Surrender");
         surrenderWhite.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
-                surrenderBlack.setVisible(false);
-                surrenderWhite.setVisible(false);
-                while(pieces.isEmpty()){
+
+                while(!pieces.isEmpty()){
                     pieces.remove(0);
                 }
                 gfm.resetGame();
@@ -99,8 +108,6 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
 
                 //esconde todos os botoes e espacos para nome
                 hideMenu();
-                surrenderBlack.setVisible(true);
-                surrenderWhite.setVisible(true);
 
                 //Posicionamento dos componentes
                 name1.setBounds(350, 10, 100, 30);
@@ -129,8 +136,6 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
 
                 //esconde todos os botoes e espacos para nome
                 hideMenu();
-                surrenderBlack.setVisible(true);
-                surrenderWhite.setVisible(true);
 
                 //Posicionamento dos componentes
                 name1.setBounds(350, 10, 100, 30);
@@ -159,8 +164,6 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
 
                 //esconde todos os botoes e espacos para nome
                 hideMenu();
-                surrenderBlack.setVisible(true);
-                surrenderWhite.setVisible(true);
 
                 //Posicionamento dos componentes
                 name1.setBounds(350, 10, 100, 30);
@@ -178,8 +181,11 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         loadButton = new JButton("Load Game");
         loadButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
+                
                 hideMenu();
                 resetLabels();
+
+                addLabels();
             }
         });
 
@@ -194,9 +200,12 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         loadButton.setBounds(360, 260, 99, 30);
         surrenderBlack.setBounds(360, 40, 99, 30);
         surrenderWhite.setBounds(360, 320, 99, 30);
+        saveButton.setBounds(390, 165, 80, 30);
+
 
         surrenderBlack.setVisible(false);
         surrenderWhite.setVisible(false);
+        saveButton.setVisible(false);
 
         board.startBoard();
         
@@ -221,6 +230,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         this.add(player2);
         this.add(surrenderBlack);
         this.add(surrenderWhite);
+        this.add(saveButton);
         this.add(dg);
     }
     
@@ -239,6 +249,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         this.setResizable(false);
         this.add(dg);
     }
+    
     public void hideMenu(){
         startButton.setVisible(false);
         allPawnStartButton.setVisible(false);
@@ -246,6 +257,11 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         loadButton.setVisible(false);
         player1.setVisible(false);
         player2.setVisible(false);
+        saveButton.setVisible(false);
+
+        surrenderBlack.setVisible(true);
+        surrenderWhite.setVisible(true);
+        saveButton.setVisible(true);
     }
 
     public void showMenu(){
@@ -255,6 +271,10 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         loadButton.setVisible(true);
         player1.setVisible(true);
         player2.setVisible(true);
+
+        surrenderBlack.setVisible(false);
+        surrenderWhite.setVisible(false);
+        saveButton.setVisible(false);
     }
     //Inicia um novo jogo, adicionando as peças a janela
     public void newGame(){
