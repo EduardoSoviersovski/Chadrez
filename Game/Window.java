@@ -24,6 +24,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
     private JButton surrenderBlack;
     private JButton surrenderWhite;
     private JButton saveButton;
+    private JButton menu;
     private JTextField player1;
     private JTextField player2;
     private ArrayList<JLabel> labels;
@@ -51,6 +52,24 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         labels.add(new JLabel(""));
         labels.add(new JLabel(""));
         labels.add(new JLabel(""));
+
+        menu = new JButton("Menu");
+        menu.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+                while(!pieces.isEmpty()){
+                    pieces.remove(0);
+                }
+                gfm.setWhiteTurn();
+                board.startBoard();
+                dg.updateDpList(pieces);
+
+                // saveRanking.createRanking();
+                showMenu();
+                hideLabels();
+                repaint();
+                revalidate(); 
+            }
+        });
 
         saveButton = new JButton("Save");
         saveButton.addActionListener(new ActionListener(){
@@ -160,6 +179,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
                 loadGame.loadGame();;
                 hideMenu();
                 showLabels();
+                dg.updateDpList(pieces);
                 repaint();
                 revalidate();
             }
@@ -176,7 +196,8 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         loadButton.setBounds(360, 260, 99, 30);
         surrenderBlack.setBounds(360, 40, 99, 30);
         surrenderWhite.setBounds(360, 320, 99, 30);
-        saveButton.setBounds(390, 165, 80, 30);        
+        saveButton.setBounds(390, 165, 80, 30);    
+        menu.setBounds(390, 205, 80, 30);     
         labels.get(0).setBounds(350, 10, 100, 30);
         labels.get(1).setBounds(350, 290, 100, 30);
         labels.get(2).setBounds(360, 165, 100, 30);
@@ -186,6 +207,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         surrenderBlack.setVisible(false);
         surrenderWhite.setVisible(false);
         saveButton.setVisible(false);
+        menu.setVisible(false);
 
         board.startBoard();
         
@@ -211,6 +233,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         this.add(surrenderBlack);
         this.add(surrenderWhite);
         this.add(saveButton);
+        this.add(menu);
         for(int i = 0; i < labels.size(); i++){
             this.add(labels.get(i));
         }
@@ -241,6 +264,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         surrenderBlack.setVisible(true);
         surrenderWhite.setVisible(true);
         saveButton.setVisible(true);
+        menu.setVisible(true);
     }
 
     public void showMenu(){
@@ -254,6 +278,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         surrenderBlack.setVisible(false);
         surrenderWhite.setVisible(false);
         saveButton.setVisible(false);
+        menu.setVisible(false);
     }
     //Inicia um novo jogo, adicionando as peças a janela
     public void newGame(){
