@@ -18,8 +18,12 @@ public class GameFlowManager {
         }
     }
 
-    public void resetGame(){
+    public void setWhiteTurn(){
         turn = PieceAlignment.WHITE;
+    }
+
+    public void setBlackTurn(){
+        turn = PieceAlignment.BLACK;
     }
     
     public boolean checkMovingPiece(Piece piece){

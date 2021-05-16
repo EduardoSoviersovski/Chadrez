@@ -31,12 +31,8 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
     private ArrayList<Piece> pieces;
     private MoveManager mm;
     private GameFlowManager gfm;
-    private JLabel name1;
-    private JLabel name2;
-    private JLabel score;
-
     private SaveGameDAO saveGame;
-
+    private LoadGameDAO loadGame;
 
     //Método construtor
     public Window(){
@@ -52,21 +48,18 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
 
         mm = new MoveManager(board, pieces, gfm);
 
-        name1 = new JLabel("");
-        name2 = new JLabel("");
-        score = new JLabel("");
+        labels.add(new JLabel(""));
+        labels.add(new JLabel(""));
+        labels.add(new JLabel(""));
 
         saveButton = new JButton("Save");
         saveButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
-                saveGame = new SaveGameDAO(board, gfm, labels);
+                saveGame = new SaveGameDAOImpl(board, gfm, labels);
                 saveGame.setSave();
                 saveGame.createSave();
-
-                System.out.println(saveGame.getSave());
             }
         });
-
 
         surrenderBlack = new JButton("Surrender");
         surrenderBlack.addActionListener(new ActionListener(){
@@ -74,50 +67,49 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
                 while(!pieces.isEmpty()){
                     pieces.remove(0);
                 }
-                gfm.resetGame();
+                gfm.setWhiteTurn();
                 board.startBoard();
+                dg.updateDpList(pieces);
+
+                // saveRanking.createRanking();
                 showMenu();
-                resetLabels();
+                hideLabels();
+                repaint();
+                revalidate(); 
             }
         });
         surrenderWhite = new JButton("Surrender");
         surrenderWhite.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
-
                 while(!pieces.isEmpty()){
                     pieces.remove(0);
                 }
-                gfm.resetGame();
+                gfm.setWhiteTurn();
                 board.startBoard();
+                dg.updateDpList(pieces);
+
                 showMenu();
-                resetLabels();
+                hideLabels();
+                repaint();
+                revalidate(); 
             }
         });
         //definicao de action listener para startButton
         startButton = new JButton("New Game");
         startButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
-                name1.setText(player1.getText());
-                name2.setText(player2.getText());
-                score.setText("0 - 0");
-
-                //adiciona labels com nomes escolhidos e placar
-                labels.add(name1);
-                labels.add(name2);
-                labels.add(score);
-
+                String name1 = player1.getText();
+                String name2 = player2.getText();
+                labels.get(0).setText(name1);
+                labels.get(1).setText(name2);
+                labels.get(2).setText("0 - 0");
                 //esconde todos os botoes e espacos para nome
                 hideMenu();
-
-                //Posicionamento dos componentes
-                name1.setBounds(350, 10, 100, 30);
-                name2.setBounds(350, 290, 100, 30);
-                score.setBounds(360, 165, 100, 30);
-
+                showLabels();
                 newGame();
                 dg.updateDpList(pieces);
-                
-                addLabels();
+                repaint();
+                revalidate(); 
             }
         
         });
@@ -125,27 +117,17 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         allPawnStartButton = new JButton("All Pawn");
         allPawnStartButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
-                name1.setText(player1.getText());
-                name2.setText(player2.getText());
-                score.setText("0 - 0");
-
-                //adiciona labels com nomes escolhidos e placar
-                labels.add(name1);
-                labels.add(name2);
-                labels.add(score);
+                labels.get(0).setText(player1.getText());
+                labels.get(1).setText(player2.getText());
+                labels.get(2).setText("0 - 0");
 
                 //esconde todos os botoes e espacos para nome
                 hideMenu();
-
-                //Posicionamento dos componentes
-                name1.setBounds(350, 10, 100, 30);
-                name2.setBounds(350, 290, 100, 30);
-                score.setBounds(360, 165, 100, 30);
-
+                showLabels();
                 pawnNewGame();
                 dg.updateDpList(pieces);
-                
-                addLabels();
+                repaint();
+                revalidate(); 
             }
         
         });
@@ -153,27 +135,17 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         randStartButton = new JButton("Random");
         randStartButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
-                name1.setText(player1.getText());
-                name2.setText(player2.getText());
-                score.setText("0 - 0");
-
-                //adiciona labels com nomes escolhidos e placar
-                labels.add(name1);
-                labels.add(name2);
-                labels.add(score);
+                labels.get(0).setText(player1.getText());
+                labels.get(1).setText(player2.getText());
+                labels.get(2).setText("0 - 0");
 
                 //esconde todos os botoes e espacos para nome
                 hideMenu();
-
-                //Posicionamento dos componentes
-                name1.setBounds(350, 10, 100, 30);
-                name2.setBounds(350, 290, 100, 30);
-                score.setBounds(360, 165, 100, 30);
-
+                showLabels();
                 randNewGame();
                 dg.updateDpList(pieces);
-                
-                addLabels();
+                repaint();
+                revalidate(); 
             }
         
         });
@@ -181,11 +153,15 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         loadButton = new JButton("Load Game");
         loadButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
+                dg.updateDpList(pieces);
                 
-                hideMenu();
-                resetLabels();
+                loadGame = new LoadGameDAOImpl(board, gfm, labels, pieces, player1, player2);
 
-                addLabels();
+                loadGame.loadGame();;
+                hideMenu();
+                showLabels();
+                repaint();
+                revalidate();
             }
         });
 
@@ -200,7 +176,11 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         loadButton.setBounds(360, 260, 99, 30);
         surrenderBlack.setBounds(360, 40, 99, 30);
         surrenderWhite.setBounds(360, 320, 99, 30);
-        saveButton.setBounds(390, 165, 80, 30);
+        saveButton.setBounds(390, 165, 80, 30);        
+        labels.get(0).setBounds(350, 10, 100, 30);
+        labels.get(1).setBounds(350, 290, 100, 30);
+        labels.get(2).setBounds(360, 165, 100, 30);
+
 
 
         surrenderBlack.setVisible(false);
@@ -231,23 +211,22 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         this.add(surrenderBlack);
         this.add(surrenderWhite);
         this.add(saveButton);
-        this.add(dg);
-    }
-    
-    public void addLabels(){
         for(int i = 0; i < labels.size(); i++){
             this.add(labels.get(i));
         }
-        this.setResizable(false);
         this.add(dg);
     }
 
-    public void resetLabels(){
+    public void hideLabels(){
         for(int i = 0; i < labels.size(); i++){
-            labels.get(i).setText("");
+            labels.get(i).setVisible(false);
         }
-        this.setResizable(false);
-        this.add(dg);
+    }
+
+    public void showLabels(){
+        for(int i = 0; i < labels.size(); i++){
+            labels.get(i).setVisible(true);
+        }
     }
     
     public void hideMenu(){
