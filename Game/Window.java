@@ -45,7 +45,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
 
         player1 = new JTextField("Jogador1");
         player2 = new JTextField("Jogador2");
-        promote = new JTextField("q,b,n,r");
+        promote = new JTextField("Q, B, R, N");
 
         pieces = new ArrayList<Piece>();
         labels = new ArrayList<JLabel>();
@@ -57,6 +57,71 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         labels.add(new JLabel(""));
 
         promoteButton = new JButton("Promote");
+        promoteButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+                int x = -1;
+                int y = -1;
+                for(int i = 0; i < 8; i++){
+                    if(board.getTile(i, 0).getIsTileOccupied()){
+                        if(board.getTile(i, 0).getPieceInTile().getPieceType() == PieceType.PAWN){
+                            x = i;
+                            y = 0;
+                            break;
+                        }
+                    }
+
+                    if(board.getTile(i, 7).getIsTileOccupied()){
+                        if(board.getTile(i, 7).getPieceInTile().getPieceType() == PieceType.PAWN){
+                            x = i;
+                            y = 7;
+                            break;
+                        }
+                    }
+                }
+                System.out.println(x +  " " + y);
+                if(y != -1){
+                    pieces.remove(board.getTile(x, y).getPieceInTile());
+                    dg.updateDpList(pieces);
+                    char prom = promote.getText().toLowerCase().charAt(0);
+                    if(prom == 'q'){
+                        if(y == 0){
+                            pieces.add(new Queen(board, board.getTile(x, y), PieceAlignment.WHITE));
+                        }
+                        else{
+                            pieces.add(new Queen(board, board.getTile(x, y), PieceAlignment.BLACK));
+                        }
+                    }
+                    if(prom == 'n'){
+                        if(y == 0){
+                            pieces.add(new Knight(board, board.getTile(x, y), PieceAlignment.WHITE));
+                        }
+                        else{
+                            pieces.add(new Knight(board, board.getTile(x, y), PieceAlignment.BLACK));
+                        }
+                    }
+                    if(prom == 'r'){
+                        if(y == 0){
+                            pieces.add(new Rook(board, board.getTile(x, y), PieceAlignment.WHITE));
+                        }
+                        else{
+                            pieces.add(new Rook(board, board.getTile(x, y), PieceAlignment.BLACK));
+                        }
+                    }
+                    if(prom == 'b'){
+                        if(y == 0){
+                            pieces.add(new Bishop(board, board.getTile(x, y), PieceAlignment.WHITE));
+                        }
+                        else{
+                            pieces.add(new Bishop(board, board.getTile(x, y), PieceAlignment.BLACK));
+                        }
+                    }
+                    promote.setText("Q, B, R, N");
+                    dg.updateDpList(pieces);
+                    repaint();
+                    revalidate();
+                }
+            }
+        });
 
         menu = new JButton("Menu");
         menu.addActionListener(new ActionListener(){
@@ -174,14 +239,13 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         
         });
 
+        
         loadButton = new JButton("Load Game");
         loadButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 dg.updateDpList(pieces);
-                
-                loadGame = new LoadGameDAOImpl(board, gfm, labels, pieces, player1, player2, promote, promoteButton);
-
-                loadGame.loadGame();;
+                loadGame = new LoadGameDAOImpl(board, gfm, labels, pieces, player1, player2);
+                loadGame.load();
                 hideMenu();
                 showLabels();
                 dg.updateDpList(pieces);
@@ -192,19 +256,22 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
 
         addMouseListener(this);
         addMouseMotionListener(this);
+
         //Posicionamento dos componentes
         player1.setBounds(360, 50, 100, 30);
         player2.setBounds(360, 90, 100, 30);
-        promote.setBounds(360, 80, 80, 20);
+        promote.setBounds(360, 80, 90, 30);
+
         startButton.setBounds(360, 130, 99, 30);
         allPawnStartButton.setBounds(360, 170, 99, 30);
         randStartButton.setBounds(360, 210, 99, 30);
         loadButton.setBounds(360, 260, 99, 30);
-        promoteButton.setBounds(360, 110, 90, 25);
+        promoteButton.setBounds(360, 110, 90, 30);
         surrenderBlack.setBounds(360, 40, 99, 30);
         surrenderWhite.setBounds(360, 320, 99, 30);
         saveButton.setBounds(390, 165, 80, 30);    
         menu.setBounds(390, 205, 80, 30);     
+        
         labels.get(0).setBounds(350, 10, 100, 30);
         labels.get(1).setBounds(350, 290, 100, 30);
         labels.get(2).setBounds(360, 165, 100, 30);
@@ -215,6 +282,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         surrenderWhite.setVisible(false);
         saveButton.setVisible(false);
         menu.setVisible(false);
+
         promote.setVisible(false);
         promoteButton.setVisible(false);
 
@@ -272,6 +340,8 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         player2.setVisible(false);
         saveButton.setVisible(false);
 
+        promote.setVisible(true);
+        promoteButton.setVisible(true);
         surrenderBlack.setVisible(true);
         surrenderWhite.setVisible(true);
         saveButton.setVisible(true);
@@ -286,6 +356,8 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         player1.setVisible(true);
         player2.setVisible(true);
 
+        promote.setVisible(false);
+        promoteButton.setVisible(false);
         surrenderBlack.setVisible(false);
         surrenderWhite.setVisible(false);
         saveButton.setVisible(false);
@@ -315,8 +387,8 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
                 pieces.add(new King(board, board.getTile(i,0), PieceAlignment.BLACK));
                 pieces.add(new King(board, board.getTile(i,7), PieceAlignment.WHITE));
             }
-            pieces.add(new Pawn(board, board.getTile(i,1), PieceAlignment.BLACK, promote, promoteButton));
-            pieces.add(new Pawn(board, board.getTile(i,6), PieceAlignment.WHITE, promote, promoteButton));
+            pieces.add(new Pawn(board, board.getTile(i,1), PieceAlignment.BLACK));
+            pieces.add(new Pawn(board, board.getTile(i,6), PieceAlignment.WHITE));
         }
     }
 
@@ -325,14 +397,14 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
             if(i == 4){
                 pieces.add(new King(board, board.getTile(i,0), PieceAlignment.BLACK));
                 pieces.add(new King(board, board.getTile(i,7), PieceAlignment.WHITE));
-                pieces.add(new Pawn(board, board.getTile(i,1), PieceAlignment.BLACK, promote, promoteButton));
-                pieces.add(new Pawn(board, board.getTile(i,6), PieceAlignment.WHITE, promote, promoteButton));
+                pieces.add(new Pawn(board, board.getTile(i,1), PieceAlignment.BLACK));
+                pieces.add(new Pawn(board, board.getTile(i,6), PieceAlignment.WHITE));
             }
             else{
-                pieces.add(new Pawn(board, board.getTile(i,0), PieceAlignment.BLACK, promote, promoteButton));
-                pieces.add(new Pawn(board, board.getTile(i,7), PieceAlignment.WHITE, promote, promoteButton));
-                pieces.add(new Pawn(board, board.getTile(i,1), PieceAlignment.BLACK, promote, promoteButton));
-                pieces.add(new Pawn(board, board.getTile(i,6), PieceAlignment.WHITE, promote, promoteButton));
+                pieces.add(new Pawn(board, board.getTile(i,0), PieceAlignment.BLACK));
+                pieces.add(new Pawn(board, board.getTile(i,7), PieceAlignment.WHITE));
+                pieces.add(new Pawn(board, board.getTile(i,1), PieceAlignment.BLACK));
+                pieces.add(new Pawn(board, board.getTile(i,6), PieceAlignment.WHITE));
             }
         }
     }
@@ -349,7 +421,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
                 else{
                     num = rand.nextInt(451);
                     if(num >= 0 && num <= 99){
-                        pieces.add(new Pawn(board, board.getTile(i,j), PieceAlignment.BLACK, promote, promoteButton));
+                        pieces.add(new Pawn(board, board.getTile(i,j), PieceAlignment.BLACK));
                     }
                     else if(num >= 100 && num <= 199){
                         pieces.add(new Rook(board, board.getTile(i,j), PieceAlignment.BLACK));
@@ -366,7 +438,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
 
                     num = rand.nextInt(451);
                     if(num >= 0 && num <= 99){
-                        pieces.add(new Pawn(board, board.getTile(i,7-j), PieceAlignment.WHITE, promote, promoteButton));
+                        pieces.add(new Pawn(board, board.getTile(i,7-j), PieceAlignment.WHITE));
                     }
                     else if(num >= 100 && num <= 199){
                         pieces.add(new Rook(board, board.getTile(i,7-j), PieceAlignment.WHITE));
@@ -384,7 +456,6 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
             }
         }
     }
-
 
     @Override
     public void mousePressed(MouseEvent e) {

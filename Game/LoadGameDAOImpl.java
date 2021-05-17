@@ -5,8 +5,6 @@ import Piece.*;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
@@ -17,22 +15,18 @@ public class LoadGameDAOImpl implements LoadGameDAO{
     private GameFlowManager gfm;
     private String player1;
     private String player2;
-    private JTextField promote;
-    private JButton promoteButton;
 
-    public LoadGameDAOImpl(Board board, GameFlowManager gfm, ArrayList<JLabel> labels, ArrayList<Piece> pieces,
-        JTextField player1, JTextField player2, JTextField promote, JButton promoteButton){
+    public LoadGameDAOImpl(Board board, GameFlowManager gfm, ArrayList<JLabel> labels, ArrayList<Piece> pieces, 
+    JTextField player1, JTextField player2){
         this.board = board;
         this.gfm = gfm;
         this.labels = labels;
         this.pieces = pieces;
         this.player1 = player1.getText();
-        this.player2 = player2.getText(); 
-        this.promote = promote;
-        this.promoteButton = promoteButton;
+        this.player2 = player2.getText();
     }
     @Override
-    public void loadGame(){
+    public void load(){
         try(FileReader fr = new FileReader("./SavedGames/" + player1 + "_" + player2 + ".txt")){
             int i;
             int x=0;
@@ -59,7 +53,7 @@ public class LoadGameDAOImpl implements LoadGameDAO{
                     pieces.add(new King(board, board.getTile(x, y), PieceAlignment.BLACK));
                 }
                 else if((char)i == 'p'){
-                    pieces.add(new Pawn(board, board.getTile(x, y), PieceAlignment.BLACK, promote, promoteButton));
+                    pieces.add(new Pawn(board, board.getTile(x, y), PieceAlignment.BLACK));
                 }
 
                 else if((char)i == 'R'){
@@ -78,7 +72,7 @@ public class LoadGameDAOImpl implements LoadGameDAO{
                     pieces.add(new King(board, board.getTile(x, y), PieceAlignment.WHITE));
                 }
                 else if((char)i == 'P'){
-                    pieces.add(new Pawn(board, board.getTile(x, y), PieceAlignment.WHITE, promote, promoteButton));
+                    pieces.add(new Pawn(board, board.getTile(x, y), PieceAlignment.WHITE));
                 }
 
                 else if((char)i == 'w'){

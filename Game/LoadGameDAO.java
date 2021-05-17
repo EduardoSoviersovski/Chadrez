@@ -1,5 +1,5 @@
 package Game;
 
 public interface LoadGameDAO {
-    public void loadGame();
+    public void load();
 }
