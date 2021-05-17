@@ -42,7 +42,7 @@ public abstract class Piece {
         board.getTile(x, y).setPieceInTile(this);
         System.out.println("Peca capturada");
     }
-
+    
     public abstract void setPossibleMoves();
 
     public abstract ArrayList<Tile> getPossibleMoves();
