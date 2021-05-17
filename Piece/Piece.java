@@ -43,9 +43,11 @@ public abstract class Piece {
         System.out.println("Peca capturada");
     }
     
+    public ArrayList<Tile> getPossibleMoves(){
+        return possibleMoves;
+    }
+    
     public abstract void setPossibleMoves();
-
-    public abstract ArrayList<Tile> getPossibleMoves();
     
     public abstract DrawPiece getDp();
 

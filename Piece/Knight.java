@@ -106,7 +106,4 @@ public class Knight extends Piece{
         }
         this.possibleMoves = moves;
     }
-    public ArrayList<Tile> getPossibleMoves(){
-        return possibleMoves;
-    }
 }
