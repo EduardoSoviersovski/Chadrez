@@ -11,14 +11,15 @@ import java.util.ArrayList;
 
 import javax.swing.JLabel;
 
-public class SaveGameDAOImpl implements SaveGameDAO{
+
+public class SaveGameDocDAO implements SaveGameDAO{
     private Board board;
     private GameFlowManager gfm;
     private String save = "";
     private String nameBlack;
     private String nameWhite;
 
-    public SaveGameDAOImpl(Board board, GameFlowManager gfm, ArrayList<JLabel> labels){
+    public SaveGameDocDAO(Board board, GameFlowManager gfm, ArrayList<JLabel> labels){
         this.board = board;
         this.gfm = gfm;
         this.nameBlack = labels.get(0).getText();
@@ -104,12 +105,6 @@ public class SaveGameDAOImpl implements SaveGameDAO{
 
     @Override
     public void createSave(){
-        try(PrintWriter out = new PrintWriter(new FileWriter(new File("./SavedGames", nameBlack + "_" + nameWhite + ".txt")))) {
-            out.write(save);
-        } catch (IOException e1) {
-            System.err.println("Error occurred");
-            e1.printStackTrace();
-        }
         try(PrintWriter out = new PrintWriter(new FileWriter(new File("./SavedGames", nameBlack + "_" + nameWhite + ".doc")))) {
             out.write(save);
         } catch (IOException e1) {

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-public class LoadGameDAOImpl implements LoadGameDAO{
+public class LoadGameDocDAO implements LoadGameDAO{
     private Board board;
     private ArrayList<Piece> pieces;
     private ArrayList<JLabel> labels;
@@ -16,18 +16,18 @@ public class LoadGameDAOImpl implements LoadGameDAO{
     private String player1;
     private String player2;
 
-    public LoadGameDAOImpl(Board board, GameFlowManager gfm, ArrayList<JLabel> labels, ArrayList<Piece> pieces, 
-    JTextField player1, JTextField player2){
+    public LoadGameDocDAO(Board board, GameFlowManager gfm, ArrayList<JLabel> labels, ArrayList<Piece> pieces,
+        JTextField player1, JTextField player2){
         this.board = board;
         this.gfm = gfm;
         this.labels = labels;
         this.pieces = pieces;
         this.player1 = player1.getText();
-        this.player2 = player2.getText();
+        this.player2 = player2.getText(); 
     }
     @Override
-    public void load(){
-        try(FileReader fr = new FileReader("./SavedGames/" + player1 + "_" + player2 + ".txt")){
+    public boolean loadGame(){
+        try(FileReader fr = new FileReader("./SavedGames/" + player1 + "_" + player2 + ".doc")){
             int i;
             int x=0;
             int y=0;
@@ -112,9 +112,11 @@ public class LoadGameDAOImpl implements LoadGameDAO{
                     x=0;
                 }
             }
+            return true;
         } catch (IOException e1){
-            System.err.println("Error occurred");
-            e1.printStackTrace();
+            System.err.println("Não há um jogo salvo com esses jogadores.");
+            //e1.printStackTrace();
+            return false;
         }
     }
 }

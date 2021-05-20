@@ -1,8 +1,10 @@
 package Game;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.BufferedWriter;
 import java.util.ArrayList;
 import javax.swing.JLabel;
 
@@ -18,12 +20,20 @@ public class SaveRankingDAOImpl {
     }
 
     public void createRanking(){
-        try(PrintWriter out = new PrintWriter(new FileWriter("Ranking.txt"))) {
-            out.append("\n" + nameBlack + " - " + winBlack);
-            out.append("\n" + nameWhite + " - " + winWhite);
+        try(BufferedWriter out = new BufferedWriter(new FileWriter("Players.txt", true))) {
+            String line;
+            int i = 0;
+            BufferedReader buffer = new BufferedReader(new FileReader("Players.txt"));
+            while((line = buffer.readLine()) != null && !line.equals(nameBlack)){
+                
+            }
+            //out.append("\n" + nameBlack + " - " + winBlack);
+            //out.append("\n" + nameWhite + " - " + winWhite);
+
+            buffer.close();
         } catch (IOException e1) {
             System.err.println("Error occurred");
-            e1.printStackTrace();
+            //e1.printStackTrace();
         }
     }
 }

@@ -21,10 +21,15 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
     private JButton allPawnStartButton;
     private JButton randStartButton;
     private JButton loadButton;
+    private JButton loadTxtButton;
+    private JButton loadDocButton;
+    private JButton menuFromLoad;
     private JButton surrenderBlack;
     private JButton surrenderWhite;
     private JButton saveButton;
     private JButton promoteButton;
+    private JButton saveTxtButton;
+    private JButton saveDocButton;
     private JButton menu;
     private JTextField player1;
     private JTextField player2;
@@ -34,8 +39,11 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
     private ArrayList<Piece> pieces;
     private MoveManager mm;
     private GameFlowManager gfm;
-    private SaveGameDAO saveGame;
-    private LoadGameDAO loadGame;
+    private SaveGameDAO saveGameTxt;
+    private SaveGameDAO saveGameDoc;
+    private LoadGameDAO loadGameTxt;
+    private LoadGameDAO loadGameDoc;
+    private SaveRankingDAOImpl ranking;
 
     //Método construtor
     public Window(){
@@ -52,6 +60,8 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
 
         mm = new MoveManager(board, pieces, gfm);
 
+        labels.add(new JLabel(""));
+        labels.add(new JLabel(""));
         labels.add(new JLabel(""));
         labels.add(new JLabel(""));
         labels.add(new JLabel(""));
@@ -144,9 +154,30 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         saveButton = new JButton("Save");
         saveButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
-                saveGame = new SaveGameDAOImpl(board, gfm, labels);
-                saveGame.setSave();
-                saveGame.createSave();
+                labels.get(3).setText("Escolha como salvar:");
+                showSaveMenu();
+            }
+        });
+
+        saveTxtButton = new JButton("Txt");
+        saveTxtButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                saveGameTxt = new SaveGameTxtDAO(board, gfm, labels);
+                saveGameTxt.setSave();
+                saveGameTxt.createSave();
+
+                hideSaveMenu();
+            }
+        });
+
+        saveDocButton = new JButton("Doc");
+        saveDocButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                saveGameDoc = new SaveGameDocDAO(board, gfm, labels);
+                saveGameDoc.setSave();
+                saveGameDoc.createSave();
+
+                hideSaveMenu();
             }
         });
 
@@ -192,9 +223,12 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
                 labels.get(0).setText(name1);
                 labels.get(1).setText(name2);
                 labels.get(2).setText("0 - 0");
+
+                ranking = new SaveRankingDAOImpl(labels);
+                ranking.createRanking();
                 //esconde todos os botoes e espacos para nome
-                hideMenu();
-                showLabels();
+                showGame();
+                showGameLabels();
                 newGame();
                 dg.updateDpList(pieces);
                 repaint();
@@ -211,8 +245,8 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
                 labels.get(2).setText("0 - 0");
 
                 //esconde todos os botoes e espacos para nome
-                hideMenu();
-                showLabels();
+                showGame();
+                showGameLabels();
                 pawnNewGame();
                 dg.updateDpList(pieces);
                 repaint();
@@ -229,8 +263,8 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
                 labels.get(2).setText("0 - 0");
 
                 //esconde todos os botoes e espacos para nome
-                hideMenu();
-                showLabels();
+                showGame();
+                showGameLabels();
                 randNewGame();
                 dg.updateDpList(pieces);
                 repaint();
@@ -243,14 +277,57 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         loadButton = new JButton("Load Game");
         loadButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
-                dg.updateDpList(pieces);
-                loadGame = new LoadGameDAOImpl(board, gfm, labels, pieces, player1, player2);
-                loadGame.load();
-                hideMenu();
-                showLabels();
-                dg.updateDpList(pieces);
-                repaint();
-                revalidate();
+                labels.get(4).setText("Escolha como carregar o jogo:");
+                showLoadLabels();
+                showLoadMenu();
+            }
+        });
+
+        loadTxtButton = new JButton("Txt");
+        loadTxtButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                loadGameTxt = new LoadGameTxtDAO(board, gfm, labels, pieces, player1, player2, promote, promoteButton);
+
+                if(loadGameTxt.loadGame()){
+                    hideLoadLabels();
+                    hideLoadMenu();
+
+                    showGameLabels();
+                    showGame();
+
+                    dg.updateDpList(pieces);
+                    repaint();
+                    revalidate();
+                }
+            }
+        });
+
+        loadDocButton = new JButton("Doc");
+        loadDocButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                loadGameDoc = new LoadGameDocDAO(board, gfm, labels, pieces, player1, player2);
+
+                if(loadGameDoc.loadGame()){
+                    hideLoadLabels();
+                    hideLoadMenu();
+
+                    showGameLabels();
+                    showGame();
+
+                    dg.updateDpList(pieces);
+                    repaint();
+                    revalidate();
+                }
+            }
+        });
+
+        menuFromLoad = new JButton("Voltar");
+        menuFromLoad.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                hideLoadLabels();
+                hideLoadMenu();
+
+                showMenu();
             }
         });
 
@@ -266,21 +343,33 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         allPawnStartButton.setBounds(360, 170, 99, 30);
         randStartButton.setBounds(360, 210, 99, 30);
         loadButton.setBounds(360, 260, 99, 30);
-        promoteButton.setBounds(360, 110, 90, 30);
+        loadTxtButton.setBounds(360, 100, 80, 30);
+        loadDocButton.setBounds(360, 140, 80, 30);
+        menuFromLoad.setBounds(360, 180, 80, 30);
+        promoteButton.setBounds(360, 110, 90, 25);
         surrenderBlack.setBounds(360, 40, 99, 30);
         surrenderWhite.setBounds(360, 320, 99, 30);
         saveButton.setBounds(390, 165, 80, 30);    
+        saveTxtButton.setBounds(425, 160, 80, 30);
+        saveDocButton.setBounds(425, 200, 80, 30);
         menu.setBounds(390, 205, 80, 30);     
         
         labels.get(0).setBounds(350, 10, 100, 30);
         labels.get(1).setBounds(350, 290, 100, 30);
         labels.get(2).setBounds(360, 165, 100, 30);
+        labels.get(3).setBounds(425, 135, 200, 30);
+        labels.get(4).setBounds(360, 50, 200, 30);
 
 
 
         surrenderBlack.setVisible(false);
         surrenderWhite.setVisible(false);
+        loadTxtButton.setVisible(false);
+        loadDocButton.setVisible(false);
+        menuFromLoad.setVisible(false);
         saveButton.setVisible(false);
+        saveTxtButton.setVisible(false);
+        saveDocButton.setVisible(false);
         menu.setVisible(false);
 
         promote.setVisible(false);
@@ -296,13 +385,16 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
     public void setup(){
         //Configuração da janela
         this.setTitle("Chádrez");
-        this.setSize(500, 400);
+        this.setSize(600, 400);
         this.setDefaultCloseOperation(3);
         this.setResizable(false);
 
         //Adição dos componentes
         this.add(startButton);
         this.add(loadButton);
+        this.add(loadTxtButton);
+        this.add(loadDocButton);
+        this.add(menuFromLoad);
         this.add(allPawnStartButton);
         this.add(randStartButton);
         this.add(player1);
@@ -312,6 +404,8 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         this.add(surrenderBlack);
         this.add(surrenderWhite);
         this.add(saveButton);
+        this.add(saveTxtButton);
+        this.add(saveDocButton);
         this.add(menu);
         for(int i = 0; i < labels.size(); i++){
             this.add(labels.get(i));
@@ -325,20 +419,28 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         }
     }
 
-    public void showLabels(){
-        for(int i = 0; i < labels.size(); i++){
+    public void showLoadLabels(){
+        labels.get(4).setVisible(true);
+    }
+
+    public void hideLoadLabels(){
+        labels.get(4).setVisible(false);
+    }
+
+    public void showGameLabels(){
+        for(int i = 0; i < 3; i++){
             labels.get(i).setVisible(true);
         }
     }
     
-    public void hideMenu(){
+    public void showGame(){
         startButton.setVisible(false);
         allPawnStartButton.setVisible(false);
         randStartButton.setVisible(false);
         loadButton.setVisible(false);
+        loadTxtButton.setVisible(false);
         player1.setVisible(false);
         player2.setVisible(false);
-        saveButton.setVisible(false);
 
         promote.setVisible(true);
         promoteButton.setVisible(true);
@@ -362,6 +464,46 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         surrenderWhite.setVisible(false);
         saveButton.setVisible(false);
         menu.setVisible(false);
+    }
+
+    public void showLoadMenu(){
+        startButton.setVisible(false);
+        allPawnStartButton.setVisible(false);
+        randStartButton.setVisible(false);
+        loadButton.setVisible(false);
+        player1.setVisible(false);
+        player2.setVisible(false);
+
+        loadTxtButton.setVisible(true);
+        loadDocButton.setVisible(true);
+        menuFromLoad.setVisible(true);
+    }
+
+    public void hideLoadMenu(){
+        loadTxtButton.setVisible(false);
+        loadDocButton.setVisible(false);
+        menuFromLoad.setVisible(false);
+    }
+
+    public void showSaveMenu(){
+        surrenderBlack.setVisible(false);
+        surrenderWhite.setVisible(false);
+        saveButton.setVisible(false);
+        menu.setVisible(false);
+
+        saveTxtButton.setVisible(true);
+        saveDocButton.setVisible(true);
+    }
+
+    public void hideSaveMenu(){
+        surrenderBlack.setVisible(true);
+        surrenderWhite.setVisible(true);
+        saveButton.setVisible(true);
+        menu.setVisible(true);
+
+        saveTxtButton.setVisible(false);
+        saveDocButton.setVisible(false);
+        labels.get(3).setVisible(false);
     }
     //Inicia um novo jogo, adicionando as peças a janela
     public void newGame(){
