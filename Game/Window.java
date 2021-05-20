@@ -43,13 +43,16 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
     private SaveGameDAO saveGameDoc;
     private LoadGameDAO loadGameTxt;
     private LoadGameDAO loadGameDoc;
-    private SaveRankingDAOImpl ranking;
+    private SaveRankingTxtDAO ranking;
+    private Player whitePlayer;
+    private Player blackPlayer;
 
     //Método construtor
     public Window(){
         //Inicialização dos atributos
         board = new Board();
         gfm = new GameFlowManager();
+
 
         player1 = new JTextField("Jogador1");
         player2 = new JTextField("Jogador2");
@@ -191,6 +194,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
                 board.startBoard();
                 dg.updateDpList(pieces);
 
+                whitePlayer.updateWins();
                 // saveRanking.createRanking();
                 showMenu();
                 hideLabels();
@@ -208,6 +212,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
                 board.startBoard();
                 dg.updateDpList(pieces);
 
+                blackPlayer.updateWins();
                 showMenu();
                 hideLabels();
                 repaint();
@@ -218,14 +223,14 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         startButton = new JButton("New Game");
         startButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
-                String name1 = player1.getText();
-                String name2 = player2.getText();
-                labels.get(0).setText(name1);
-                labels.get(1).setText(name2);
-                labels.get(2).setText("0 - 0");
+                blackPlayer = new Player(player1.getText(), 0);
+                whitePlayer = new Player(player2.getText(), 0);
+                labels.get(0).setText(blackPlayer.getName());
+                labels.get(1).setText(whitePlayer.getName());
+                labels.get(2).setText(blackPlayer.getWins() + " - " + whitePlayer.getWins());
 
-                ranking = new SaveRankingDAOImpl(labels);
-                ranking.createRanking();
+                ranking = new SaveRankingTxtDAO(blackPlayer, whitePlayer);
+                ranking.createPlayerList();
                 //esconde todos os botoes e espacos para nome
                 showGame();
                 showGameLabels();
