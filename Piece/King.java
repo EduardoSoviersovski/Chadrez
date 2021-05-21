@@ -21,7 +21,7 @@ public class King extends Piece{
         ArrayList<Tile> moves = new ArrayList<Tile>();
         int x = getX();
         int y = getY();
-        //Para todas as casas adjacentes do rei, verifica se ela esta ocupada
+        //Para todas as casas adjacentes do rei, verifica se ela esta ocupada ou acabar o tabuleiro
         for(int i = -1; i < 2; i++){
             for(int j = -1; j < 2; j++){
                 //Para todas as casas adjacentes do rei, verifica se ela esta ocupada, se nao estiver adiciona

@@ -23,7 +23,7 @@ public class Bishop extends Piece{
         int x = getX()-1;
         int y = getY()-1;
 
-        //Para todas as pecas nas diagonais ate encontrar uma casa ocupada
+        //Para todas as pecas nas diagonais ate encontrar uma casa ocupada ou acabar o tabuleiro
         while(x >= 0 && y >=0 && !board.getTile(x, y).getIsTileOccupied()){     
             moves.add(board.getTile(x, y));
             x -= 1;

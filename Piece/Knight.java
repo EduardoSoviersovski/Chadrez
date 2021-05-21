@@ -22,8 +22,8 @@ public class Knight extends Piece{
         int x = tile.getX();
         int y = tile.getY();
 
-        //Para todos os movimentos em 'L', verifica se a casa esta ocupada
-        //se ano estiver adiciona a lista de movimentos possiveis
+        //Para todos os movimentos em 'L', verifica se a casa esta ocupada e dentro do tabuleiro
+        //se nao estiver adiciona a lista de movimentos possiveis
         if(x - 1 >= 0 && y - 2 >= 0){
                 if(board.getTile(x - 1, y - 2).getIsTileOccupied()){
                         //Se estiver ocupada por uma peca de outra cor, adiciona a lista de movimentos possiveis
@@ -31,6 +31,7 @@ public class Knight extends Piece{
                                 moves.add(board.getTile(x - 1, y - 2));
                         }
                 }
+                //se nao estiver ocupada, adiciona a lista de movimentos
                 else{
                         moves.add(board.getTile(x - 1, y - 2));
                 }
