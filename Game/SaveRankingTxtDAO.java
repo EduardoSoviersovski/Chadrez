@@ -46,7 +46,7 @@ public class SaveRankingTxtDAO {
         try(BufferedWriter out = new BufferedWriter(new FileWriter("./Ranking/Ranking.txt", true))) {
             try{
                 BufferedReader buffer = new BufferedReader(new FileReader("./Ranking/Ranking.txt"));
-                out.append(newPlayer.getName() + " - " + newPlayer.getWins() + "\n");
+                out.append(newPlayer.getName() + "-" + newPlayer.getWins() + "\n");
                 buffer.close();
             } catch (IOException e1) {
                 System.err.println("Error occurred");
@@ -75,5 +75,25 @@ public class SaveRankingTxtDAO {
             //e1.printStackTrace();
         }
         return false;
+    }
+
+    public void updateRanking(){
+        try(BufferedWriter out = new BufferedWriter(new FileWriter("./Ranking/Ranking.txt", false))) {
+            try(BufferedReader reader = new BufferedReader(new FileReader("./Ranking/Ranking.txt"))){
+                String line;
+                while((line = reader.readLine()) != null){
+                    if(line.split("-")[0].equals(blackPlayer.getName())){
+                        line.split("-")[1] = String.valueOf(blackPlayer.getWins());
+                    }
+                    if(line.split("-")[0].equals(blackPlayer.getName())){
+                        line.split("-")[1] = String.valueOf(whitePlayer.getWins());
+                    }
+                }
+            }catch(IOException e){
+                System.err.println("Error occurred!");
+            }
+        }catch(IOException e){
+            System.err.println("Error occurred!");
+        }
     }
 }

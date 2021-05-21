@@ -18,6 +18,11 @@ public class Player {
         wins++;
     }
     
+
+    public void setWins(int wins){
+        this.wins = wins;
+    }
+
     public String getName(){
         return name;
     }

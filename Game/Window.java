@@ -44,6 +44,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
     private LoadGameDAO loadGameTxt;
     private LoadGameDAO loadGameDoc;
     private SaveRankingTxtDAO ranking;
+    private ReadRankingDAO rankingReader;
     private Player whitePlayer;
     private Player blackPlayer;
 
@@ -200,6 +201,10 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
                 while(!pieces.isEmpty()){
                     pieces.remove(0);
                 }
+
+                whitePlayer.setWins(whitePlayer.getWins() + 1);
+                ranking.updateRanking();
+
                 gfm.setWhiteTurn();
                 board.startBoard();
                 dg.updateDpList(pieces);
@@ -222,6 +227,10 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
                 while(!pieces.isEmpty()){
                     pieces.remove(0);
                 }
+
+                blackPlayer.setWins(blackPlayer.getWins() + 1);
+                ranking.updateRanking();
+
                 gfm.setWhiteTurn();
                 board.startBoard();
                 dg.updateDpList(pieces);
@@ -242,6 +251,10 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
             public void actionPerformed(ActionEvent e) {
                 blackPlayer = new Player(player1.getText(), 0);
                 whitePlayer = new Player(player2.getText(), 0);
+                rankingReader = new ReadRankingDAO();
+                
+                rankingReader.readRankingFile(blackPlayer, whitePlayer);
+
                 labels.get(0).setText(blackPlayer.getName());
                 labels.get(1).setText(whitePlayer.getName());
                 labels.get(2).setText(blackPlayer.getWins() + " - " + whitePlayer.getWins());
@@ -379,10 +392,10 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         promoteButton.setBounds(360, 110, 90, 25);
         surrenderBlack.setBounds(360, 40, 99, 30);
         surrenderWhite.setBounds(360, 320, 99, 30);
-        saveButton.setBounds(390, 165, 80, 30);    
+        saveButton.setBounds(450, 165, 80, 30);    
         saveTxtButton.setBounds(425, 160, 80, 30);
         saveDocButton.setBounds(425, 200, 80, 30);
-        menu.setBounds(390, 205, 80, 30);     
+        menu.setBounds(450, 205, 80, 30);     
         
         labels.get(0).setBounds(350, 10, 100, 30);
         labels.get(1).setBounds(350, 290, 100, 30);
