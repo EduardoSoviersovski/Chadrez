@@ -7,6 +7,7 @@ public class Pawn extends Piece{
     //Atributos
     private boolean firstMove = true;
 
+    //Construtora
     public Pawn(Board board, Tile tile, PieceAlignment alignment){
         super(board, tile, alignment);
         type = PieceType.PAWN;

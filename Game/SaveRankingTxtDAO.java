@@ -7,15 +7,18 @@ import java.io.IOException;
 import java.io.BufferedWriter;
 
 public class SaveRankingTxtDAO {
-
+    //Atributos
     private Player whitePlayer;
     private Player blackPlayer;
 
+    //Construtora
     public SaveRankingTxtDAO(Player blackPlayer, Player whitePlayer){
         this.blackPlayer = blackPlayer;
         this.whitePlayer = whitePlayer;
     }
 
+    //Metodos
+    //Se for um jogador novo, adicona a lista de jogadores
     public void createPlayerList(){
         try(BufferedWriter out = new BufferedWriter(new FileWriter("./Ranking/Players.txt", true))) {
             boolean blackPlayerFound;
@@ -23,7 +26,7 @@ public class SaveRankingTxtDAO {
 
             blackPlayerFound = isNewPlayer(blackPlayer);
             whitePlayerFound = isNewPlayer(whitePlayer);
-            
+
             if(!blackPlayerFound){
                 out.append(blackPlayer.getName() + "\n");
                 newPlayer(blackPlayer);
@@ -38,6 +41,7 @@ public class SaveRankingTxtDAO {
         }
     }
 
+    //Adiciona um jogador novo a lista de jogadores com suas pontuacoes
     public void newPlayer(Player newPlayer){
         try(BufferedWriter out = new BufferedWriter(new FileWriter("./Ranking/Ranking.txt", true))) {
             try{
@@ -54,6 +58,7 @@ public class SaveRankingTxtDAO {
         }
     }
 
+    //Retorna true se o jogodor nao estiver presente na lista de jogadores
     public boolean isNewPlayer(Player player){
         try{
             BufferedReader buffer = new BufferedReader(new FileReader("./Ranking/Players.txt"));

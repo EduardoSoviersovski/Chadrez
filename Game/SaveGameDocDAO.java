@@ -13,12 +13,14 @@ import javax.swing.JLabel;
 
 
 public class SaveGameDocDAO implements SaveGameDAO{
+    //Atributos
     private Board board;
     private GameFlowManager gfm;
     private String save = "";
     private String nameBlack;
     private String nameWhite;
 
+    //Construtora
     public SaveGameDocDAO(Board board, GameFlowManager gfm, ArrayList<JLabel> labels){
         this.board = board;
         this.gfm = gfm;
@@ -26,9 +28,15 @@ public class SaveGameDocDAO implements SaveGameDAO{
         this.nameWhite = labels.get(1).getText();
     }
 
+    //Metodos
+
+    //Salva o jogo na notacao FEN
     @Override
     public void setSave(){
         int cont = 0;
+        //Para todas as casas do tabuleiro, verifica se possui uma peca ou nao
+        //se possuir, adiciona a uma string a quantidade de casas vazias antes dele
+        //e seu caracter correspondente e zera o contador de casas vazias.
         for(int j = 0; j < 8; j++){
             for(int i = 0; i < 8; i++){
                 if(board.getTile(i, j).getIsTileOccupied()){
@@ -86,6 +94,8 @@ public class SaveGameDocDAO implements SaveGameDAO{
                         cont++;
                     }
                 }
+                //Se chegar no final da linha e nao encontrar uma peca, 
+                //salva o numero de casas vagas ate o fim da linha e zera o contador
                 if(i == 7 && j != 7){
                     if(cont != 0){
                         save = save + cont;
@@ -95,6 +105,8 @@ public class SaveGameDocDAO implements SaveGameDAO{
                 }
             }
         }
+        //adiciona a string 'd' se o proximo a jogar for o jogador com as pecas pretas
+        // e 'w', se for o jogador com as pecas brancas
         if(gfm.getTurn() == PieceAlignment.BLACK){
             save = save + " d";
         }
@@ -103,6 +115,7 @@ public class SaveGameDocDAO implements SaveGameDAO{
         }
     }
 
+    //Cria um save no formato Jogador1_Jogador2.doc na pasta de jogos salvos
     @Override
     public void createSave(){
         try(PrintWriter out = new PrintWriter(new FileWriter(new File("./SavedGames", nameBlack + "_" + nameWhite + ".doc")))) {

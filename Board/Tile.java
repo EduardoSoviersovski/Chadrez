@@ -3,6 +3,7 @@ import Draw.DrawTile;
 import Piece.*;
 
 public class Tile {
+    //Atributos
     private int x;
     private int y;
     private boolean isTileOccupied;
@@ -10,12 +11,14 @@ public class Tile {
     private Piece pieceInTile;
     private TileColor color;
 
+    //Construtora
     public Tile(int x, int y){
         this.x = x;
         this.y = y;
 
         
         isTileOccupied = false;
+        //Desenha o tabuleiro com casas brancas e pretas alternadamente
 
         if(x % 2 == 0){
             if(y % 2 == 0){
@@ -39,6 +42,9 @@ public class Tile {
         pieceInTile = null;
     }
 
+    //Metodos
+
+    //Reseta os atributos do Tile para os valores padrao (sem peca)
     public void reset(){
         isTileOccupied = false;
         pieceInTile = null;

@@ -22,10 +22,13 @@ public class Rook extends Piece{
         int x = tile.getX()-1;
         int y = tile.getY();
 
+        //Para todas as casas na vertical adiciona as casas para a array de Tiles
+        //ate encontrar uma casa ocupada ou acabar o tabuleiro
         while(x >= 0 && !board.getTile(x, y).getIsTileOccupied()){
             moves.add(board.getTile(x, y));
             x -= 1;
         }
+        //Se a casa for ocupada por uma peça de outra cor, adiciona a casa a lista de movimentos possiveis
         if(x >= 0){
             if(board.getTile(x, y).getIsTileOccupied()){
                 if(board.getTile(x, y).getPieceInTile().getPieceAlignment() != alignment){

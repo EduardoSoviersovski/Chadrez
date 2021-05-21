@@ -4,7 +4,7 @@ import Board.*;
 import java.util.ArrayList;
 
 public class Bishop extends Piece{
-    //Atributos
+    //Construtora
     public Bishop(Board board, Tile tile, PieceAlignment alignment){
         super(board, tile, alignment);
         type = PieceType.BISHOP;
@@ -16,18 +16,21 @@ public class Bishop extends Piece{
         return dp;
     }
 
-    //adicona todos os movimentos possiveis desta peca nesta posicao a uma array de Tiles
+    //Metodos
+    //Adicona todos os movimentos possiveis desta peca nesta posicao a uma array de Tiles
     public void setPossibleMoves(){
         ArrayList<Tile> moves = new ArrayList<Tile>();
         int x = getX()-1;
         int y = getY()-1;
 
+        //Para todas as pecas nas diagonais ate encontrar uma casa ocupada
         while(x >= 0 && y >=0 && !board.getTile(x, y).getIsTileOccupied()){     
             moves.add(board.getTile(x, y));
             x -= 1;
             y -= 1;
         }
 
+        //Se a casa for ocupada por uma peca do outro jogador, adicona ela a lista
         if(x >= 0 && y >= 0){
             if(board.getTile(x, y).getIsTileOccupied()){
                 if(board.getTile(x, y).getPieceInTile().getPieceAlignment() != alignment){

@@ -4,6 +4,7 @@ import Draw.DrawPiece;
 import java.util.ArrayList;
 
 public abstract class Piece {
+    //Atributos
     protected Board board;
     protected Tile tile;
     protected PieceType type;
@@ -11,6 +12,7 @@ public abstract class Piece {
     protected DrawPiece dp;
     protected ArrayList <Tile> possibleMoves;
 
+    //Construtora
     public Piece(Board board, Tile tile, PieceAlignment alignment){
         this.board = board;
         this.tile = tile;
@@ -19,7 +21,10 @@ public abstract class Piece {
         this.tile.setPieceInTile(this);
     }
 
+    //Metodos
+    //Realiza o movimento da peca
     public void move(int x, int y, ArrayList<Piece> pieces){
+        //Se a casa clicada nao estiver ocupada, move para a casa desejada
         if(!board.getTile(x, y).getIsTileOccupied()){
             tile.reset();
             tile = board.getTile(x, y);
@@ -29,10 +34,14 @@ public abstract class Piece {
             System.out.println("Peça movida");
         }
         else{
+            //Se estiver ocupada e for de outra cor, captura a peça
             capture(x, y, pieces);
         }
     }
+    //Captura de peca
     public void capture(int x, int y, ArrayList<Piece> pieces){
+        //Remove a peca na casa selecionada da lista
+        //Muda os atributos do objeto peca para a casa selecionada
         pieces.remove(board.getTile(x, y).getPieceInTile());
         tile.reset();
         tile = board.getTile(x, y);

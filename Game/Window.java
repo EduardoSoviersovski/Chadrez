@@ -47,12 +47,11 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
     private Player whitePlayer;
     private Player blackPlayer;
 
-    //Método construtor
+    //Construtora
     public Window(){
         //Inicialização dos atributos
         board = new Board();
         gfm = new GameFlowManager();
-
 
         player1 = new JTextField("Jogador1");
         player2 = new JTextField("Jogador2");
@@ -69,12 +68,14 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         labels.add(new JLabel(""));
         labels.add(new JLabel(""));
 
+        //Define funcao do botao de promocao de peoes
         promoteButton = new JButton("Promote");
         promoteButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 int x = -1;
                 int y = -1;
                 for(int i = 0; i < 8; i++){
+                    //Se encontrar um peao na linha 0, salva sua posicao em x e y sai do loop
                     if(board.getTile(i, 0).getIsTileOccupied()){
                         if(board.getTile(i, 0).getPieceInTile().getPieceType() == PieceType.PAWN){
                             x = i;
@@ -82,7 +83,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
                             break;
                         }
                     }
-
+                    //Se encontrar um peao na linha 7, salva sua posicao em x e y sai do loop
                     if(board.getTile(i, 7).getIsTileOccupied()){
                         if(board.getTile(i, 7).getPieceInTile().getPieceType() == PieceType.PAWN){
                             x = i;
@@ -91,7 +92,10 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
                         }
                     }
                 }
-                System.out.println(x +  " " + y);
+
+                //Se encontrar algum peao nas linhas 0 ou 7 quando o botao for pressionado
+                //remove o peao da posicao e insere uma nova peca em seu lugar
+                //q para dama, n para cavalo, r para torre e b para bispo
                 if(y != -1){
                     pieces.remove(board.getTile(x, y).getPieceInTile());
                     dg.updateDpList(pieces);
@@ -136,6 +140,8 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
             }
         });
 
+        //Remove as pecas e esconde Labels e botoes relacionados ao jogo
+        //Mostra os botoes e TextFields do menu
         menu = new JButton("Menu");
         menu.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
@@ -154,6 +160,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
             }
         });
 
+        //Mostra o menu de save
         saveButton = new JButton("Save");
         saveButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
@@ -162,6 +169,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
             }
         });
 
+        //Salva o jogo no formato txt e esconde o menu de save
         saveTxtButton = new JButton("Txt");
         saveTxtButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
@@ -173,6 +181,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
             }
         });
 
+        //Salva o jogo no formato doc e esconde o menu de save
         saveDocButton = new JButton("Doc");
         saveDocButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
@@ -184,6 +193,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
             }
         });
 
+        //Termina o jogo e adiciona em 1 as vitorias do jogador de pecas Brancas
         surrenderBlack = new JButton("Surrender");
         surrenderBlack.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
@@ -196,12 +206,16 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
 
                 whitePlayer.updateWins();
                 // saveRanking.createRanking();
+
+                //Remove as pecas do jogo e mostra o menu
                 showMenu();
                 hideLabels();
                 repaint();
                 revalidate(); 
             }
         });
+
+        //Termina o jogo e adiciona em 1 as vitorias do jogador de pecas Brancas
         surrenderWhite = new JButton("Surrender");
         surrenderWhite.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
@@ -213,13 +227,16 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
                 dg.updateDpList(pieces);
 
                 blackPlayer.updateWins();
+
+                //Remove as pecas do jogo e mostra o menu
                 showMenu();
                 hideLabels();
                 repaint();
                 revalidate(); 
             }
         });
-        //definicao de action listener para startButton
+
+        //Definicao de action listener para startButton
         startButton = new JButton("New Game");
         startButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
@@ -231,9 +248,10 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
 
                 ranking = new SaveRankingTxtDAO(blackPlayer, whitePlayer);
                 ranking.createPlayerList();
-                //esconde todos os botoes e espacos para nome
+                //Esconde todos os botoes e TextFields
                 showGame();
                 showGameLabels();
+                //Coloca as pecas na posicao inicial de um jogo normal
                 newGame();
                 dg.updateDpList(pieces);
                 repaint();
@@ -242,6 +260,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         
         });
 
+        //Definicao de action listener para allPawnButton
         allPawnStartButton = new JButton("All Pawn");
         allPawnStartButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
@@ -249,9 +268,11 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
                 labels.get(1).setText(player2.getText());
                 labels.get(2).setText("0 - 0");
 
-                //esconde todos os botoes e espacos para nome
+                //Esconde todos os botoes e TextFields
                 showGame();
                 showGameLabels();
+
+                //Coloca as pecas na posicao inicial de um jogo só com peoes
                 pawnNewGame();
                 dg.updateDpList(pieces);
                 repaint();
@@ -259,7 +280,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
             }
         
         });
-
+        //Definicao de action listener para randonStartButton
         randStartButton = new JButton("Random");
         randStartButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
@@ -267,9 +288,10 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
                 labels.get(1).setText(player2.getText());
                 labels.get(2).setText("0 - 0");
 
-                //esconde todos os botoes e espacos para nome
                 showGame();
                 showGameLabels();
+
+                //Coloca as pecas na posicao inicial de um jogo aleatorio
                 randNewGame();
                 dg.updateDpList(pieces);
                 repaint();
@@ -278,7 +300,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         
         });
 
-        
+        //Abre o menu de selecao de formato de carregamento
         loadButton = new JButton("Load Game");
         loadButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
@@ -288,6 +310,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
             }
         });
 
+        //Coloca as pecas na posicao em realcao a um jogo salvo no formato txt e esconde o menu
         loadTxtButton = new JButton("Txt");
         loadTxtButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
@@ -307,6 +330,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
             }
         });
 
+        //Coloca as pecas na posicao em relacao a um jogo salvo no formato doc e esconde o menu
         loadDocButton = new JButton("Doc");
         loadDocButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
@@ -326,6 +350,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
             }
         });
 
+        //Botao de voltar para menu de load e save
         menuFromLoad = new JButton("Voltar");
         menuFromLoad.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
@@ -365,8 +390,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         labels.get(3).setBounds(425, 135, 200, 30);
         labels.get(4).setBounds(360, 50, 200, 30);
 
-
-
+        //Deixa os componentes invisiveis
         surrenderBlack.setVisible(false);
         surrenderWhite.setVisible(false);
         loadTxtButton.setVisible(false);
@@ -376,12 +400,13 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         saveTxtButton.setVisible(false);
         saveDocButton.setVisible(false);
         menu.setVisible(false);
-
         promote.setVisible(false);
         promoteButton.setVisible(false);
 
+        //Inicia o tabuleiro
         board.startBoard();
         
+        //Desenha os componentes de jogo (pecas e tabuleiro)
         dg = new DrawGame(board.getDb(), pieces);
         setup();
     }
@@ -418,26 +443,28 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         this.add(dg);
     }
 
+    //Esconde as labels de nome e pontuacao
     public void hideLabels(){
         for(int i = 0; i < labels.size(); i++){
             labels.get(i).setVisible(false);
         }
     }
-
-    public void showLoadLabels(){
-        labels.get(4).setVisible(true);
-    }
-
-    public void hideLoadLabels(){
-        labels.get(4).setVisible(false);
-    }
-
+    //Mostra as labels de nome e pontuacao
     public void showGameLabels(){
         for(int i = 0; i < 3; i++){
             labels.get(i).setVisible(true);
         }
     }
-    
+    //Mostra a label de load
+    public void showLoadLabels(){
+        labels.get(4).setVisible(true);
+    }
+    //Esconde a label de load
+    public void hideLoadLabels(){
+        labels.get(4).setVisible(false);
+    }
+
+    //Esconde os componentes de menu e mostra os de jogo
     public void showGame(){
         startButton.setVisible(false);
         allPawnStartButton.setVisible(false);
@@ -455,6 +482,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         menu.setVisible(true);
     }
 
+    //Mostra os componentes de menu e esconde os de jogo
     public void showMenu(){
         startButton.setVisible(true);
         allPawnStartButton.setVisible(true);
@@ -471,6 +499,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         menu.setVisible(false);
     }
 
+    //Esconde os componentes de menu e mostra os de load menu
     public void showLoadMenu(){
         startButton.setVisible(false);
         allPawnStartButton.setVisible(false);
@@ -484,12 +513,14 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         menuFromLoad.setVisible(true);
     }
 
+    //Esconde os componentes de load menu
     public void hideLoadMenu(){
         loadTxtButton.setVisible(false);
         loadDocButton.setVisible(false);
         menuFromLoad.setVisible(false);
     }
 
+    //Mostra os componentes de save menu e esconde os de jogo
     public void showSaveMenu(){
         surrenderBlack.setVisible(false);
         surrenderWhite.setVisible(false);
@@ -500,6 +531,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         saveDocButton.setVisible(true);
     }
 
+    //Esconde os componentes de save menu e mostra os de jogo
     public void hideSaveMenu(){
         surrenderBlack.setVisible(true);
         surrenderWhite.setVisible(true);
@@ -510,7 +542,8 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         saveDocButton.setVisible(false);
         labels.get(3).setVisible(false);
     }
-    //Inicia um novo jogo, adicionando as peças a janela
+
+    //Inicia um novo jogo normal, adicionando as peças em suas posicoes iniciais a uma lista de pecas
     public void newGame(){
         for(int i = 0; i < 8; i++){
             if(i == 0 || i == 7){
@@ -539,6 +572,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         }
     }
 
+    //Inicia um novo jogo so de peoes, adicionando as peças em suas posicoes iniciais a uma lista de pecas  
     public void pawnNewGame(){
         for(int i = 0; i < 8; i++){
             if(i == 4){
@@ -556,6 +590,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         }
     }
 
+    //Inicia um novo jogo aleatorio, adicionando as peças em suas posicoes iniciais a uma lista de pecas
     public void randNewGame(){
         Random rand = new Random();
         int num;
@@ -566,6 +601,8 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
                     pieces.add(new King(board, board.getTile(i,7-j), PieceAlignment.WHITE));
                 }
                 else{
+                    //Soreteia um numero entre 0 e 451, para cada intervalo, adicona uma peça diferente aleatoria ao jogo
+                    //Com menos chances de ter uma Dama
                     num = rand.nextInt(451);
                     if(num >= 0 && num <= 99){
                         pieces.add(new Pawn(board, board.getTile(i,j), PieceAlignment.BLACK));
@@ -604,6 +641,8 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         }
     }
 
+    //Se o jogador clicar na janela, realiza a funcao makeMove de moveMenager
+    //com os valores de x e y convertidos para coordenadas do tabuleiro
     @Override
     public void mousePressed(MouseEvent e) {
         mm.makeMove((e.getX()-20)/40, (e.getY()-40)/40);

@@ -13,6 +13,7 @@ public class DrawPiece extends Draw{
     private int y;
     private Image image;
 
+    //Construtora
     public DrawPiece(int x, int y, PieceType type, PieceAlignment color){
         this.x = x;
         this.y = y;
@@ -26,6 +27,7 @@ public class DrawPiece extends Draw{
         image = image.getScaledInstance(34, 34, Image.SCALE_DEFAULT);
     }
 
+    //Metodos
     @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
@@ -41,6 +43,7 @@ public class DrawPiece extends Draw{
         this.y = y;
     }
 
+    //retorna a imagem correspondente a peça
     public Image getImage(){
         return image;
     }

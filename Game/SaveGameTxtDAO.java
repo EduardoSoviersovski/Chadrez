@@ -12,12 +12,14 @@ import java.util.ArrayList;
 import javax.swing.JLabel;
 
 public class SaveGameTxtDAO implements SaveGameDAO{
+    //Atributos
     private Board board;
     private GameFlowManager gfm;
     private String save = "";
     private String nameBlack;
     private String nameWhite;
 
+    //Construtora
     public SaveGameTxtDAO(Board board, GameFlowManager gfm, ArrayList<JLabel> labels){
         this.board = board;
         this.gfm = gfm;
@@ -25,6 +27,8 @@ public class SaveGameTxtDAO implements SaveGameDAO{
         this.nameWhite = labels.get(1).getText();
     }
 
+    //Metodos
+    //Igual ao LoadGameDocDAO
     @Override
     public void setSave(){
         int cont = 0;
@@ -102,6 +106,7 @@ public class SaveGameTxtDAO implements SaveGameDAO{
         }
     }
 
+    //Cria um save no formato Jogador1_Jogador2.txt na pasta de jogos salvo
     @Override
     public void createSave(){
         try(PrintWriter out = new PrintWriter(new FileWriter(new File("./SavedGames", nameBlack + "_" + nameWhite + ".txt")))) {

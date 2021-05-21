@@ -15,7 +15,7 @@ public class DrawGame extends Draw{
         listDp = new ArrayList<DrawPiece>();
     }
 
-    //Métodos
+    //Metodos
     public void paintComponent(Graphics g){
         super.paintComponent(g);
 
@@ -25,6 +25,8 @@ public class DrawGame extends Draw{
         }
     }
 
+    //Atualiza a lista de pecas se uma nova for criada ou removida
+    //do tabuleiro
     public void updateDpList(ArrayList<Piece> listPiece){
         while(!listDp.isEmpty()){
             listDp.remove(0);

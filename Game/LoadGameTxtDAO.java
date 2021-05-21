@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 public class LoadGameTxtDAO implements LoadGameDAO{
+    //Atributos
     private Board board;
     private ArrayList<Piece> pieces;
     private ArrayList<JLabel> labels;
@@ -17,6 +18,7 @@ public class LoadGameTxtDAO implements LoadGameDAO{
     private String player1;
     private String player2;
 
+    //Construtora
     public LoadGameTxtDAO(Board board, GameFlowManager gfm, ArrayList<JLabel> labels, ArrayList<Piece> pieces,
         JTextField player1, JTextField player2, JTextField promote, JButton promoteButton){
         this.board = board;
@@ -26,6 +28,8 @@ public class LoadGameTxtDAO implements LoadGameDAO{
         this.player1 = player1.getText();
         this.player2 = player2.getText();
     }
+    //Metodos
+    //Igual ao LoadGameDocDAO, porem salva em .txt
     @Override
     public boolean loadGame(){
         try(FileReader fr = new FileReader("./SavedGames/" + player1 + "_" + player2 + ".txt")){

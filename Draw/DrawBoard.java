@@ -2,12 +2,17 @@ package Draw;
 import java.awt.*;
 
 public class DrawBoard extends Draw{
+    //Atributos
     private DrawTile[][] dt;
 
+    //Construtora
     public DrawBoard(){
         dt = new DrawTile[8][8];
     }
 
+    //Metodos
+    
+    //Inicia desenha cada tile em sua coordenada
     public void startDrawBoard(int x, int y, DrawTile dt){
         this.dt[x][y] = dt;
 
