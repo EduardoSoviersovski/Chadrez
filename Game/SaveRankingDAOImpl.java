@@ -6,13 +6,20 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.BufferedWriter;
 
-public class SaveRankingTxtDAO {
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import java.util.ArrayList;
+
+public class SaveRankingDAOImpl {
     //Atributos
     private Player whitePlayer;
     private Player blackPlayer;
 
     //Construtora
-    public SaveRankingTxtDAO(Player blackPlayer, Player whitePlayer){
+    public SaveRankingDAOImpl(Player blackPlayer, Player whitePlayer){
         this.blackPlayer = blackPlayer;
         this.whitePlayer = whitePlayer;
     }
@@ -77,23 +84,47 @@ public class SaveRankingTxtDAO {
         return false;
     }
 
-    public void updateRanking(){
-        try(BufferedWriter out = new BufferedWriter(new FileWriter("./Ranking/Ranking.txt", false))) {
-            try(BufferedReader reader = new BufferedReader(new FileReader("./Ranking/Ranking.txt"))){
-                String line;
-                while((line = reader.readLine()) != null){
-                    if(line.split("-")[0].equals(blackPlayer.getName())){
-                        line.split("-")[1] = String.valueOf(blackPlayer.getWins());
-                    }
-                    if(line.split("-")[0].equals(blackPlayer.getName())){
-                        line.split("-")[1] = String.valueOf(whitePlayer.getWins());
-                    }
+    public void updateRanking(String name, int wins){
+        try{
+            Path path = Paths.get("./Ranking/Ranking.txt");
+            ArrayList<String> fileContent = new ArrayList<>(Files.readAllLines(path));
+
+            for (int i = 0; i < fileContent.size(); i++) {
+                if (fileContent.get(i).equals(name + "-" + wins)) {
+                    fileContent.set(i, name + "-" + String.valueOf(wins + 1));
+                    break;
                 }
-            }catch(IOException e){
-                System.err.println("Error occurred!");
             }
-        }catch(IOException e){
+
+            fileContent = orderRanking(fileContent);
+            Files.write(path, fileContent, StandardCharsets.UTF_8);
+        } catch(IOException e){
             System.err.println("Error occurred!");
         }
+            
+    }
+
+    public ArrayList<String> orderRanking(ArrayList<String> file){
+        ArrayList<Integer> organizedWins = new ArrayList<Integer>();
+
+        for(int i = 0; i < file.size(); i++){
+            organizedWins.add(Integer.parseInt(file.get(i).split("-")[1]));
+        }
+
+        //Insertion sort para organizar as listas
+        for (int i = 1; i < organizedWins.size(); i++){  
+            int key = organizedWins.get(i); 
+            String stringKey = file.get(i); 
+            int j = i - 1;  
+            while ((j > -1) && (organizedWins.get(j) < key)){  
+                organizedWins.set(j+1, organizedWins.get(j));
+                file.set(j+1, file.get(j));
+                j--;  
+            }  
+            organizedWins.set(j+1, key);  
+            file.set(j+1, stringKey);
+        }  
+
+        return file;
     }
 }

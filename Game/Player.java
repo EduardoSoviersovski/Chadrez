@@ -2,13 +2,15 @@ package Game;
 
 public class Player {
     //Atributos
-    String name;
-    int wins;
+    private String name;
+    private int wins;
+    private int rankingLine;
 
     //Construtora
-    public Player(String name, int wins){
+    public Player(String name){
         this.name = name;
-        this.wins = wins;
+        wins = 0;
+        rankingLine = 0;
     }
 
     //Metodos
@@ -23,11 +25,19 @@ public class Player {
         this.wins = wins;
     }
 
+    public void setRankingLine(int line){
+        rankingLine = line;
+    }
+
     public String getName(){
         return name;
     }
 
     public int getWins(){
         return wins;
+    }
+
+    public int getRankingLine(){
+        return rankingLine;
     }
 }

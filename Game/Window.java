@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import Board.Board;
 import Draw.DrawGame;
@@ -21,6 +22,10 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
     private JButton allPawnStartButton;
     private JButton randStartButton;
     private JButton loadButton;
+    private JButton showRanking;
+    private JButton showRankingTxt;
+    private JButton showRankingDoc;
+    private JButton returnFromRanking;
     private JButton loadTxtButton;
     private JButton loadDocButton;
     private JButton menuFromLoad;
@@ -30,6 +35,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
     private JButton promoteButton;
     private JButton saveTxtButton;
     private JButton saveDocButton;
+    private JButton backToGame;
     private JButton menu;
     private JTextField player1;
     private JTextField player2;
@@ -43,8 +49,8 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
     private SaveGameDAO saveGameDoc;
     private LoadGameDAO loadGameTxt;
     private LoadGameDAO loadGameDoc;
-    private SaveRankingTxtDAO ranking;
-    private ReadRankingDAO rankingReader;
+    private SaveRankingDAOImpl ranking;
+    private ReadRankingDAOImpl rankingReader;
     private Player whitePlayer;
     private Player blackPlayer;
 
@@ -155,6 +161,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
 
                 // saveRanking.createRanking();
                 showMenu();
+                hideGame();
                 hideLabels();
                 repaint();
                 revalidate(); 
@@ -166,6 +173,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         saveButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 labels.get(3).setText("Escolha como salvar:");
+                hideGame();
                 showSaveMenu();
             }
         });
@@ -179,6 +187,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
                 saveGameTxt.createSave();
 
                 hideSaveMenu();
+                showGame();
             }
         });
 
@@ -191,6 +200,18 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
                 saveGameDoc.createSave();
 
                 hideSaveMenu();
+                showGame();
+            }
+        });
+
+        //Volta para o jogo do menu de save
+        backToGame = new JButton("Return");
+        backToGame.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                
+
+                hideSaveMenu();
+                showGame();
             }
         });
 
@@ -202,8 +223,8 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
                     pieces.remove(0);
                 }
 
-                whitePlayer.setWins(whitePlayer.getWins() + 1);
-                ranking.updateRanking();
+                //whitePlayer.setWins(whitePlayer.getWins() + 1);
+                ranking.updateRanking(whitePlayer.getName(), whitePlayer.getWins());
 
                 gfm.setWhiteTurn();
                 board.startBoard();
@@ -214,6 +235,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
 
                 //Remove as pecas do jogo e mostra o menu
                 showMenu();
+                hideGame();
                 hideLabels();
                 repaint();
                 revalidate(); 
@@ -228,8 +250,8 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
                     pieces.remove(0);
                 }
 
-                blackPlayer.setWins(blackPlayer.getWins() + 1);
-                ranking.updateRanking();
+                //blackPlayer.setWins(blackPlayer.getWins() + 1);
+                ranking.updateRanking(blackPlayer.getName(), blackPlayer.getWins());
 
                 gfm.setWhiteTurn();
                 board.startBoard();
@@ -239,6 +261,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
 
                 //Remove as pecas do jogo e mostra o menu
                 showMenu();
+                hideGame();
                 hideLabels();
                 repaint();
                 revalidate(); 
@@ -249,19 +272,19 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         startButton = new JButton("New Game");
         startButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
-                blackPlayer = new Player(player1.getText(), 0);
-                whitePlayer = new Player(player2.getText(), 0);
-                rankingReader = new ReadRankingDAO();
+                blackPlayer = new Player(player1.getText());
+                whitePlayer = new Player(player2.getText());
+                rankingReader = new ReadRankingDAOImpl();
                 
-                rankingReader.readRankingFile(blackPlayer, whitePlayer);
+                rankingReader.readRankingTxtFile(blackPlayer, whitePlayer);
 
-                labels.get(0).setText(blackPlayer.getName());
-                labels.get(1).setText(whitePlayer.getName());
-                labels.get(2).setText(blackPlayer.getWins() + " - " + whitePlayer.getWins());
+                labels.get(0).setText(blackPlayer.getName() + " - " + blackPlayer.getWins());
+                labels.get(1).setText(whitePlayer.getName() + " - " + whitePlayer.getWins());
 
-                ranking = new SaveRankingTxtDAO(blackPlayer, whitePlayer);
+                ranking = new SaveRankingDAOImpl(blackPlayer, whitePlayer);
                 ranking.createPlayerList();
                 //Esconde todos os botoes e TextFields
+                hideMenu();
                 showGame();
                 showGameLabels();
                 //Coloca as pecas na posicao inicial de um jogo normal
@@ -277,11 +300,19 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         allPawnStartButton = new JButton("All Pawn");
         allPawnStartButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
-                labels.get(0).setText(player1.getText());
-                labels.get(1).setText(player2.getText());
-                labels.get(2).setText("0 - 0");
+                blackPlayer = new Player(player1.getText());
+                whitePlayer = new Player(player2.getText());
+                rankingReader = new ReadRankingDAOImpl();
+                
+                rankingReader.readRankingTxtFile(blackPlayer, whitePlayer);
 
+                labels.get(0).setText(blackPlayer.getName() + " - " + blackPlayer.getWins());
+                labels.get(1).setText(whitePlayer.getName() + " - " + whitePlayer.getWins());
+
+                ranking = new SaveRankingDAOImpl(blackPlayer, whitePlayer);
+                ranking.createPlayerList();
                 //Esconde todos os botoes e TextFields
+                hideMenu();
                 showGame();
                 showGameLabels();
 
@@ -297,9 +328,19 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         randStartButton = new JButton("Random");
         randStartButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
-                labels.get(0).setText(player1.getText());
-                labels.get(1).setText(player2.getText());
-                labels.get(2).setText("0 - 0");
+                blackPlayer = new Player(player1.getText());
+                whitePlayer = new Player(player2.getText());
+                rankingReader = new ReadRankingDAOImpl();
+                
+                rankingReader.readRankingTxtFile(blackPlayer, whitePlayer);
+
+                labels.get(0).setText(blackPlayer.getName() + " - " + blackPlayer.getWins());
+                labels.get(1).setText(whitePlayer.getName() + " - " + whitePlayer.getWins());
+
+                ranking = new SaveRankingDAOImpl(blackPlayer, whitePlayer);
+                ranking.createPlayerList();
+
+                hideMenu();
 
                 showGame();
                 showGameLabels();
@@ -318,6 +359,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         loadButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 labels.get(4).setText("Escolha como carregar o jogo:");
+                hideMenu();
                 showLoadLabels();
                 showLoadMenu();
             }
@@ -364,11 +406,69 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         });
 
         //Botao de voltar para menu de load e save
-        menuFromLoad = new JButton("Voltar");
+        menuFromLoad = new JButton("Return");
         menuFromLoad.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 hideLoadLabels();
                 hideLoadMenu();
+
+                showMenu();
+            }
+        });
+
+        showRanking = new JButton("Ranking");
+        showRanking.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                labels.get(2).setText("Escolha como carregar o ranking:");
+                hideMenu();
+                showRankingMenu();
+                showRankingLabels();
+            }
+        });
+
+        showRankingTxt = new JButton("Txt");
+        showRankingTxt.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                JFrame rankingWindow = new JFrame();
+                JTextArea ranking = new JTextArea();
+                ReadRankingDAOImpl fileReader = new ReadRankingDAOImpl();
+
+                rankingWindow.setSize(200, 300);
+                rankingWindow.setResizable(false);
+                rankingWindow.setVisible(true);
+
+                rankingWindow.add(ranking);
+
+                ranking.setBounds(0, 0, 200, 300);
+
+                ranking.setText(fileReader.readRankingTxt());
+            }
+        });
+
+        showRankingDoc = new JButton("Doc");
+        showRankingDoc.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                JFrame rankingWindow = new JFrame();
+                JTextArea ranking = new JTextArea();
+                ReadRankingDAOImpl fileReader = new ReadRankingDAOImpl();
+
+                rankingWindow.setSize(200, 300);
+                rankingWindow.setResizable(false);
+                rankingWindow.setVisible(true);
+
+                rankingWindow.add(ranking);
+
+                ranking.setBounds(0, 0, 200, 300);
+
+                ranking.setText(fileReader.readRankingDoc());
+            }
+        });
+
+        returnFromRanking = new JButton("Return");
+        returnFromRanking.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                hideRankingLabels();
+                hideRankingMenu();
 
                 showMenu();
             }
@@ -388,18 +488,23 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         loadButton.setBounds(360, 260, 99, 30);
         loadTxtButton.setBounds(360, 100, 80, 30);
         loadDocButton.setBounds(360, 140, 80, 30);
+        showRanking.setBounds(360, 300, 99, 30);
+        showRankingTxt.setBounds(425, 160, 80, 30);
+        showRankingDoc.setBounds(425, 200, 80, 30);
+        returnFromRanking.setBounds(425, 240, 80, 30);
         menuFromLoad.setBounds(360, 180, 80, 30);
         promoteButton.setBounds(360, 110, 90, 25);
         surrenderBlack.setBounds(360, 40, 99, 30);
         surrenderWhite.setBounds(360, 320, 99, 30);
-        saveButton.setBounds(450, 165, 80, 30);    
+        saveButton.setBounds(360, 165, 80, 30);    
         saveTxtButton.setBounds(425, 160, 80, 30);
         saveDocButton.setBounds(425, 200, 80, 30);
-        menu.setBounds(450, 205, 80, 30);     
+        backToGame.setBounds(425, 240, 80, 30);
+        menu.setBounds(360, 205, 80, 30);     
         
-        labels.get(0).setBounds(350, 10, 100, 30);
-        labels.get(1).setBounds(350, 290, 100, 30);
-        labels.get(2).setBounds(360, 165, 100, 30);
+        labels.get(0).setBounds(350, 10, 200, 30);
+        labels.get(1).setBounds(350, 290, 200, 30);
+        labels.get(2).setBounds(425, 135, 200, 30);
         labels.get(3).setBounds(425, 135, 200, 30);
         labels.get(4).setBounds(360, 50, 200, 30);
 
@@ -408,10 +513,14 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         surrenderWhite.setVisible(false);
         loadTxtButton.setVisible(false);
         loadDocButton.setVisible(false);
+        showRankingTxt.setVisible(false);
+        showRankingDoc.setVisible(false);
         menuFromLoad.setVisible(false);
+        returnFromRanking.setVisible(false);
         saveButton.setVisible(false);
         saveTxtButton.setVisible(false);
         saveDocButton.setVisible(false);
+        backToGame.setVisible(false);
         menu.setVisible(false);
         promote.setVisible(false);
         promoteButton.setVisible(false);
@@ -437,6 +546,10 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         this.add(loadButton);
         this.add(loadTxtButton);
         this.add(loadDocButton);
+        this.add(showRanking);
+        this.add(showRankingTxt);
+        this.add(showRankingDoc);
+        this.add(returnFromRanking);
         this.add(menuFromLoad);
         this.add(allPawnStartButton);
         this.add(randStartButton);
@@ -449,6 +562,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         this.add(saveButton);
         this.add(saveTxtButton);
         this.add(saveDocButton);
+        this.add(backToGame);
         this.add(menu);
         for(int i = 0; i < labels.size(); i++){
             this.add(labels.get(i));
@@ -464,7 +578,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
     }
     //Mostra as labels de nome e pontuacao
     public void showGameLabels(){
-        for(int i = 0; i < 3; i++){
+        for(int i = 0; i < 2; i++){
             labels.get(i).setVisible(true);
         }
     }
@@ -477,16 +591,16 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         labels.get(4).setVisible(false);
     }
 
+    public void showRankingLabels(){
+        labels.get(2).setVisible(true);
+    }
+
+    public void hideRankingLabels(){
+        labels.get(2).setVisible(false);
+    }
+
     //Esconde os componentes de menu e mostra os de jogo
     public void showGame(){
-        startButton.setVisible(false);
-        allPawnStartButton.setVisible(false);
-        randStartButton.setVisible(false);
-        loadButton.setVisible(false);
-        loadTxtButton.setVisible(false);
-        player1.setVisible(false);
-        player2.setVisible(false);
-
         promote.setVisible(true);
         promoteButton.setVisible(true);
         surrenderBlack.setVisible(true);
@@ -495,15 +609,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         menu.setVisible(true);
     }
 
-    //Mostra os componentes de menu e esconde os de jogo
-    public void showMenu(){
-        startButton.setVisible(true);
-        allPawnStartButton.setVisible(true);
-        randStartButton.setVisible(true);
-        loadButton.setVisible(true);
-        player1.setVisible(true);
-        player2.setVisible(true);
-
+    public void hideGame(){
         promote.setVisible(false);
         promoteButton.setVisible(false);
         surrenderBlack.setVisible(false);
@@ -512,15 +618,29 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         menu.setVisible(false);
     }
 
-    //Esconde os componentes de menu e mostra os de load menu
-    public void showLoadMenu(){
+    //Mostra os componentes de menu e esconde os de jogo
+    public void showMenu(){
+        startButton.setVisible(true);
+        allPawnStartButton.setVisible(true);
+        randStartButton.setVisible(true);
+        loadButton.setVisible(true);
+        showRanking.setVisible(true);
+        player1.setVisible(true);
+        player2.setVisible(true);
+    }
+
+    public void hideMenu(){
         startButton.setVisible(false);
         allPawnStartButton.setVisible(false);
         randStartButton.setVisible(false);
         loadButton.setVisible(false);
+        showRanking.setVisible(false);
         player1.setVisible(false);
         player2.setVisible(false);
+    }
 
+    //Esconde os componentes de menu e mostra os de load menu
+    public void showLoadMenu(){
         loadTxtButton.setVisible(true);
         loadDocButton.setVisible(true);
         menuFromLoad.setVisible(true);
@@ -535,25 +655,29 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
 
     //Mostra os componentes de save menu e esconde os de jogo
     public void showSaveMenu(){
-        surrenderBlack.setVisible(false);
-        surrenderWhite.setVisible(false);
-        saveButton.setVisible(false);
-        menu.setVisible(false);
-
         saveTxtButton.setVisible(true);
         saveDocButton.setVisible(true);
+        backToGame.setVisible(true);
     }
 
     //Esconde os componentes de save menu e mostra os de jogo
     public void hideSaveMenu(){
-        surrenderBlack.setVisible(true);
-        surrenderWhite.setVisible(true);
-        saveButton.setVisible(true);
-        menu.setVisible(true);
-
         saveTxtButton.setVisible(false);
         saveDocButton.setVisible(false);
+        backToGame.setVisible(false);
         labels.get(3).setVisible(false);
+    }
+
+    public void showRankingMenu(){
+        showRankingTxt.setVisible(true);
+        showRankingDoc.setVisible(true);
+        returnFromRanking.setVisible(true);
+    }
+
+    public void hideRankingMenu(){
+        showRankingTxt.setVisible(false);
+        showRankingDoc.setVisible(false);
+        returnFromRanking.setVisible(false);
     }
 
     //Inicia um novo jogo normal, adicionando as peças em suas posicoes iniciais a uma lista de pecas

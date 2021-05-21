@@ -1,6 +1,4 @@
-Jogador1 - 0
-Jogador2 - 0
-asdasfsdfvdas - 0
-as - 0
-aaaa - 0
-asas - 0
+Jogador1-5
+Jogador2-4
+Eduardo poraaa-1
+Eduardo porraaa-0
