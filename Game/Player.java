@@ -16,11 +16,6 @@ public class Player {
     //Metodos
 
     //Acrescenta a vitoria do jogador em 1;
-    public void updateWins(){
-        wins++;
-    }
-    
-
     public void setWins(int wins){
         this.wins = wins;
     }

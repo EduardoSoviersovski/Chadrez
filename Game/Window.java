@@ -45,10 +45,8 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
     private ArrayList<Piece> pieces;
     private MoveManager mm;
     private GameFlowManager gfm;
-    private SaveGameDAO saveGameTxt;
-    private SaveGameDAO saveGameDoc;
-    private LoadGameDAO loadGameTxt;
-    private LoadGameDAO loadGameDoc;
+    private SaveGameDAO saveGame;
+    private LoadGameDAO loadGame;
     private SaveRankingDAOImpl ranking;
     private ReadRankingDAOImpl rankingReader;
     private Player whitePlayer;
@@ -68,13 +66,15 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         labels = new ArrayList<JLabel>();
 
         mm = new MoveManager(board, pieces, gfm);
-
+        
+        
         labels.add(new JLabel(""));
         labels.add(new JLabel(""));
         labels.add(new JLabel(""));
         labels.add(new JLabel(""));
         labels.add(new JLabel(""));
-
+        
+        
         //Define funcao do botao de promocao de peoes
         promoteButton = new JButton("Promote");
         promoteButton.addActionListener(new ActionListener(){
@@ -182,10 +182,10 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         saveTxtButton = new JButton("Txt");
         saveTxtButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                saveGameTxt = new SaveGameTxtDAO(board, gfm, labels);
-                saveGameTxt.setSave();
-                saveGameTxt.createSave();
+                saveGame = new SaveGameDAOImpl(board, gfm, labels);
 
+                saveGame.setSaveTxt();
+                saveGame.createSaveTxt();
                 hideSaveMenu();
                 showGame();
             }
@@ -195,10 +195,10 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         saveDocButton = new JButton("Doc");
         saveDocButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                saveGameDoc = new SaveGameDocDAO(board, gfm, labels);
-                saveGameDoc.setSave();
-                saveGameDoc.createSave();
-
+                saveGame = new SaveGameDAOImpl(board, gfm, labels);
+    
+                saveGame.setSaveDoc();
+                saveGame.createSaveDoc();
                 hideSaveMenu();
                 showGame();
             }
@@ -219,20 +219,21 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         surrenderBlack = new JButton("Surrender");
         surrenderBlack.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
+                saveGame = new SaveGameDAOImpl(board, gfm, labels);
                 while(!pieces.isEmpty()){
                     pieces.remove(0);
                 }
 
                 //whitePlayer.setWins(whitePlayer.getWins() + 1);
-                ranking.updateRanking(whitePlayer.getName(), whitePlayer.getWins());
+                ranking.updateRankingTxt(whitePlayer.getName(), whitePlayer.getWins());
+                ranking.updateRankingDoc(whitePlayer.getName(), whitePlayer.getWins());
 
                 gfm.setWhiteTurn();
                 board.startBoard();
                 dg.updateDpList(pieces);
 
-                whitePlayer.updateWins();
-                // saveRanking.createRanking();
-
+                saveGame.deleteSaveTxt(blackPlayer.getName(), whitePlayer.getName());
+                saveGame.deleteSaveDoc(blackPlayer.getName(), whitePlayer.getName());
                 //Remove as pecas do jogo e mostra o menu
                 showMenu();
                 hideGame();
@@ -246,18 +247,21 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         surrenderWhite = new JButton("Surrender");
         surrenderWhite.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
+                saveGame = new SaveGameDAOImpl(board, gfm, labels);
                 while(!pieces.isEmpty()){
                     pieces.remove(0);
                 }
 
                 //blackPlayer.setWins(blackPlayer.getWins() + 1);
-                ranking.updateRanking(blackPlayer.getName(), blackPlayer.getWins());
+                ranking.updateRankingTxt(blackPlayer.getName(), blackPlayer.getWins());
+                ranking.updateRankingDoc(blackPlayer.getName(), blackPlayer.getWins());
 
+                saveGame.deleteSaveTxt(blackPlayer.getName(), whitePlayer.getName());
+                saveGame.deleteSaveDoc(blackPlayer.getName(), whitePlayer.getName());
+                
                 gfm.setWhiteTurn();
                 board.startBoard();
                 dg.updateDpList(pieces);
-
-                blackPlayer.updateWins();
 
                 //Remove as pecas do jogo e mostra o menu
                 showMenu();
@@ -278,11 +282,12 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
                 
                 rankingReader.readRankingTxtFile(blackPlayer, whitePlayer);
 
-                labels.get(0).setText(blackPlayer.getName() + " - " + blackPlayer.getWins());
-                labels.get(1).setText(whitePlayer.getName() + " - " + whitePlayer.getWins());
+                labels.get(0).setText(blackPlayer.getName() + "-" + blackPlayer.getWins());
+                labels.get(1).setText(whitePlayer.getName() + "-" + whitePlayer.getWins());
 
                 ranking = new SaveRankingDAOImpl(blackPlayer, whitePlayer);
-                ranking.createPlayerList();
+                ranking.createPlayerListTxt();
+                ranking.createPlayerListDoc();
                 //Esconde todos os botoes e TextFields
                 hideMenu();
                 showGame();
@@ -306,11 +311,12 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
                 
                 rankingReader.readRankingTxtFile(blackPlayer, whitePlayer);
 
-                labels.get(0).setText(blackPlayer.getName() + " - " + blackPlayer.getWins());
-                labels.get(1).setText(whitePlayer.getName() + " - " + whitePlayer.getWins());
+                labels.get(0).setText(blackPlayer.getName() + "-" + blackPlayer.getWins());
+                labels.get(1).setText(whitePlayer.getName() + "-" + whitePlayer.getWins());
 
                 ranking = new SaveRankingDAOImpl(blackPlayer, whitePlayer);
-                ranking.createPlayerList();
+                ranking.createPlayerListTxt();
+                ranking.createPlayerListDoc();
                 //Esconde todos os botoes e TextFields
                 hideMenu();
                 showGame();
@@ -334,11 +340,12 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
                 
                 rankingReader.readRankingTxtFile(blackPlayer, whitePlayer);
 
-                labels.get(0).setText(blackPlayer.getName() + " - " + blackPlayer.getWins());
-                labels.get(1).setText(whitePlayer.getName() + " - " + whitePlayer.getWins());
+                labels.get(0).setText(blackPlayer.getName() + "-" + blackPlayer.getWins());
+                labels.get(1).setText(whitePlayer.getName() + "-" + whitePlayer.getWins());
 
                 ranking = new SaveRankingDAOImpl(blackPlayer, whitePlayer);
-                ranking.createPlayerList();
+                ranking.createPlayerListTxt();
+                ranking.createPlayerListDoc();
 
                 hideMenu();
 
@@ -369,9 +376,20 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         loadTxtButton = new JButton("Txt");
         loadTxtButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                loadGameTxt = new LoadGameTxtDAO(board, gfm, labels, pieces, player1, player2, promote, promoteButton);
+                loadGame = new LoadGameDAOImpl(board, gfm, labels, pieces, player1, player2);
 
-                if(loadGameTxt.loadGame()){
+                if(loadGame.loadGameTxt()){
+                    blackPlayer = new Player(player1.getText());
+                    whitePlayer = new Player(player2.getText());
+                    rankingReader = new ReadRankingDAOImpl();
+                
+                    rankingReader.readRankingTxtFile(blackPlayer, whitePlayer);
+
+                    labels.get(0).setText(blackPlayer.getName() + "-" + blackPlayer.getWins());
+                    labels.get(1).setText(whitePlayer.getName() + "-" + whitePlayer.getWins());
+
+                    ranking = new SaveRankingDAOImpl(blackPlayer, whitePlayer);
+
                     hideLoadLabels();
                     hideLoadMenu();
 
@@ -389,9 +407,9 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         loadDocButton = new JButton("Doc");
         loadDocButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                loadGameDoc = new LoadGameDocDAO(board, gfm, labels, pieces, player1, player2);
+                loadGame = new LoadGameDAOImpl(board, gfm, labels, pieces, player1, player2);
 
-                if(loadGameDoc.loadGame()){
+                if(loadGame.loadGameDoc()){
                     hideLoadLabels();
                     hideLoadMenu();
 
@@ -504,7 +522,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         
         labels.get(0).setBounds(350, 10, 200, 30);
         labels.get(1).setBounds(350, 290, 200, 30);
-        labels.get(2).setBounds(425, 135, 200, 30);
+        labels.get(2).setBounds(375, 135, 200, 30);
         labels.get(3).setBounds(425, 135, 200, 30);
         labels.get(4).setBounds(360, 50, 200, 30);
 

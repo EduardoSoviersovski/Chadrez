@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import javax.swing.JLabel;
 
 
-public class SaveGameDocDAO implements SaveGameDAO{
+public class SaveGameDAOImpl implements SaveGameDAO{
     //Atributos
     private Board board;
     private GameFlowManager gfm;
@@ -21,18 +21,18 @@ public class SaveGameDocDAO implements SaveGameDAO{
     private String nameWhite;
 
     //Construtora
-    public SaveGameDocDAO(Board board, GameFlowManager gfm, ArrayList<JLabel> labels){
+    public SaveGameDAOImpl(Board board, GameFlowManager gfm, ArrayList<JLabel> labels){
         this.board = board;
         this.gfm = gfm;
-        this.nameBlack = labels.get(0).getText();
-        this.nameWhite = labels.get(1).getText();
+        this.nameBlack = labels.get(0).getText().split("-")[0];
+        this.nameWhite = labels.get(1).getText().split("-")[0];
     }
 
     //Metodos
 
     //Salva o jogo na notacao FEN
     @Override
-    public void setSave(){
+    public void setSaveDoc(){
         int cont = 0;
         //Para todas as casas do tabuleiro, verifica se possui uma peca ou nao
         //se possuir, adiciona a uma string a quantidade de casas vazias antes dele
@@ -116,8 +116,13 @@ public class SaveGameDocDAO implements SaveGameDAO{
     }
 
     //Cria um save no formato Jogador1_Jogador2.doc na pasta de jogos salvos
+    
     @Override
-    public void createSave(){
+    public String getSaveDoc(){
+        return save;
+    }
+    @Override
+    public void createSaveDoc(){
         try(PrintWriter out = new PrintWriter(new FileWriter(new File("./SavedGames", nameBlack + "_" + nameWhite + ".doc")))) {
             out.write(save);
         } catch (IOException e1) {
@@ -126,8 +131,106 @@ public class SaveGameDocDAO implements SaveGameDAO{
         }
     }
 
+    public void deleteSaveDoc(String nameBlack, String nameWhite){
+        File file = new File("./SavedGames", nameBlack + "_" + nameWhite + ".doc");
+        file.delete();
+    }
+    //Igual ao LoadGameDocDAO
     @Override
-    public String getSave(){
+    public void setSaveTxt(){
+        int cont = 0;
+        for(int j = 0; j < 8; j++){
+            for(int i = 0; i < 8; i++){
+                if(board.getTile(i, j).getIsTileOccupied()){
+                    if(board.getTile(i, j).getPieceInTile().getPieceAlignment() == PieceAlignment.BLACK){
+                        if(cont != 0){
+                            save = save + cont;
+                            cont = 0;
+                        }
+                        if(board.getTile(i, j).getPieceInTile().getPieceType() == PieceType.BISHOP){
+                        save = save + "b";
+                        }
+                        else if(board.getTile(i, j).getPieceInTile().getPieceType() == PieceType.KNIGHT){
+                            save = save + "n";
+                        }
+                        else if(board.getTile(i, j).getPieceInTile().getPieceType() == PieceType.ROOK){
+                            save = save + "r";
+                        }
+                        else if(board.getTile(i, j).getPieceInTile().getPieceType() == PieceType.PAWN){
+                            save = save + "p";
+                        }
+                        else if(board.getTile(i, j).getPieceInTile().getPieceType() == PieceType.QUEEN){
+                            save = save + "q";
+                        }
+                        else if(board.getTile(i, j).getPieceInTile().getPieceType() == PieceType.KING){
+                            save = save + "k";
+                        }
+                    }
+                    else{
+                        if(cont != 0){
+                            save = save + cont;
+                            cont = 0;
+                        }
+                        if(board.getTile(i, j).getPieceInTile().getPieceType() == PieceType.BISHOP){
+                            save = save + "B";
+                        }
+                        else if(board.getTile(i, j).getPieceInTile().getPieceType() == PieceType.KNIGHT){
+                            save = save + "N";
+                        }
+                        else if(board.getTile(i, j).getPieceInTile().getPieceType() == PieceType.ROOK){
+                            save = save + "R";
+                        }
+                        else if(board.getTile(i, j).getPieceInTile().getPieceType() == PieceType.PAWN){
+                            save = save + "P";
+                        }
+                        else if(board.getTile(i, j).getPieceInTile().getPieceType() == PieceType.QUEEN){
+                            save = save + "Q";
+                        }
+                        else if(board.getTile(i, j).getPieceInTile().getPieceType() == PieceType.KING){
+                            save = save + "K";
+                        }  
+                    }  
+                }
+                else{
+                    if(i < 8){
+                        cont++;
+                    }
+                }
+                if(i == 7 && j != 7){
+                    if(cont != 0){
+                        save = save + cont;
+                    }
+                    save = save + "/";
+                    cont = 0;
+                }
+            }
+        }
+        if(gfm.getTurn() == PieceAlignment.BLACK){
+            save = save + " d";
+        }
+        else{
+            save = save + " w";
+        }
+    }
+    
+        //Cria um save no formato Jogador1_Jogador2.txt na pasta de jogos salvo
+    @Override
+    public void createSaveTxt(){
+        try(PrintWriter out = new PrintWriter(new FileWriter(new File("./SavedGames", nameBlack + "_" + nameWhite + ".txt")))) {
+            out.write(save);
+        } catch (IOException e1) {
+            System.err.println("Error occurred");
+            e1.printStackTrace();
+        }
+    }
+    
+    @Override
+    public String getSaveTxt(){
         return save;
+    }
+
+    public void deleteSaveTxt(String nameBlack, String nameWhite){
+        File file = new File("./SavedGames", nameBlack + "_" + nameWhite + ".txt");
+        file.delete();
     }
 }
