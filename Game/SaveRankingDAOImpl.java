@@ -14,64 +14,64 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 public class SaveRankingDAOImpl {
-    //Atributos
+    // Atributos
     private Player whitePlayer;
     private Player blackPlayer;
 
-    //Construtora
-    public SaveRankingDAOImpl(Player blackPlayer, Player whitePlayer){
+    // Construtora
+    public SaveRankingDAOImpl(Player blackPlayer, Player whitePlayer) {
         this.blackPlayer = blackPlayer;
         this.whitePlayer = whitePlayer;
     }
 
-    //Metodos
-    //Se for um jogador novo, adicona a lista de jogadores
-    public void createPlayerListTxt(){
-        try(BufferedWriter out = new BufferedWriter(new FileWriter("./Ranking/Players.txt", true))) {
+    // Metodos
+    // Se for um jogador novo, adicona a lista de jogadores
+    public void createPlayerListTxt() {
+        try (BufferedWriter out = new BufferedWriter(new FileWriter("./Ranking/Players.txt", true))) {
             boolean blackPlayerFound;
             boolean whitePlayerFound;
 
             blackPlayerFound = isNewPlayerTxt(blackPlayer);
             whitePlayerFound = isNewPlayerTxt(whitePlayer);
 
-            if(!blackPlayerFound){
+            if (!blackPlayerFound) {
                 out.append(blackPlayer.getName() + "\n");
                 newPlayerTxt(blackPlayer);
             }
-            if(!whitePlayerFound){
+            if (!whitePlayerFound) {
                 out.append(whitePlayer.getName() + "\n");
                 newPlayerTxt(whitePlayer);
             }
         } catch (IOException e1) {
             System.err.println("Error occurred");
-            //e1.printStackTrace();
+            // e1.printStackTrace();
         }
     }
 
-    //Adiciona um jogador novo a lista de jogadores com suas pontuacoes
-    public void newPlayerTxt(Player newPlayer){
-        try(BufferedWriter out = new BufferedWriter(new FileWriter("./Ranking/Ranking.txt", true))) {
-            try{
+    // Adiciona um jogador novo a lista de jogadores com suas pontuacoes
+    public void newPlayerTxt(Player newPlayer) {
+        try (BufferedWriter out = new BufferedWriter(new FileWriter("./Ranking/Ranking.txt", true))) {
+            try {
                 BufferedReader buffer = new BufferedReader(new FileReader("./Ranking/Ranking.txt"));
                 out.append(newPlayer.getName() + "-" + newPlayer.getWins() + "\n");
                 buffer.close();
             } catch (IOException e1) {
                 System.err.println("Error occurred");
-                //e1.printStackTrace();
+                // e1.printStackTrace();
             }
         } catch (IOException e1) {
             System.err.println("Error occurred");
-            //e1.printStackTrace();
+            // e1.printStackTrace();
         }
     }
 
-    //Retorna true se o jogodor nao estiver presente na lista de jogadores
-    public boolean isNewPlayerTxt(Player player){
-        try{
+    // Retorna true se o jogodor nao estiver presente na lista de jogadores
+    public boolean isNewPlayerTxt(Player player) {
+        try {
             BufferedReader buffer = new BufferedReader(new FileReader("./Ranking/Players.txt"));
             String line;
-            while((line = buffer.readLine()) != null){
-                if(line.equals(player.getName())){
+            while ((line = buffer.readLine()) != null) {
+                if (line.equals(player.getName())) {
                     buffer.close();
                     return true;
                 }
@@ -79,13 +79,13 @@ public class SaveRankingDAOImpl {
             buffer.close();
         } catch (IOException e1) {
             System.err.println("Error occurred");
-            //e1.printStackTrace();
+            // e1.printStackTrace();
         }
         return false;
     }
 
-    public void updateRankingTxt(String name, int wins){
-        try{
+    public void updateRankingTxt(String name, int wins) {
+        try {
             Path path = Paths.get("./Ranking/Ranking.txt");
             ArrayList<String> fileContent = new ArrayList<>(Files.readAllLines(path));
 
@@ -98,58 +98,58 @@ public class SaveRankingDAOImpl {
 
             fileContent = orderRanking(fileContent);
             Files.write(path, fileContent, StandardCharsets.UTF_8);
-        } catch(IOException e){
+        } catch (IOException e) {
             System.err.println("Error occurred!");
         }
-            
+
     }
 
-    public void createPlayerListDoc(){
-        try(BufferedWriter out = new BufferedWriter(new FileWriter("./Ranking/Players.doc", true))) {
+    public void createPlayerListDoc() {
+        try (BufferedWriter out = new BufferedWriter(new FileWriter("./Ranking/Players.doc", true))) {
             boolean blackPlayerFound;
             boolean whitePlayerFound;
 
             blackPlayerFound = isNewPlayerDoc(blackPlayer);
             whitePlayerFound = isNewPlayerDoc(whitePlayer);
 
-            if(!blackPlayerFound){
+            if (!blackPlayerFound) {
                 out.append(blackPlayer.getName() + "\n");
                 newPlayerDoc(blackPlayer);
             }
-            if(!whitePlayerFound){
+            if (!whitePlayerFound) {
                 out.append(whitePlayer.getName() + "\n");
                 newPlayerDoc(whitePlayer);
             }
         } catch (IOException e1) {
             System.err.println("Error occurred");
-            //e1.printStackTrace();
+            // e1.printStackTrace();
         }
     }
 
-    //Adiciona um jogador novo a lista de jogadores com suas pontuacoes
-    public void newPlayerDoc(Player newPlayer){
-        try(BufferedWriter out = new BufferedWriter(new FileWriter("./Ranking/Ranking.doc", true))) {
-            try{
+    // Adiciona um jogador novo a lista de jogadores com suas pontuacoes
+    public void newPlayerDoc(Player newPlayer) {
+        try (BufferedWriter out = new BufferedWriter(new FileWriter("./Ranking/Ranking.doc", true))) {
+            try {
                 BufferedReader buffer = new BufferedReader(new FileReader("./Ranking/Ranking.doc"));
                 out.append(newPlayer.getName() + "-" + newPlayer.getWins() + "\n");
                 buffer.close();
             } catch (IOException e1) {
                 System.err.println("Error occurred");
-                //e1.printStackTrace();
+                // e1.printStackTrace();
             }
         } catch (IOException e1) {
             System.err.println("Error occurred");
-            //e1.printStackTrace();
+            // e1.printStackTrace();
         }
     }
 
-    //Retorna true se o jogodor nao estiver presente na lista de jogadores
-    public boolean isNewPlayerDoc(Player player){
-        try{
+    // Retorna true se o jogodor nao estiver presente na lista de jogadores
+    public boolean isNewPlayerDoc(Player player) {
+        try {
             BufferedReader buffer = new BufferedReader(new FileReader("./Ranking/Players.doc"));
             String line;
-            while((line = buffer.readLine()) != null){
-                if(line.equals(player.getName())){
+            while ((line = buffer.readLine()) != null) {
+                if (line.equals(player.getName())) {
                     buffer.close();
                     return true;
                 }
@@ -157,13 +157,13 @@ public class SaveRankingDAOImpl {
             buffer.close();
         } catch (IOException e1) {
             System.err.println("Error occurred");
-            //e1.printStackTrace();
+            // e1.printStackTrace();
         }
         return false;
     }
 
-    public void updateRankingDoc(String name, int wins){
-        try{
+    public void updateRankingDoc(String name, int wins) {
+        try {
             Path path = Paths.get("./Ranking/Ranking.doc");
             ArrayList<String> fileContent = new ArrayList<>(Files.readAllLines(path));
 
@@ -176,33 +176,32 @@ public class SaveRankingDAOImpl {
 
             fileContent = orderRanking(fileContent);
             Files.write(path, fileContent, StandardCharsets.UTF_8);
-        } catch(IOException e){
+        } catch (IOException e) {
             System.err.println("Error occurred!");
         }
-            
-    }
-    
 
-    public ArrayList<String> orderRanking(ArrayList<String> file){
+    }
+
+    public ArrayList<String> orderRanking(ArrayList<String> file) {
         ArrayList<Integer> organizedWins = new ArrayList<Integer>();
 
-        for(int i = 0; i < file.size(); i++){
+        for (int i = 0; i < file.size(); i++) {
             organizedWins.add(Integer.parseInt(file.get(i).split("-")[1]));
         }
 
-        //Insertion sort para organizar as listas
-        for (int i = 1; i < organizedWins.size(); i++){  
-            int key = organizedWins.get(i); 
-            String stringKey = file.get(i); 
-            int j = i - 1;  
-            while ((j > -1) && (organizedWins.get(j) < key)){  
-                organizedWins.set(j+1, organizedWins.get(j));
-                file.set(j+1, file.get(j));
-                j--;  
-            }  
-            organizedWins.set(j+1, key);  
-            file.set(j+1, stringKey);
-        }  
+        // Insertion sort para organizar as listas
+        for (int i = 1; i < organizedWins.size(); i++) {
+            int key = organizedWins.get(i);
+            String stringKey = file.get(i);
+            int j = i - 1;
+            while ((j > -1) && (organizedWins.get(j) < key)) {
+                organizedWins.set(j + 1, organizedWins.get(j));
+                file.set(j + 1, file.get(j));
+                j--;
+            }
+            organizedWins.set(j + 1, key);
+            file.set(j + 1, stringKey);
+        }
 
         return file;
     }

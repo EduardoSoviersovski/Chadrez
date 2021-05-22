@@ -1,7 +1,8 @@
 package Game;
 
 public interface LoadGameDAO {
-    //Metodos
+    // Metodos
     public boolean loadGameDoc();
+
     public boolean loadGameTxt();
 }

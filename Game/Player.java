@@ -1,38 +1,38 @@
 package Game;
 
 public class Player {
-    //Atributos
+    // Atributos
     private String name;
     private int wins;
     private int rankingLine;
 
-    //Construtora
-    public Player(String name){
+    // Construtora
+    public Player(String name) {
         this.name = name;
         wins = 0;
         rankingLine = 0;
     }
 
-    //Metodos
+    // Metodos
 
-    //Acrescenta a vitoria do jogador em 1;
-    public void setWins(int wins){
+    // Acrescenta a vitoria do jogador em 1;
+    public void setWins(int wins) {
         this.wins = wins;
     }
 
-    public void setRankingLine(int line){
+    public void setRankingLine(int line) {
         rankingLine = line;
     }
 
-    public String getName(){
+    public String getName() {
         return name;
     }
 
-    public int getWins(){
+    public int getWins() {
         return wins;
     }
 
-    public int getRankingLine(){
+    public int getRankingLine() {
         return rankingLine;
     }
 }

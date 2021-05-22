@@ -1,18 +1,18 @@
 package Game;
 
 public class Game {
-    //Atributos
-    private Window window;   
+    // Atributos
+    private Window window;
 
-    //Construtora
-    public Game(){
+    // Construtora
+    public Game() {
         window = new Window();
     }
 
-    //Metodos
+    // Metodos
 
-    //Inicia a Janela do jogo
-    public void startGame(){
+    // Inicia a Janela do jogo
+    public void startGame() {
         window.setVisible(true);
     }
 }

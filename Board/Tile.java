@@ -1,9 +1,10 @@
 package Board;
+
 import Draw.DrawTile;
 import Piece.*;
 
 public class Tile {
-    //Atributos
+    // Atributos
     private int x;
     private int y;
     private boolean isTileOccupied;
@@ -11,28 +12,24 @@ public class Tile {
     private Piece pieceInTile;
     private TileColor color;
 
-    //Construtora
-    public Tile(int x, int y){
+    // Construtora
+    public Tile(int x, int y) {
         this.x = x;
         this.y = y;
 
-        
         isTileOccupied = false;
-        //Desenha o tabuleiro com casas brancas e pretas alternadamente
+        // Desenha o tabuleiro com casas brancas e pretas alternadamente
 
-        if(x % 2 == 0){
-            if(y % 2 == 0){
+        if (x % 2 == 0) {
+            if (y % 2 == 0) {
                 this.color = TileColor.LIGHT;
-            }
-            else{
+            } else {
                 this.color = TileColor.DARK;
             }
-        }
-        else{
-            if(y % 2 == 0){
+        } else {
+            if (y % 2 == 0) {
                 this.color = TileColor.DARK;
-            }
-            else{
+            } else {
                 this.color = TileColor.LIGHT;
             }
         }
@@ -42,43 +39,44 @@ public class Tile {
         pieceInTile = null;
     }
 
-    //Metodos
+    // Metodos
 
-    //Reseta os atributos do Tile para os valores padrao (sem peca)
-    public void reset(){
+    // Reseta os atributos do Tile para os valores padrao (sem peca)
+    public void reset() {
         isTileOccupied = false;
         pieceInTile = null;
     }
 
-    public void setPieceInTile(Piece piece){
+    public void setPieceInTile(Piece piece) {
         pieceInTile = piece;
         isTileOccupied = true;
     }
 
-    public void setIsTileOccupied(boolean b){
+    public void setIsTileOccupied(boolean b) {
         this.isTileOccupied = b;
     }
-    public int getX(){
+
+    public int getX() {
         return x;
     }
 
-    public int getY(){
+    public int getY() {
         return y;
     }
 
-    public boolean getIsTileOccupied(){
+    public boolean getIsTileOccupied() {
         return isTileOccupied;
     }
 
-    public DrawTile getDt(){
+    public DrawTile getDt() {
         return dt;
     }
 
-    public Piece getPieceInTile(){
+    public Piece getPieceInTile() {
         return pieceInTile;
     }
 
-    public TileColor getColor(){
+    public TileColor getColor() {
         return color;
     }
 

@@ -1,5 +1,5 @@
 package Piece;
 
-public enum PieceAlignment{
+public enum PieceAlignment {
     BLACK, WHITE;
 }
