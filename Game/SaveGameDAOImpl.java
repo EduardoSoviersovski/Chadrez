@@ -91,13 +91,13 @@ public class SaveGameDAOImpl implements SaveGameDAO {
             }
         }
         // Se o proximo a jogar for o jogador de pecas pretas, adiciona b separado por
-        // um espaço antes e depois
+        // um espaco antes e depois
         if (gfm.getTurn() == PieceAlignment.BLACK) {
             save = save + " b ";
         } else {
             save = save + " w ";
         }
-        // Se a casa inicial do rei e das torres estiverem ocupadas pelas proprias peças e
+        // Se a casa inicial do rei e das torres estiverem ocupadas pelas proprias pecas e
         // elas nao tiverem se movido durante o jogo, adiciona o roque valido a string
         if (board.getTile(4, 7).getIsTileOccupied() && board.getTile(7, 7).getIsTileOccupied()) {
             if (board.getTile(4, 7).getPieceInTile().getPieceType() == PieceType.KING
