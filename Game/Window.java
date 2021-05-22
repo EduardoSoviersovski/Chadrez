@@ -38,6 +38,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
     private JButton saveDocButton;
     private JButton backToGame;
     private JButton menu;
+    private JButton menuAfterWin;
     private JTextField player1;
     private JTextField player2;
     private JTextField promote;
@@ -46,6 +47,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
     private ArrayList<Piece> pieces;
     private MoveManager mm;
     private GameFlowManager gfm;
+    private EndGameManager egm;
     private SaveGameDAO saveGame;
     private LoadGameDAO loadGame;
     private SaveRankingDAOImpl ranking;
@@ -67,7 +69,10 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         labels = new ArrayList<JLabel>();
 
         mm = new MoveManager(board, pieces, gfm);
+        egm = new EndGameManager(pieces);
 
+        labels.add(new JLabel(""));
+        labels.add(new JLabel(""));
         labels.add(new JLabel(""));
         labels.add(new JLabel(""));
         labels.add(new JLabel(""));
@@ -160,7 +165,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
                 // saveRanking.createRanking();
                 showMenu();
                 hideGame();
-                hideLabels();
+                hideGameLabels();
                 repaint();
                 revalidate();
             }
@@ -231,16 +236,18 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
 
                 saveGame.deleteSaveTxt(blackPlayer.getName(), whitePlayer.getName());
                 saveGame.deleteSaveDoc(blackPlayer.getName(), whitePlayer.getName());
+
                 // Remove as pecas do jogo e mostra o menu
-                showMenu();
+                showVictoryMenu();
+                showVictoryLabels();
                 hideGame();
-                hideLabels();
+                hideGameLabels();
                 repaint();
                 revalidate();
             }
         });
 
-        // Termina o jogo e adiciona em 1 as vitorias do jogador de pecas Brancas
+        // Termina o jogo e adiciona em 1 as vitorias do jogador de pecas Pretas
         surrenderWhite = new JButton("Surrender");
         surrenderWhite.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -260,10 +267,11 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
                 board.startBoard();
                 dg.updateDpList(pieces);
 
-                // Remove as pecas do jogo e mostra o menu
-                showMenu();
+                // Remove as pecas do jogo e mostra o menu de vitória
+                showVictoryLabels();
+                showVictoryMenu();
                 hideGame();
-                hideLabels();
+                hideGameLabels();
                 repaint();
                 revalidate();
             }
@@ -491,6 +499,16 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
             }
         });
 
+        menuAfterWin = new JButton("Return to menu");
+        menuAfterWin.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                hideVictoryLabels();
+                hideVictoryMenu();
+
+                showMenu();
+            }
+        });
+
         addMouseListener(this);
         addMouseMotionListener(this);
 
@@ -518,12 +536,15 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         saveDocButton.setBounds(425, 200, 80, 30);
         backToGame.setBounds(425, 240, 80, 30);
         menu.setBounds(360, 205, 80, 30);
+        menuAfterWin.setBounds(400, 175, 125, 30);
 
         labels.get(0).setBounds(350, 10, 200, 30);
         labels.get(1).setBounds(350, 290, 200, 30);
         labels.get(2).setBounds(375, 135, 200, 30);
         labels.get(3).setBounds(425, 135, 200, 30);
         labels.get(4).setBounds(360, 50, 200, 30);
+        labels.get(5).setBounds(425, 135, 200, 30);
+        labels.get(6).setBounds(425, 135, 200, 30);
 
         // Deixa os componentes invisiveis
         surrenderBlack.setVisible(false);
@@ -541,6 +562,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         menu.setVisible(false);
         promote.setVisible(false);
         promoteButton.setVisible(false);
+        menuAfterWin.setVisible(false);
 
         // Inicia o tabuleiro
         board.startBoard();
@@ -582,23 +604,24 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         this.add(saveDocButton);
         this.add(backToGame);
         this.add(menu);
+        this.add(menuAfterWin);
         for (int i = 0; i < labels.size(); i++) {
             this.add(labels.get(i));
         }
         this.add(dg);
     }
 
-    // Esconde as labels de nome e pontuacao
-    public void hideLabels() {
-        for (int i = 0; i < labels.size(); i++) {
-            labels.get(i).setVisible(false);
-        }
-    }
-
     // Mostra as labels de nome e pontuacao
     public void showGameLabels() {
         for (int i = 0; i < 2; i++) {
             labels.get(i).setVisible(true);
+        }
+    }
+
+    // Esconde as labels de nome e pontuacao
+    public void hideGameLabels(){
+        for (int i = 0; i < 2; i++) {
+            labels.get(i).setVisible(false);
         }
     }
 
@@ -618,6 +641,20 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
 
     public void hideRankingLabels() {
         labels.get(2).setVisible(false);
+    }
+
+    public void showVictoryLabels(){
+        if(checkWinner() == PieceAlignment.WHITE){
+            labels.get(5).setText("White victory!");
+        }
+        else{
+            labels.get(6).setText("Black victory!");
+        }
+    }
+
+    public void hideVictoryLabels(){
+        labels.get(5).setVisible(false);
+        labels.get(6).setVisible(false);
     }
 
     // Esconde os componentes de menu e mostra os de jogo
@@ -699,6 +736,56 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         showRankingTxt.setVisible(false);
         showRankingDoc.setVisible(false);
         returnFromRanking.setVisible(false);
+    }
+
+    public void showVictoryMenu(){
+        menuAfterWin.setVisible(true);
+    }
+
+    public void hideVictoryMenu(){
+        menuAfterWin.setVisible(false);
+    }
+
+    public void gameFinish(){
+        saveGame = new SaveGameDAOImpl(board, gfm, labels);
+        if(egm.checkGameEnd()){
+            hideGameLabels();
+            hideGame();
+
+            showVictoryMenu();
+            showVictoryLabels(); 
+            
+            updateAfterGame();
+
+            while (!pieces.isEmpty()) {
+                pieces.remove(0);
+            }
+        }
+    }
+
+    public void updateAfterGame(){
+        gfm.setWhiteTurn();
+
+        if(checkWinner() == PieceAlignment.WHITE){
+            ranking.updateRankingTxt(whitePlayer.getName(), whitePlayer.getWins());
+            ranking.updateRankingDoc(whitePlayer.getName(), whitePlayer.getWins());
+        }
+        else{
+            ranking.updateRankingTxt(blackPlayer.getName(), blackPlayer.getWins());
+            ranking.updateRankingDoc(blackPlayer.getName(), blackPlayer.getWins());
+        }
+
+        saveGame.deleteSaveTxt(blackPlayer.getName(), whitePlayer.getName());
+        saveGame.deleteSaveDoc(blackPlayer.getName(), whitePlayer.getName());
+    }
+
+    public PieceAlignment checkWinner(){
+        if(gfm.getTurn() == PieceAlignment.WHITE){
+            return PieceAlignment.BLACK;
+        }
+        else{
+            return PieceAlignment.WHITE;
+        }
     }
 
     // Inicia um novo jogo normal, adicionando as peças em suas posicoes iniciais a
@@ -794,6 +881,9 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
     @Override
     public void mousePressed(MouseEvent e) {
         mm.makeMove((e.getX() - 20) / 40, (e.getY() - 40) / 40);
+
+        gameFinish();
+
         dg.updateDpList(pieces);
         repaint();
         revalidate();
