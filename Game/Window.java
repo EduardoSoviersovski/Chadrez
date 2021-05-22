@@ -104,9 +104,12 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
                 //remove o peao da posicao e insere uma nova peca em seu lugar
                 //q para dama, n para cavalo, r para torre e b para bispo
                 if(y != -1){
-                    pieces.remove(board.getTile(x, y).getPieceInTile());
-                    dg.updateDpList(pieces);
                     char prom = promote.getText().toLowerCase().charAt(0);
+                    if(prom == 'q' || prom == 'n' || prom == 'r'|| prom == 'b'){
+                        pieces.remove(board.getTile(x, y).getPieceInTile());
+                        dg.updateDpList(pieces);
+                    }
+
                     if(prom == 'q'){
                         if(y == 0){
                             pieces.add(new Queen(board, board.getTile(x, y), PieceAlignment.WHITE));
