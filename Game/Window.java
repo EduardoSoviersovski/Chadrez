@@ -244,7 +244,6 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
                 ranking.updateRankingTxt(whitePlayer.getName(), whitePlayer.getWins());
                 ranking.updateRankingDoc(whitePlayer.getName(), whitePlayer.getWins());
 
-                gfm.setWhiteTurn();
                 board.startBoard();
                 dg.updateDpList(pieces);
 
@@ -253,7 +252,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
 
                 // Remove as pecas do jogo e mostra o menu
                 showVictoryMenu();
-                showVictoryLabels();
+                showWhiteVictoryLabels();
                 hideGame();
                 hideGameLabels();
                 repaint();
@@ -279,12 +278,11 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
                 saveGame.deleteSaveTxt(blackPlayer.getName(), whitePlayer.getName());
                 saveGame.deleteSaveDoc(blackPlayer.getName(), whitePlayer.getName());
 
-                gfm.setWhiteTurn();
                 board.startBoard();
                 dg.updateDpList(pieces);
 
                 // Remove as pecas do jogo e mostra o menu de vitória
-                showVictoryLabels();
+                showBlackVictoryLabels();
                 showVictoryMenu();
                 hideGame();
                 hideGameLabels();
@@ -669,15 +667,14 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         labels.get(2).setVisible(false);
     }
 
-    public void showVictoryLabels(){
-        if(checkWinner() == PieceAlignment.WHITE){
-            labels.get(5).setVisible(true);
-            labels.get(5).setText("White victory!");
-        }
-        else{
-            labels.get(6).setVisible(true);
-            labels.get(6).setText("Black victory!");
-        }
+    public void showWhiteVictoryLabels(){
+        labels.get(5).setVisible(true);
+        labels.get(5).setText("White victory!");
+    }
+
+    public void showBlackVictoryLabels(){
+        labels.get(6).setVisible(true);
+        labels.get(6).setText("Black victory!");
     }
 
     public void hideVictoryLabels(){
@@ -780,7 +777,13 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         hideGame();
 
         showVictoryMenu();
-        showVictoryLabels(); 
+        System.out.println(gfm.getTurn());
+        if(checkWinner() == PieceAlignment.WHITE){
+            showWhiteVictoryLabels();
+        }
+        else{
+            showBlackVictoryLabels();
+        } 
             
         updateAfterGame();
 
