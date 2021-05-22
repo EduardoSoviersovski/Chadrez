@@ -31,7 +31,7 @@ public class LoadGameDAOImpl implements LoadGameDAO {
     // Metodos
     @Override
     public boolean loadGameDoc() {
-        // Se existir um ojgo salvo entre os jogadores
+        // Se existir um jogo salvo entre os jogadores
         try (FileReader fr = new FileReader("./SavedGames/" + player1 + "_" + player2 + ".doc")) {
             char i;
             int cont;
@@ -41,13 +41,18 @@ public class LoadGameDAOImpl implements LoadGameDAO {
 
             labels.get(0).setText(player1);
             labels.get(1).setText(player2);
+
             StringBuilder load = new StringBuilder("");
 
+            // Preenche uma variavel StringBuilder com todos os caracteres do do documento
+            // lido
             while ((cont = fr.read()) != -1) {
                 i = (char) cont;
                 load.append(i);
                 i++;
             }
+
+            // Salva em uma string os caractertes do começo ate o primero espaco
             String loadP = load.toString().split(" ")[0];
 
             while (j < loadP.length()) {
@@ -106,6 +111,8 @@ public class LoadGameDAOImpl implements LoadGameDAO {
                 j++;
             }
             j = 0;
+
+            // Salva em uma string os caractertes do primeiro espaco ate o segundo espaco
             loadP = load.toString().split(" ")[1];
             while (j < loadP.length()) {
                 i = loadP.charAt(j);
@@ -119,8 +126,15 @@ public class LoadGameDAOImpl implements LoadGameDAO {
             }
 
             j = 0;
+
+            // Se existirem caracteres depoisd o segundo espaco
             if (load.toString().split(" ").length > 2) {
+                // Salva em uma string os caractertes do segundo espaco ate o fim da
+                // StringBuilder
                 loadP = load.toString().split(" ")[2];
+
+                // Para cada caracter que encontrar, muda os atributos das torres e reis
+                // correspondentes para realizar a o roque
                 while (j < loadP.length()) {
                     i = loadP.charAt(j);
                     if (i == 'K') {
@@ -150,7 +164,7 @@ public class LoadGameDAOImpl implements LoadGameDAO {
         }
     }
 
-    // Igual ao LoadGameDocDAO, porem salva em .txt
+    // Igual ao LoadGameDoc
     @Override
     public boolean loadGameTxt() {
         try (FileReader fr = new FileReader("./SavedGames/" + player1 + "_" + player2 + ".txt")) {

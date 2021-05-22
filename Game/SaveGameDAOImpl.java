@@ -81,8 +81,6 @@ public class SaveGameDAOImpl implements SaveGameDAO {
                         cont++;
                     }
                 }
-                // Se chegar no final da linha e nao encontrar uma peca,
-                // salva o numero de casas vagas ate o fim da linha e zera o contador
                 if (i == 7 && j != 7) {
                     if (cont != 0) {
                         save = save + cont;
@@ -92,16 +90,62 @@ public class SaveGameDAOImpl implements SaveGameDAO {
                 }
             }
         }
-        // adiciona a string 'd' se o proximo a jogar for o jogador com as pecas pretas
-        // e 'w', se for o jogador com as pecas brancas
+        // Se o proximo a jogar for o jogador de pecas pretas, adiciona b separado por
+        // um espaço antes e depois
         if (gfm.getTurn() == PieceAlignment.BLACK) {
-            save = save + " d";
+            save = save + " b ";
         } else {
-            save = save + " w";
+            save = save + " w ";
+        }
+        // Se a casa inicial do rei e das torres estiverem ocupadas pelas proprias peças e
+        // elas nao tiverem se movido durante o jogo, adiciona o roque valido a string
+        if (board.getTile(4, 7).getIsTileOccupied() && board.getTile(7, 7).getIsTileOccupied()) {
+            if (board.getTile(4, 7).getPieceInTile().getPieceType() == PieceType.KING
+                    && board.getTile(7, 7).getPieceInTile().getPieceType() == PieceType.ROOK
+                    && board.getTile(4, 7).getPieceInTile().getPieceAlignment() == PieceAlignment.WHITE
+                    && board.getTile(7, 7).getPieceInTile().getPieceAlignment() == PieceAlignment.WHITE) {
+                if (board.getTile(4, 7).getPieceInTile().getFirstMove()
+                        && board.getTile(7, 7).getPieceInTile().getFirstMove()) {
+                    save = save + "K";
+                }
+            }
+        }
+        if (board.getTile(4, 7).getIsTileOccupied() && board.getTile(0, 7).getIsTileOccupied()) {
+            if (board.getTile(4, 7).getPieceInTile().getPieceType() == PieceType.KING
+                    && board.getTile(0, 7).getPieceInTile().getPieceType() == PieceType.ROOK
+                    && board.getTile(4, 7).getPieceInTile().getPieceAlignment() == PieceAlignment.WHITE
+                    && board.getTile(0, 7).getPieceInTile().getPieceAlignment() == PieceAlignment.WHITE) {
+                if (board.getTile(4, 7).getPieceInTile().getFirstMove()
+                        && board.getTile(0, 7).getPieceInTile().getFirstMove()) {
+                    save = save + "Q";
+                }
+            }
+        }
+
+        if (board.getTile(4, 0).getIsTileOccupied() && board.getTile(7, 0).getIsTileOccupied()) {
+            if (board.getTile(4, 0).getPieceInTile().getPieceType() == PieceType.KING
+                    && board.getTile(7, 0).getPieceInTile().getPieceType() == PieceType.ROOK
+                    && board.getTile(4, 0).getPieceInTile().getPieceAlignment() == PieceAlignment.BLACK
+                    && board.getTile(7, 0).getPieceInTile().getPieceAlignment() == PieceAlignment.BLACK) {
+                if (board.getTile(4, 0).getPieceInTile().getFirstMove()
+                        && board.getTile(7, 0).getPieceInTile().getFirstMove()) {
+                    save = save + "k";
+                }
+            }
+        }
+
+        if (board.getTile(4, 0).getIsTileOccupied() && board.getTile(0, 0).getIsTileOccupied()) {
+            if (board.getTile(4, 0).getPieceInTile().getPieceType() == PieceType.KING
+                    && board.getTile(0, 0).getPieceInTile().getPieceType() == PieceType.ROOK
+                    && board.getTile(4, 0).getPieceInTile().getPieceAlignment() == PieceAlignment.BLACK
+                    && board.getTile(0, 0).getPieceInTile().getPieceAlignment() == PieceAlignment.BLACK) {
+                if (board.getTile(4, 0).getPieceInTile().getFirstMove()
+                        && board.getTile(0, 0).getPieceInTile().getFirstMove()) {
+                    save = save + "q";
+                }
+            }
         }
     }
-
-    // Cria um save no formato Jogador1_Jogador2.doc na pasta de jogos salvos
 
     @Override
     public String getSaveDoc() {
@@ -124,7 +168,7 @@ public class SaveGameDAOImpl implements SaveGameDAO {
         file.delete();
     }
 
-    // Igual ao LoadGameDocDAO
+    // Igual ao LoadGameDoc
     @Override
     public void setSaveTxt() {
         int cont = 0;
