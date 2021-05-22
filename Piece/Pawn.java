@@ -125,4 +125,7 @@ public class Pawn extends Piece {
     public boolean getFirstMove() {
         return firstMove;
     }
+
+    public void setFirstMove(boolean b) {
+    }
 }

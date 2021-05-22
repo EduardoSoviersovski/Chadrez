@@ -719,8 +719,8 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
                 pieces.add(new Queen(board, board.getTile(i, 0), PieceAlignment.BLACK));
                 pieces.add(new Queen(board, board.getTile(i, 7), PieceAlignment.WHITE));
             } else if (i == 4) {
-                pieces.add(new King(board, board.getTile(i, 0), PieceAlignment.BLACK));
-                pieces.add(new King(board, board.getTile(i, 7), PieceAlignment.WHITE));
+                pieces.add(new King(board, board.getTile(i, 0), PieceAlignment.BLACK, true));
+                pieces.add(new King(board, board.getTile(i, 7), PieceAlignment.WHITE, true));
             }
             pieces.add(new Pawn(board, board.getTile(i, 1), PieceAlignment.BLACK));
             pieces.add(new Pawn(board, board.getTile(i, 6), PieceAlignment.WHITE));
@@ -732,8 +732,8 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
     public void pawnNewGame() {
         for (int i = 0; i < 8; i++) {
             if (i == 4) {
-                pieces.add(new King(board, board.getTile(i, 0), PieceAlignment.BLACK));
-                pieces.add(new King(board, board.getTile(i, 7), PieceAlignment.WHITE));
+                pieces.add(new King(board, board.getTile(i, 0), PieceAlignment.BLACK, true));
+                pieces.add(new King(board, board.getTile(i, 7), PieceAlignment.WHITE, true));
                 pieces.add(new Pawn(board, board.getTile(i, 1), PieceAlignment.BLACK));
                 pieces.add(new Pawn(board, board.getTile(i, 6), PieceAlignment.WHITE));
             } else {
@@ -753,8 +753,8 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 2; j++) {
                 if (i == 4 && j == 0) {
-                    pieces.add(new King(board, board.getTile(i, 0), PieceAlignment.BLACK));
-                    pieces.add(new King(board, board.getTile(i, 7 - j), PieceAlignment.WHITE));
+                    pieces.add(new King(board, board.getTile(i, 0), PieceAlignment.BLACK, true));
+                    pieces.add(new King(board, board.getTile(i, 7 - j), PieceAlignment.WHITE, true));
                 } else {
                     // Soreteia um numero entre 0 e 451, para cada intervalo, adicona uma peça
                     // diferente aleatoria ao jogo

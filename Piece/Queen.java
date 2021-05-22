@@ -166,4 +166,7 @@ public class Queen extends Piece {
     public boolean getFirstMove() {
         return false;
     }
+
+    public void setFirstMove(boolean b) {
+    }
 }

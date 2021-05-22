@@ -110,4 +110,7 @@ public class Knight extends Piece {
     public boolean getFirstMove() {
         return false;
     }
+
+    public void setFirstMove(boolean b) {
+    }
 }

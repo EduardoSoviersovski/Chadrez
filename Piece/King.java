@@ -9,9 +9,9 @@ public class King extends Piece {
     private boolean firstMove;
 
     // Construtora
-    public King(Board board, Tile tile, PieceAlignment alignment) {
+    public King(Board board, Tile tile, PieceAlignment alignment, boolean b) {
         super(board, tile, alignment);
-        firstMove = true;
+        firstMove = b;
         type = PieceType.KING;
 
         dp = new DrawPiece(tile.getX(), tile.getY(), PieceType.KING, alignment);
@@ -145,6 +145,10 @@ public class King extends Piece {
                 board.getTile(7, 7).getPieceInTile().move(5, 7, pieces);
             }
         }
+    }
+
+    public void setFirstMove(boolean b) {
+        firstMove = b;
     }
 
     public boolean getFirstMove() {

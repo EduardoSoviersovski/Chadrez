@@ -59,6 +59,8 @@ public abstract class Piece {
 
     public abstract boolean getFirstMove();
 
+    public abstract void setFirstMove(boolean b);
+
     public ArrayList<Tile> getPossibleMoves() {
         return possibleMoves;
     }

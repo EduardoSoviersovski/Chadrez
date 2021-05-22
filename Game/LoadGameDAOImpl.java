@@ -33,96 +33,113 @@ public class LoadGameDAOImpl implements LoadGameDAO {
     public boolean loadGameDoc() {
         // Se existir um ojgo salvo entre os jogadores
         try (FileReader fr = new FileReader("./SavedGames/" + player1 + "_" + player2 + ".doc")) {
-            int i;
+            char i;
+            int cont;
+            int j = 0;
             int x = 0;
             int y = 0;
 
-            // Le o arquivo de texto letra por letra
-            // Letras maiusculas sao pecas brancas e minusculas para pretas
-            while ((i = fr.read()) != -1) {
-                // Se a letra lida for 'r', insere uma Torre na posicao
-                if ((char) i == 'r') {
+            labels.get(0).setText(player1);
+            labels.get(1).setText(player2);
+            StringBuilder load = new StringBuilder("");
+
+            while ((cont = fr.read()) != -1) {
+                i = (char) cont;
+                load.append(i);
+                i++;
+            }
+            String loadP = load.toString().split(" ")[0];
+
+            while (j < loadP.length()) {
+                i = loadP.charAt(j);
+                if (i == 'r') {
                     pieces.add(new Rook(board, board.getTile(x, y), PieceAlignment.BLACK));
-                }
-                // Se for 'n', insere um Cavalo na posicao
-                else if ((char) i == 'n') {
+                } else if (i == 'n') {
                     pieces.add(new Knight(board, board.getTile(x, y), PieceAlignment.BLACK));
-                }
-                // Se for 'b', insere um Bispo na posicao
-                else if ((char) i == 'b') {
+                } else if (i == 'b') {
                     pieces.add(new Bishop(board, board.getTile(x, y), PieceAlignment.BLACK));
-                }
-                // Se for 'q', insere uma Dama na posicao
-                else if ((char) i == 'q') {
+                } else if (i == 'q') {
                     pieces.add(new Queen(board, board.getTile(x, y), PieceAlignment.BLACK));
-                }
-                // Se for 'k', insere o Rei na posição
-                else if ((char) i == 'k') {
-                    pieces.add(new King(board, board.getTile(x, y), PieceAlignment.BLACK));
-                }
-                // Se for 'p', insere um peao na posicao
-                else if ((char) i == 'p') {
+                } else if (i == 'k') {
+                    pieces.add(new King(board, board.getTile(x, y), PieceAlignment.BLACK, false));
+                } else if (i == 'p') {
                     pieces.add(new Pawn(board, board.getTile(x, y), PieceAlignment.BLACK));
                 }
-                // Se for 'R', insere uma torre na posicao
-                else if ((char) i == 'R') {
+
+                else if (i == 'R') {
                     pieces.add(new Rook(board, board.getTile(x, y), PieceAlignment.WHITE));
-                }
-                // Se for 'N', insere um Cavalo na posicao
-                else if ((char) i == 'N') {
+                } else if (i == 'N') {
                     pieces.add(new Knight(board, board.getTile(x, y), PieceAlignment.WHITE));
-                }
-                // Se for 'B', insere um Bispo na posicao
-                else if ((char) i == 'B') {
+                } else if (i == 'B') {
                     pieces.add(new Bishop(board, board.getTile(x, y), PieceAlignment.WHITE));
-                }
-                // Se for 'Q', insere uma Dama na posicao
-                else if ((char) i == 'Q') {
+                } else if (i == 'Q') {
                     pieces.add(new Queen(board, board.getTile(x, y), PieceAlignment.WHITE));
-                }
-                // Se for 'K', insere um Rei na posicao
-                else if ((char) i == 'K') {
-                    pieces.add(new King(board, board.getTile(x, y), PieceAlignment.WHITE));
-                }
-                // Se for 'P', insere um peao na posicao
-                else if ((char) i == 'P') {
+                } else if (i == 'K') {
+                    pieces.add(new King(board, board.getTile(x, y), PieceAlignment.WHITE, false));
+                } else if (i == 'P') {
                     pieces.add(new Pawn(board, board.getTile(x, y), PieceAlignment.WHITE));
                 }
 
-                // Se for 'w', inicia o valor de turno como WHITE
-                else if ((char) i == 'w') {
-                    gfm.setWhiteTurn();
-                }
-                // Se for 'd', inicia o valor de turno como BLACK
-                else if ((char) i == 'd') {
-                    gfm.setBlackTurn();
-                }
-
-                // Para cada numero, pula a quantidade de casas correspondente -1
-                else if ((char) i == '2') {
+                else if (i == '2') {
                     x = x + 1;
-                } else if ((char) i == '3') {
+                } else if (i == '3') {
                     x = x + 2;
-                } else if ((char) i == '4') {
+                } else if (i == '4') {
                     x = x + 3;
-                } else if ((char) i == '5') {
+                } else if (i == '5') {
                     x = x + 4;
-                } else if ((char) i == '6') {
+                } else if (i == '6') {
                     x = x + 5;
-                } else if ((char) i == '7') {
+                } else if (i == '7') {
                     x = x + 6;
-                } else if ((char) i == '8') {
+                } else if (i == '8') {
                     x = x + 7;
                 }
-                // Se o contador for menos que 7, soma 1
                 if (x < 7) {
                     x++;
                 }
 
-                // Se for '/', zera o contador de x e soma 1 ao o de y
-                if ((char) i == '/') {
+                if (i == '/') {
                     y++;
                     x = 0;
+                }
+                j++;
+            }
+            j = 0;
+            loadP = load.toString().split(" ")[1];
+            while (j < loadP.length()) {
+                i = loadP.charAt(j);
+                if (i == 'w') {
+                    gfm.setWhiteTurn();
+                }
+                if (i == 'b') {
+                    gfm.setBlackTurn();
+                }
+                j++;
+            }
+
+            j = 0;
+            if (load.toString().split(" ").length > 2) {
+                loadP = load.toString().split(" ")[2];
+                while (j < loadP.length()) {
+                    i = loadP.charAt(j);
+                    if (i == 'K') {
+                        board.getTile(4, 7).getPieceInTile().setFirstMove(true);
+                        board.getTile(0, 7).getPieceInTile().setFirstMove(true);
+                    }
+                    if (i == 'Q') {
+                        board.getTile(4, 7).getPieceInTile().setFirstMove(true);
+                        board.getTile(7, 7).getPieceInTile().setFirstMove(true);
+                    }
+                    if (i == 'k') {
+                        board.getTile(4, 0).getPieceInTile().setFirstMove(true);
+                        board.getTile(0, 0).getPieceInTile().setFirstMove(true);
+                    }
+                    if (i == 'q') {
+                        board.getTile(4, 0).getPieceInTile().setFirstMove(true);
+                        board.getTile(7, 0).getPieceInTile().setFirstMove(true);
+                    }
+                    j++;
                 }
             }
             return true;
@@ -137,70 +154,113 @@ public class LoadGameDAOImpl implements LoadGameDAO {
     @Override
     public boolean loadGameTxt() {
         try (FileReader fr = new FileReader("./SavedGames/" + player1 + "_" + player2 + ".txt")) {
-            int i;
+            char i;
+            int cont;
+            int j = 0;
             int x = 0;
             int y = 0;
 
             labels.get(0).setText(player1);
             labels.get(1).setText(player2);
+            StringBuilder load = new StringBuilder("");
 
-            while ((i = fr.read()) != -1) {
-                if ((char) i == 'r') {
+            while ((cont = fr.read()) != -1) {
+                i = (char) cont;
+                load.append(i);
+                i++;
+            }
+            String loadP = load.toString().split(" ")[0];
+
+            while (j < loadP.length()) {
+                i = loadP.charAt(j);
+                if (i == 'r') {
                     pieces.add(new Rook(board, board.getTile(x, y), PieceAlignment.BLACK));
-                } else if ((char) i == 'n') {
+                } else if (i == 'n') {
                     pieces.add(new Knight(board, board.getTile(x, y), PieceAlignment.BLACK));
-                } else if ((char) i == 'b') {
+                } else if (i == 'b') {
                     pieces.add(new Bishop(board, board.getTile(x, y), PieceAlignment.BLACK));
-                } else if ((char) i == 'q') {
+                } else if (i == 'q') {
                     pieces.add(new Queen(board, board.getTile(x, y), PieceAlignment.BLACK));
-                } else if ((char) i == 'k') {
-                    pieces.add(new King(board, board.getTile(x, y), PieceAlignment.BLACK));
-                } else if ((char) i == 'p') {
+                } else if (i == 'k') {
+                    pieces.add(new King(board, board.getTile(x, y), PieceAlignment.BLACK, false));
+                } else if (i == 'p') {
                     pieces.add(new Pawn(board, board.getTile(x, y), PieceAlignment.BLACK));
                 }
 
-                else if ((char) i == 'R') {
+                else if (i == 'R') {
                     pieces.add(new Rook(board, board.getTile(x, y), PieceAlignment.WHITE));
-                } else if ((char) i == 'N') {
+                } else if (i == 'N') {
                     pieces.add(new Knight(board, board.getTile(x, y), PieceAlignment.WHITE));
-                } else if ((char) i == 'B') {
+                } else if (i == 'B') {
                     pieces.add(new Bishop(board, board.getTile(x, y), PieceAlignment.WHITE));
-                } else if ((char) i == 'Q') {
+                } else if (i == 'Q') {
                     pieces.add(new Queen(board, board.getTile(x, y), PieceAlignment.WHITE));
-                } else if ((char) i == 'K') {
-                    pieces.add(new King(board, board.getTile(x, y), PieceAlignment.WHITE));
-                } else if ((char) i == 'P') {
+                } else if (i == 'K') {
+                    pieces.add(new King(board, board.getTile(x, y), PieceAlignment.WHITE, false));
+                } else if (i == 'P') {
                     pieces.add(new Pawn(board, board.getTile(x, y), PieceAlignment.WHITE));
                 }
 
-                else if ((char) i == 'w') {
-                    gfm.setWhiteTurn();
-                } else if ((char) i == 'd') {
-                    gfm.setBlackTurn();
-                }
-
-                else if ((char) i == '2') {
+                else if (i == '2') {
                     x = x + 1;
-                } else if ((char) i == '3') {
+                } else if (i == '3') {
                     x = x + 2;
-                } else if ((char) i == '4') {
+                } else if (i == '4') {
                     x = x + 3;
-                } else if ((char) i == '5') {
+                } else if (i == '5') {
                     x = x + 4;
-                } else if ((char) i == '6') {
+                } else if (i == '6') {
                     x = x + 5;
-                } else if ((char) i == '7') {
+                } else if (i == '7') {
                     x = x + 6;
-                } else if ((char) i == '8') {
+                } else if (i == '8') {
                     x = x + 7;
                 }
                 if (x < 7) {
                     x++;
                 }
 
-                if ((char) i == '/') {
+                if (i == '/') {
                     y++;
                     x = 0;
+                }
+                j++;
+            }
+            j = 0;
+            loadP = load.toString().split(" ")[1];
+            while (j < loadP.length()) {
+                i = loadP.charAt(j);
+                if (i == 'w') {
+                    gfm.setWhiteTurn();
+                }
+                if (i == 'b') {
+                    gfm.setBlackTurn();
+                }
+                j++;
+            }
+
+            j = 0;
+            if (load.toString().split(" ").length > 2) {
+                loadP = load.toString().split(" ")[2];
+                while (j < loadP.length()) {
+                    i = loadP.charAt(j);
+                    if (i == 'K') {
+                        board.getTile(4, 7).getPieceInTile().setFirstMove(true);
+                        board.getTile(7, 7).getPieceInTile().setFirstMove(true);
+                    }
+                    if (i == 'Q') {
+                        board.getTile(4, 7).getPieceInTile().setFirstMove(true);
+                        board.getTile(0, 7).getPieceInTile().setFirstMove(true);
+                    }
+                    if (i == 'k') {
+                        board.getTile(4, 0).getPieceInTile().setFirstMove(true);
+                        board.getTile(7, 0).getPieceInTile().setFirstMove(true);
+                    }
+                    if (i == 'q') {
+                        board.getTile(4, 0).getPieceInTile().setFirstMove(true);
+                        board.getTile(0, 0).getPieceInTile().setFirstMove(true);
+                    }
+                    j++;
                 }
             }
             return true;

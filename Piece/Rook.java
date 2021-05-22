@@ -25,6 +25,10 @@ public class Rook extends Piece {
         return firstMove;
     }
 
+    public void setFirstMove(boolean b){
+        firstMove = b;
+    }
+
     // adicona todos os movimentos possiveis desta peca nesta posicao a uma array de
     // Tiles
     public void setPossibleMoves() {

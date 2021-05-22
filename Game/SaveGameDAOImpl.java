@@ -183,9 +183,55 @@ public class SaveGameDAOImpl implements SaveGameDAO {
             }
         }
         if (gfm.getTurn() == PieceAlignment.BLACK) {
-            save = save + " d";
+            save = save + " b ";
         } else {
-            save = save + " w";
+            save = save + " w ";
+        }
+        if (board.getTile(4, 7).getIsTileOccupied() && board.getTile(7, 7).getIsTileOccupied()) {
+            if (board.getTile(4, 7).getPieceInTile().getPieceType() == PieceType.KING
+                    && board.getTile(7, 7).getPieceInTile().getPieceType() == PieceType.ROOK
+                    && board.getTile(4, 7).getPieceInTile().getPieceAlignment() == PieceAlignment.WHITE
+                    && board.getTile(7, 7).getPieceInTile().getPieceAlignment() == PieceAlignment.WHITE) {
+                if (board.getTile(4, 7).getPieceInTile().getFirstMove()
+                        && board.getTile(7, 7).getPieceInTile().getFirstMove()) {
+                    save = save + "K";
+                }
+            }
+        }
+        if (board.getTile(4, 7).getIsTileOccupied() && board.getTile(0, 7).getIsTileOccupied()) {
+            if (board.getTile(4, 7).getPieceInTile().getPieceType() == PieceType.KING
+                    && board.getTile(0, 7).getPieceInTile().getPieceType() == PieceType.ROOK
+                    && board.getTile(4, 7).getPieceInTile().getPieceAlignment() == PieceAlignment.WHITE
+                    && board.getTile(0, 7).getPieceInTile().getPieceAlignment() == PieceAlignment.WHITE) {
+                if (board.getTile(4, 7).getPieceInTile().getFirstMove()
+                        && board.getTile(0, 7).getPieceInTile().getFirstMove()) {
+                    save = save + "Q";
+                }
+            }
+        }
+
+        if (board.getTile(4, 0).getIsTileOccupied() && board.getTile(7, 0).getIsTileOccupied()) {
+            if (board.getTile(4, 0).getPieceInTile().getPieceType() == PieceType.KING
+                    && board.getTile(7, 0).getPieceInTile().getPieceType() == PieceType.ROOK
+                    && board.getTile(4, 0).getPieceInTile().getPieceAlignment() == PieceAlignment.BLACK
+                    && board.getTile(7, 0).getPieceInTile().getPieceAlignment() == PieceAlignment.BLACK) {
+                if (board.getTile(4, 0).getPieceInTile().getFirstMove()
+                        && board.getTile(7, 0).getPieceInTile().getFirstMove()) {
+                    save = save + "k";
+                }
+            }
+        }
+
+        if (board.getTile(4, 0).getIsTileOccupied() && board.getTile(0, 0).getIsTileOccupied()) {
+            if (board.getTile(4, 0).getPieceInTile().getPieceType() == PieceType.KING
+                    && board.getTile(0, 0).getPieceInTile().getPieceType() == PieceType.ROOK
+                    && board.getTile(4, 0).getPieceInTile().getPieceAlignment() == PieceAlignment.BLACK
+                    && board.getTile(0, 0).getPieceInTile().getPieceAlignment() == PieceAlignment.BLACK) {
+                if (board.getTile(4, 0).getPieceInTile().getFirstMove()
+                        && board.getTile(0, 0).getPieceInTile().getFirstMove()) {
+                    save = save + "q";
+                }
+            }
         }
     }
 
