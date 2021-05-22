@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class ReadRankingDAOImpl {
+public class ReadRankingDAO {
     public void readRankingTxtFile(Player blackPlayer, Player whitePlayer) {
         if (isNewPlayerTxt(blackPlayer)) {
             readWinsTxt(blackPlayer);

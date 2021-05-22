@@ -51,7 +51,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
     private SaveGameDAO saveGame;
     private LoadGameDAO loadGame;
     private SaveRankingDAOImpl ranking;
-    private ReadRankingDAOImpl rankingReader;
+    private ReadRankingDAO rankingReader;
     private Player whitePlayer;
     private Player blackPlayer;
     private boolean gameIsRunning;
@@ -301,7 +301,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
 
                 blackPlayer = new Player(player1.getText());
                 whitePlayer = new Player(player2.getText());
-                rankingReader = new ReadRankingDAOImpl();
+                rankingReader = new ReadRankingDAO();
 
                 rankingReader.readRankingTxtFile(blackPlayer, whitePlayer);
 
@@ -332,7 +332,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
 
                 blackPlayer = new Player(player1.getText());
                 whitePlayer = new Player(player2.getText());
-                rankingReader = new ReadRankingDAOImpl();
+                rankingReader = new ReadRankingDAO();
 
                 rankingReader.readRankingTxtFile(blackPlayer, whitePlayer);
 
@@ -363,7 +363,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
 
                 blackPlayer = new Player(player1.getText());
                 whitePlayer = new Player(player2.getText());
-                rankingReader = new ReadRankingDAOImpl();
+                rankingReader = new ReadRankingDAO();
 
                 rankingReader.readRankingTxtFile(blackPlayer, whitePlayer);
 
@@ -411,7 +411,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
                 if (loadGame.loadGameTxt()) {
                     blackPlayer = new Player(player1.getText());
                     whitePlayer = new Player(player2.getText());
-                    rankingReader = new ReadRankingDAOImpl();
+                    rankingReader = new ReadRankingDAO();
 
                     rankingReader.readRankingTxtFile(blackPlayer, whitePlayer);
 
@@ -482,7 +482,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
             public void actionPerformed(ActionEvent e) {
                 JFrame rankingWindow = new JFrame();
                 JTextArea ranking = new JTextArea();
-                ReadRankingDAOImpl fileReader = new ReadRankingDAOImpl();
+                ReadRankingDAO fileReader = new ReadRankingDAO();
 
                 rankingWindow.setSize(200, 300);
                 rankingWindow.setResizable(false);
@@ -501,7 +501,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
             public void actionPerformed(ActionEvent e) {
                 JFrame rankingWindow = new JFrame();
                 JTextArea ranking = new JTextArea();
-                ReadRankingDAOImpl fileReader = new ReadRankingDAOImpl();
+                ReadRankingDAO fileReader = new ReadRankingDAO();
 
                 rankingWindow.setSize(200, 300);
                 rankingWindow.setResizable(false);

@@ -13,7 +13,7 @@ import java.nio.file.Paths;
 
 import java.util.ArrayList;
 
-public class SaveRankingDAOImpl {
+public class SaveRankingDAOImpl implements SaveRankingDAO{
     // Atributos
     private Player whitePlayer;
     private Player blackPlayer;
@@ -26,6 +26,7 @@ public class SaveRankingDAOImpl {
 
     // Metodos
     // Se for um jogador novo, adicona a lista de jogadores
+    @Override
     public void createPlayerListTxt() {
         try (BufferedWriter out = new BufferedWriter(new FileWriter("./Ranking/Players.txt", true))) {
             boolean blackPlayerFound;
@@ -49,6 +50,7 @@ public class SaveRankingDAOImpl {
     }
 
     // Adiciona um jogador novo a lista de jogadores com suas pontuacoes
+    @Override
     public void newPlayerTxt(Player newPlayer) {
         try (BufferedWriter out = new BufferedWriter(new FileWriter("./Ranking/Ranking.txt", true))) {
             try {
@@ -66,6 +68,7 @@ public class SaveRankingDAOImpl {
     }
 
     // Retorna true se o jogodor nao estiver presente na lista de jogadores
+    @Override
     public boolean isNewPlayerTxt(Player player) {
         try {
             BufferedReader buffer = new BufferedReader(new FileReader("./Ranking/Players.txt"));
@@ -84,6 +87,7 @@ public class SaveRankingDAOImpl {
         return false;
     }
 
+    @Override
     public void updateRankingTxt(String name, int wins) {
         try {
             Path path = Paths.get("./Ranking/Ranking.txt");
@@ -104,6 +108,7 @@ public class SaveRankingDAOImpl {
 
     }
 
+    @Override
     public void createPlayerListDoc() {
         try (BufferedWriter out = new BufferedWriter(new FileWriter("./Ranking/Players.doc", true))) {
             boolean blackPlayerFound;
@@ -127,6 +132,7 @@ public class SaveRankingDAOImpl {
     }
 
     // Adiciona um jogador novo a lista de jogadores com suas pontuacoes
+    @Override
     public void newPlayerDoc(Player newPlayer) {
         try (BufferedWriter out = new BufferedWriter(new FileWriter("./Ranking/Ranking.doc", true))) {
             try {
@@ -144,6 +150,7 @@ public class SaveRankingDAOImpl {
     }
 
     // Retorna true se o jogodor nao estiver presente na lista de jogadores
+    @Override
     public boolean isNewPlayerDoc(Player player) {
         try {
             BufferedReader buffer = new BufferedReader(new FileReader("./Ranking/Players.doc"));
@@ -162,6 +169,7 @@ public class SaveRankingDAOImpl {
         return false;
     }
 
+    @Override
     public void updateRankingDoc(String name, int wins) {
         try {
             Path path = Paths.get("./Ranking/Ranking.doc");
