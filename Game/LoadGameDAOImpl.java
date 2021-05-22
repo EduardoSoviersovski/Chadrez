@@ -52,7 +52,7 @@ public class LoadGameDAOImpl implements LoadGameDAO {
                 i++;
             }
 
-            // Salva em uma string os caractertes do começo ate o primero espaco
+            // Salva em uma string os caractertes do comeco ate o primero espaco
             String loadP = load.toString().split(" ")[0];
 
             while (j < loadP.length()) {
@@ -127,7 +127,7 @@ public class LoadGameDAOImpl implements LoadGameDAO {
 
             j = 0;
 
-            // Se existirem caracteres depoisd o segundo espaco
+            // Se existirem caracteres depois do segundo espaco
             if (load.toString().split(" ").length > 2) {
                 // Salva em uma string os caractertes do segundo espaco ate o fim da
                 // StringBuilder
