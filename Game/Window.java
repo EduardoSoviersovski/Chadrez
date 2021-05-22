@@ -54,10 +54,13 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
     private ReadRankingDAOImpl rankingReader;
     private Player whitePlayer;
     private Player blackPlayer;
+    private boolean gameIsRunning;
 
     // Construtora
     public Window() {
         // Inicialização dos atributos
+        gameIsRunning = false;
+
         board = new Board();
         gfm = new GameFlowManager();
 
@@ -155,6 +158,8 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         menu = new JButton("Menu");
         menu.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                gameIsRunning = false;
+
                 while (!pieces.isEmpty()) {
                     pieces.remove(0);
                 }
@@ -175,6 +180,8 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         saveButton = new JButton("Save");
         saveButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                gameIsRunning = false;
+
                 labels.get(3).setText("Escolha como salvar:");
                 hideGame();
                 showSaveMenu();
@@ -185,6 +192,8 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         saveTxtButton = new JButton("Txt");
         saveTxtButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                gameIsRunning = true;
+                
                 saveGame = new SaveGameDAOImpl(board, gfm, labels);
 
                 saveGame.setSaveTxt();
@@ -198,6 +207,8 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         saveDocButton = new JButton("Doc");
         saveDocButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                gameIsRunning = true;
+
                 saveGame = new SaveGameDAOImpl(board, gfm, labels);
 
                 saveGame.setSaveDoc();
@@ -211,6 +222,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         backToGame = new JButton("Return");
         backToGame.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                gameIsRunning = true;
 
                 hideSaveMenu();
                 showGame();
@@ -221,6 +233,8 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         surrenderBlack = new JButton("Surrender");
         surrenderBlack.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                gameIsRunning = false;
+
                 saveGame = new SaveGameDAOImpl(board, gfm, labels);
                 while (!pieces.isEmpty()) {
                     pieces.remove(0);
@@ -251,6 +265,8 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         surrenderWhite = new JButton("Surrender");
         surrenderWhite.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                gameIsRunning = false;
+
                 saveGame = new SaveGameDAOImpl(board, gfm, labels);
                 while (!pieces.isEmpty()) {
                     pieces.remove(0);
@@ -281,6 +297,8 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         startButton = new JButton("New Game");
         startButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                gameIsRunning = true;
+
                 blackPlayer = new Player(player1.getText());
                 whitePlayer = new Player(player2.getText());
                 rankingReader = new ReadRankingDAOImpl();
@@ -310,6 +328,8 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         allPawnStartButton = new JButton("All Pawn");
         allPawnStartButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                gameIsRunning = true;
+
                 blackPlayer = new Player(player1.getText());
                 whitePlayer = new Player(player2.getText());
                 rankingReader = new ReadRankingDAOImpl();
@@ -339,6 +359,8 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         randStartButton = new JButton("Random");
         randStartButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                gameIsRunning = true;
+
                 blackPlayer = new Player(player1.getText());
                 whitePlayer = new Player(player2.getText());
                 rankingReader = new ReadRankingDAOImpl();
@@ -382,6 +404,8 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         loadTxtButton = new JButton("Txt");
         loadTxtButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                gameIsRunning = true;
+
                 loadGame = new LoadGameDAOImpl(board, gfm, labels, pieces, player1, player2);
 
                 if (loadGame.loadGameTxt()) {
@@ -414,6 +438,8 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         loadDocButton = new JButton("Doc");
         loadDocButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                gameIsRunning = true;
+
                 loadGame = new LoadGameDAOImpl(board, gfm, labels, pieces, player1, player2);
 
                 if (loadGame.loadGameDoc()) {
@@ -645,9 +671,11 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
 
     public void showVictoryLabels(){
         if(checkWinner() == PieceAlignment.WHITE){
+            labels.get(5).setVisible(true);
             labels.get(5).setText("White victory!");
         }
         else{
+            labels.get(6).setVisible(true);
             labels.get(6).setText("Black victory!");
         }
     }
@@ -748,32 +776,32 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
 
     public void gameFinish(){
         saveGame = new SaveGameDAOImpl(board, gfm, labels);
-        if(egm.checkGameEnd()){
-            hideGameLabels();
-            hideGame();
+        hideGameLabels();
+        hideGame();
 
-            showVictoryMenu();
-            showVictoryLabels(); 
+        showVictoryMenu();
+        showVictoryLabels(); 
             
-            updateAfterGame();
+        updateAfterGame();
 
-            while (!pieces.isEmpty()) {
-                pieces.remove(0);
-            }
+        while (!pieces.isEmpty()) {
+            pieces.remove(0);
         }
     }
 
     public void updateAfterGame(){
-        gfm.setWhiteTurn();
-
         if(checkWinner() == PieceAlignment.WHITE){
             ranking.updateRankingTxt(whitePlayer.getName(), whitePlayer.getWins());
             ranking.updateRankingDoc(whitePlayer.getName(), whitePlayer.getWins());
         }
-        else{
+        else if(checkWinner() == PieceAlignment.BLACK){
             ranking.updateRankingTxt(blackPlayer.getName(), blackPlayer.getWins());
             ranking.updateRankingDoc(blackPlayer.getName(), blackPlayer.getWins());
         }
+
+        gfm.setWhiteTurn();
+
+        board.resetTiles();
 
         saveGame.deleteSaveTxt(blackPlayer.getName(), whitePlayer.getName());
         saveGame.deleteSaveDoc(blackPlayer.getName(), whitePlayer.getName());
@@ -882,7 +910,11 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
     public void mousePressed(MouseEvent e) {
         mm.makeMove((e.getX() - 20) / 40, (e.getY() - 40) / 40);
 
-        gameFinish();
+        if(gameIsRunning){
+            if(egm.checkGameEnd()){
+                gameFinish();
+            }
+        }
 
         dg.updateDpList(pieces);
         repaint();

@@ -26,6 +26,15 @@ public class Board {
         }
     }
 
+    //Reinicia as tiles para o estado inicial delas
+    public void resetTiles(){
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                tiles[i][j].reset();
+            }
+        }
+    }
+
     // Retorna o tile nas coordenadas (x,y)
     public Tile getTile(int x, int y) {
         return tiles[x][y];
