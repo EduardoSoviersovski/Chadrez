@@ -21,7 +21,7 @@ public class Rook extends Piece {
         return firstMove;
     }
 
-    public void setFirstMove(boolean b){
+    public void setFirstMove(boolean b) {
         firstMove = b;
     }
 
@@ -39,7 +39,7 @@ public class Rook extends Piece {
             x -= 1;
         }
         // Se a casa for ocupada por uma peça de outra cor, adiciona a casa a lista d
-        //  movimentos possiveis
+        // movimentos possiveis
         if (x >= 0) {
             if (board.getTile(x, y).getIsTileOccupied()) {
                 if (board.getTile(x, y).getPieceInTile().getPieceAlignment() != alignment) {
@@ -97,7 +97,8 @@ public class Rook extends Piece {
 
     @Override
     public void move(int x, int y, ArrayList<Piece> pieces) {
-        // Se a casa clicada nao estiver ocupada, move para a casa desejada
+        // Se a casa clicada nao estiver ocupada, move para a casa desejada e muda first
+        // move para falso
         if (!board.getTile(x, y).getIsTileOccupied()) {
             tile.reset();
             tile = board.getTile(x, y);

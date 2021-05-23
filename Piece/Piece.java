@@ -58,31 +58,31 @@ public abstract class Piece {
     public abstract boolean getFirstMove();
 
     public abstract void setFirstMove(boolean b);
-
+    
     public DrawPiece getDp() {
         return dp;
     }
-
+    
     public ArrayList<Tile> getPossibleMoves() {
         return possibleMoves;
     }
-
+    
     public PieceType getPieceType() {
         return this.type;
     }
-
+    
     public PieceAlignment getPieceAlignment() {
         return this.alignment;
     }
-
+    
     public Tile getTile() {
         return tile;
     }
-
+    
     public int getX() {
         return tile.getX();
     }
-
+    
     public int getY() {
         return tile.getY();
     }

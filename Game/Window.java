@@ -51,7 +51,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
     private SaveGameDAO saveGame;
     private LoadGameDAO loadGame;
     private SaveRankingDAOImpl ranking;
-    private ReadRankingDAO rankingReader;
+    private ReadRankingDAOImpl rankingReader;
     private Player whitePlayer;
     private Player blackPlayer;
     private boolean gameIsRunning;
@@ -193,7 +193,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         saveTxtButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 gameIsRunning = true;
-                
+
                 saveGame = new SaveGameDAOImpl(board, gfm, labels);
 
                 saveGame.setSaveTxt();
@@ -299,7 +299,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
 
                 blackPlayer = new Player(player1.getText());
                 whitePlayer = new Player(player2.getText());
-                rankingReader = new ReadRankingDAO();
+                rankingReader = new ReadRankingDAOImpl();
 
                 rankingReader.readRankingTxtFile(blackPlayer, whitePlayer);
 
@@ -330,7 +330,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
 
                 blackPlayer = new Player(player1.getText());
                 whitePlayer = new Player(player2.getText());
-                rankingReader = new ReadRankingDAO();
+                rankingReader = new ReadRankingDAOImpl();
 
                 rankingReader.readRankingTxtFile(blackPlayer, whitePlayer);
 
@@ -361,7 +361,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
 
                 blackPlayer = new Player(player1.getText());
                 whitePlayer = new Player(player2.getText());
-                rankingReader = new ReadRankingDAO();
+                rankingReader = new ReadRankingDAOImpl();
 
                 rankingReader.readRankingTxtFile(blackPlayer, whitePlayer);
 
@@ -409,7 +409,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
                 if (loadGame.loadGameTxt()) {
                     blackPlayer = new Player(player1.getText());
                     whitePlayer = new Player(player2.getText());
-                    rankingReader = new ReadRankingDAO();
+                    rankingReader = new ReadRankingDAOImpl();
 
                     rankingReader.readRankingTxtFile(blackPlayer, whitePlayer);
 
@@ -465,6 +465,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
             }
         });
 
+        // Botao para mostrar janela de ranking
         showRanking = new JButton("Ranking");
         showRanking.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -475,12 +476,13 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
             }
         });
 
+        // Botao para carregar o ranking em Txt
         showRankingTxt = new JButton("Txt");
         showRankingTxt.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 JFrame rankingWindow = new JFrame();
                 JTextArea ranking = new JTextArea();
-                ReadRankingDAO fileReader = new ReadRankingDAO();
+                ReadRankingDAO fileReader = new ReadRankingDAOImpl();
 
                 rankingWindow.setSize(200, 300);
                 rankingWindow.setResizable(false);
@@ -494,12 +496,13 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
             }
         });
 
+        // Botao para carregar o ranking em Doc
         showRankingDoc = new JButton("Doc");
         showRankingDoc.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 JFrame rankingWindow = new JFrame();
                 JTextArea ranking = new JTextArea();
-                ReadRankingDAO fileReader = new ReadRankingDAO();
+                ReadRankingDAO fileReader = new ReadRankingDAOImpl();
 
                 rankingWindow.setSize(200, 300);
                 rankingWindow.setResizable(false);
@@ -513,6 +516,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
             }
         });
 
+        // Botao para voltar do menu de ranking
         returnFromRanking = new JButton("Return");
         returnFromRanking.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -523,6 +527,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
             }
         });
 
+        // Botao para voltar para o menu quando um jogo acaba
         menuAfterWin = new JButton("Return to menu");
         menuAfterWin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -562,12 +567,19 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         menu.setBounds(360, 205, 80, 30);
         menuAfterWin.setBounds(400, 175, 125, 30);
 
+        // Label para nome do jogador de pretas
         labels.get(0).setBounds(350, 10, 200, 30);
+        // Label para nome do jogador de brancas
         labels.get(1).setBounds(350, 290, 200, 30);
+        // Label para pontuação
         labels.get(2).setBounds(375, 135, 200, 30);
+        // Label para menu de save
         labels.get(3).setBounds(425, 135, 200, 30);
+        // Label para menu de load
         labels.get(4).setBounds(360, 50, 200, 30);
+        // Label para vitoria das brancas
         labels.get(5).setBounds(425, 135, 200, 30);
+        // Label para vitoria das pretas
         labels.get(6).setBounds(425, 135, 200, 30);
 
         // Deixa os componentes invisiveis
@@ -596,7 +608,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         setup();
     }
 
-    // Método que seta todas as configurações da janela e adiciona os componentes
+    // Metodo que seta todas as configuracoes da janela e adiciona os componentes
     // a ela
     public void setup() {
         // Configuração da janela
@@ -643,7 +655,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
     }
 
     // Esconde as labels de nome e pontuacao
-    public void hideGameLabels(){
+    public void hideGameLabels() {
         for (int i = 0; i < 2; i++) {
             labels.get(i).setVisible(false);
         }
@@ -659,30 +671,35 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         labels.get(4).setVisible(false);
     }
 
+    // Mostra a label de pontuacao
     public void showRankingLabels() {
         labels.get(2).setVisible(true);
     }
 
+    // Esconde label de pontuacao
     public void hideRankingLabels() {
         labels.get(2).setVisible(false);
     }
 
-    public void showWhiteVictoryLabels(){
+    // Define texto para vitoria das brancas e mostra a label
+    public void showWhiteVictoryLabels() {
         labels.get(5).setVisible(true);
         labels.get(5).setText("White victory!");
     }
 
-    public void showBlackVictoryLabels(){
+    // Define texto para vitoria das pretas e mostra a label
+    public void showBlackVictoryLabels() {
         labels.get(6).setVisible(true);
         labels.get(6).setText("Black victory!");
     }
 
-    public void hideVictoryLabels(){
+    // Esconde a label de vitoria
+    public void hideVictoryLabels() {
         labels.get(5).setVisible(false);
         labels.get(6).setVisible(false);
     }
 
-    // Esconde os componentes de menu e mostra os de jogo
+    // Esconde os componentes de menu
     public void showGame() {
         promote.setVisible(true);
         promoteButton.setVisible(true);
@@ -692,6 +709,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         menu.setVisible(true);
     }
 
+    // Esconde os componentes mostrados durante o jogo
     public void hideGame() {
         promote.setVisible(false);
         promoteButton.setVisible(false);
@@ -701,7 +719,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         menu.setVisible(false);
     }
 
-    // Mostra os componentes de menu e esconde os de jogo
+    // Mostra os componentes de menu
     public void showMenu() {
         startButton.setVisible(true);
         allPawnStartButton.setVisible(true);
@@ -712,6 +730,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         player2.setVisible(true);
     }
 
+    // Esconde os componentes de menu
     public void hideMenu() {
         startButton.setVisible(false);
         allPawnStartButton.setVisible(false);
@@ -722,7 +741,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         player2.setVisible(false);
     }
 
-    // Esconde os componentes de menu e mostra os de load menu
+    // Esconde os componentes de menu
     public void showLoadMenu() {
         loadTxtButton.setVisible(true);
         loadDocButton.setVisible(true);
@@ -736,7 +755,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         menuFromLoad.setVisible(false);
     }
 
-    // Mostra os componentes de save menu e esconde os de jogo
+    // Mostra os componentes de save menu
     public void showSaveMenu() {
         saveTxtButton.setVisible(true);
         saveDocButton.setVisible(true);
@@ -751,40 +770,44 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         labels.get(3).setVisible(false);
     }
 
+    // Mostra os componentes do menu de ranking
     public void showRankingMenu() {
         showRankingTxt.setVisible(true);
         showRankingDoc.setVisible(true);
         returnFromRanking.setVisible(true);
     }
 
+    // Esconde os componentes do menu de ranking
     public void hideRankingMenu() {
         showRankingTxt.setVisible(false);
         showRankingDoc.setVisible(false);
         returnFromRanking.setVisible(false);
     }
 
-    public void showVictoryMenu(){
+    // Mostra o menu de vitoria
+    public void showVictoryMenu() {
         menuAfterWin.setVisible(true);
     }
 
-    public void hideVictoryMenu(){
+    // Esconde o menu de vitoria
+    public void hideVictoryMenu() {
         menuAfterWin.setVisible(false);
     }
 
-    public void gameFinish(){
+    // Define um final de jogo e termina ele
+    public void gameFinish() {
         saveGame = new SaveGameDAOImpl(board, gfm, labels);
         hideGameLabels();
         hideGame();
 
         showVictoryMenu();
         System.out.println(gfm.getTurn());
-        if(checkWinner() == PieceAlignment.WHITE){
+        if (checkWinner() == PieceAlignment.WHITE) {
             showWhiteVictoryLabels();
-        }
-        else{
+        } else {
             showBlackVictoryLabels();
-        } 
-            
+        }
+
         updateAfterGame();
 
         while (!pieces.isEmpty()) {
@@ -792,12 +815,12 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         }
     }
 
-    public void updateAfterGame(){
-        if(checkWinner() == PieceAlignment.WHITE){
+    // Atualiza o ranking e apaga save do jogo
+    public void updateAfterGame() {
+        if (checkWinner() == PieceAlignment.WHITE) {
             ranking.updateRankingTxt(whitePlayer.getName(), whitePlayer.getWins());
             ranking.updateRankingDoc(whitePlayer.getName(), whitePlayer.getWins());
-        }
-        else if(checkWinner() == PieceAlignment.BLACK){
+        } else if (checkWinner() == PieceAlignment.BLACK) {
             ranking.updateRankingTxt(blackPlayer.getName(), blackPlayer.getWins());
             ranking.updateRankingDoc(blackPlayer.getName(), blackPlayer.getWins());
         }
@@ -810,11 +833,11 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
         saveGame.deleteSaveDoc(blackPlayer.getName(), whitePlayer.getName());
     }
 
-    public PieceAlignment checkWinner(){
-        if(gfm.getTurn() == PieceAlignment.WHITE){
+    // Retorna a cor  das pecas do vencedor
+    public PieceAlignment checkWinner() {
+        if (gfm.getTurn() == PieceAlignment.WHITE) {
             return PieceAlignment.BLACK;
-        }
-        else{
+        } else {
             return PieceAlignment.WHITE;
         }
     }
@@ -913,8 +936,8 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
     public void mousePressed(MouseEvent e) {
         mm.makeMove((e.getX() - 20) / 40, (e.getY() - 40) / 40);
 
-        if(gameIsRunning){
-            if(egm.checkGameEnd()){
+        if (gameIsRunning) {
+            if (egm.checkGameEnd()) {
                 gameFinish();
             }
         }

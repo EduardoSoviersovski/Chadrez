@@ -97,7 +97,8 @@ public class SaveGameDAOImpl implements SaveGameDAO {
         } else {
             save = save + " w ";
         }
-        // Se a casa inicial do rei e das torres estiverem ocupadas pelas proprias pecas e
+        // Se a casa inicial do rei e das torres estiverem ocupadas pelas proprias pecas
+        // e
         // elas nao tiverem se movido durante o jogo, adiciona o roque valido a string
         if (board.getTile(4, 7).getIsTileOccupied() && board.getTile(7, 7).getIsTileOccupied()) {
             if (board.getTile(4, 7).getPieceInTile().getPieceType() == PieceType.KING
@@ -152,6 +153,7 @@ public class SaveGameDAOImpl implements SaveGameDAO {
         return save;
     }
 
+    // Cria um save no formato Jogador1_Jogador2.doc na pasta de jogos salvo
     @Override
     public void createSaveDoc() {
         try (PrintWriter out = new PrintWriter(
@@ -279,6 +281,11 @@ public class SaveGameDAOImpl implements SaveGameDAO {
         }
     }
 
+    @Override
+    public String getSaveTxt() {
+        return save;
+    }
+
     // Cria um save no formato Jogador1_Jogador2.txt na pasta de jogos salvo
     @Override
     public void createSaveTxt() {
@@ -289,11 +296,6 @@ public class SaveGameDAOImpl implements SaveGameDAO {
             System.err.println("Error occurred");
             e1.printStackTrace();
         }
-    }
-
-    @Override
-    public String getSaveTxt() {
-        return save;
     }
 
     public void deleteSaveTxt(String nameBlack, String nameWhite) {

@@ -6,13 +6,13 @@ import java.util.ArrayList;
 
 public class Pawn extends Piece {
     // Atributos
-    private boolean firstMove = true;
+    private boolean firstMove;
 
     // Construtora
     public Pawn(Board board, Tile tile, PieceAlignment alignment) {
         super(board, tile, alignment);
         type = PieceType.PAWN;
-
+        firstMove = true;
         dp = new DrawPiece(tile.getX(), tile.getY(), PieceType.PAWN, alignment);
     }
 

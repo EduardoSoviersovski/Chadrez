@@ -125,6 +125,8 @@ public class King extends Piece {
         }
     }
 
+    // Alem do movimento do rei, movimenta a Torre mais proxima do movimento
+    // realiazado
     public void castle(int x, int y, ArrayList<Piece> pieces) {
         if (y == 0) {
             if (x == 2) {
