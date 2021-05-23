@@ -1,6 +1,6 @@
 import Game.Game;
 
-public class Principal {
+public class Chadrez {
     public static void main(String[] args) {
         Game game = new Game();
 
