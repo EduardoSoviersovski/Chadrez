@@ -600,7 +600,7 @@ public class Window extends JFrame implements MouseListener, MouseMotionListener
     // a ela
     public void setup() {
         // Configuração da janela
-        this.setTitle("Chádrez");
+        this.setTitle("Chadrez");
         this.setSize(600, 400);
         this.setDefaultCloseOperation(3);
         this.setResizable(false);

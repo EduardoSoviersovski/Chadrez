@@ -18,9 +18,6 @@ public class King extends Piece {
     }
 
     // Metodos
-    public DrawPiece getDp() {
-        return dp;
-    }
 
     // Adicona todos os movimentos possiveis desta peca nesta posicao a uma array de
     // Tiles

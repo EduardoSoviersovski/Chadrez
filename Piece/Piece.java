@@ -55,11 +55,13 @@ public abstract class Piece {
 
     public abstract void setPossibleMoves();
 
-    public abstract DrawPiece getDp();
-
     public abstract boolean getFirstMove();
 
     public abstract void setFirstMove(boolean b);
+
+    public DrawPiece getDp() {
+        return dp;
+    }
 
     public ArrayList<Tile> getPossibleMoves() {
         return possibleMoves;

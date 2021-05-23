@@ -13,10 +13,6 @@ public class Bishop extends Piece {
         dp = new DrawPiece(tile.getX(), tile.getY(), PieceType.BISHOP, alignment);
     }
 
-    public DrawPiece getDp() {
-        return dp;
-    }
-
     // Metodos
     // Adicona todos os movimentos possiveis desta peca nesta posicao a uma array de
     // Tiles

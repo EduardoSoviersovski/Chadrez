@@ -13,10 +13,6 @@ public class Knight extends Piece {
         dp = new DrawPiece(tile.getX(), tile.getY(), PieceType.KNIGHT, alignment);
     }
 
-    public DrawPiece getDp() {
-        return dp;
-    }
-
     // Adicona todos os movimentos possiveis desta peca nesta posicao a uma array de
     // Tiles
     public void setPossibleMoves() {

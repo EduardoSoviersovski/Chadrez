@@ -17,10 +17,6 @@ public class Rook extends Piece {
         dp = new DrawPiece(tile.getX(), tile.getY(), PieceType.ROOK, alignment);
     }
 
-    public DrawPiece getDp() {
-        return dp;
-    }
-
     public boolean getFirstMove() {
         return firstMove;
     }

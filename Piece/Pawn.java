@@ -16,10 +16,6 @@ public class Pawn extends Piece {
         dp = new DrawPiece(tile.getX(), tile.getY(), PieceType.PAWN, alignment);
     }
 
-    public DrawPiece getDp() {
-        return dp;
-    }
-
     // Realiza o movimento da peca
     @Override
     public void move(int x, int y, ArrayList<Piece> pieces) {
